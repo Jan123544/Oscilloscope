@@ -1,0 +1,3 @@
+\babel@toc {slovak}{}
+\contentsline {section}{\numberline {1}Funkcie osciloskopu}{3}{section.1}% 
+\contentsline {section}{\numberline {2}Vstupn\IeC {\'y} deli\IeC {\v c} nap\IeC {\"a}tia}{3}{section.2}% 
