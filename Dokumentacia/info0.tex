@@ -20,18 +20,12 @@
 
 
 \begin{document}
-	\title{Špecifikácia funkcionality Osciloskopu na semestrálny projekt z predmetu vnorené systémy}
+	\title{ Semestrálny projekt Osciloskop - špecifikácia }
 	\author{Denis Vasko a Ján Urdianyk} 
 	\maketitle
 	\thispagestyle{empty}
-	\newpage
-	
-	
-	\tableofcontents
-	\listoffigures
-	\listoftables
-	\newpage
-	
+	\section{Špecifikácia}
+	Napätie na kanáloch chceme vzorkovať s pevnou periódou. Hodnoty budeme zapisovať do pamäťového buffra cez DMA. Vzorky sa budú prepočítavať podľa nastavení osciloskopu v pamäti mikropočítača(Vertikálny posun, horizontálny posun, vertikálne škálovanie atď.). Prepočítané vzorky sa potom pošlú do GUI na PC cez perifériu USART, kde sa vykreslí priebeh napätí. Nastavenie osciloskopu budeme meniť cez GUI pri zmene sa pošlú nové nastavenia do mikropočítača cez sériovú linku.
 \section{Funkcie osciloskopu}
 \begin{itemize}
 	\item Meracia mriežka (Graticule) 
@@ -42,21 +36,20 @@
 	\item Vertikálny posun - pre oba kanály zvlášť
 	\item Horizontálny posun - pre oba kanály zvlášť
 	\item Možnosť zobrazenia časového priebehu napätí na oboch kanáloch zároveň (Prepínanie len Y, len X, oba X aj Y alebo X-Y mód)
-	\item Tigrovaný vstup - štart zobrazenia pri dosiahnutí dostatočnej úrovne napätia na sledovanom/ných kanáloch
-	\item Hold-off - po trigrovaní vstupu sa ďalšie vykreslenie nemôže uskutočniť kým neprejde daný čas - cooldown trigrovania
-	\item Automatické prekresľovanie - aj keď napätie na kanály nedosiahne dostatočnú hodnotu na trigoravnie, aj tak sa periodicky kanál prekresľuje s istou periódou. V prípade, že napätie na kanály dosiahne trigrovacie napätie, automatické prekresľovanie sa vypne (restne sa časovač), potom sa znovu zapne po neprítomnosti trigrovacieho napätia na kanály
+	%\item Tigrovaný vstup - štart zobrazenia pri dosiahnutí dostatočnej úrovne napätia na sledovanom/ných kanáloch
+	%\item Hold-off - po trigrovaní vstupu sa ďalšie vykreslenie nemôže uskutočniť kým neprejde daný čas - cooldown trigrovania
+	%\item Automatické prekresľovanie - aj keď napätie na kanály nedosiahne dostatočnú hodnotu na trigoravnie, aj tak sa periodicky kanál prekresľuje s istou periódou. V prípade, že napätie na kanály dosiahne trigrovacie napätie, automatické prekresľovanie sa vypne (restne sa časovač), potom sa znovu zapne po neprítomnosti trigrovacieho napätia na kanály
 	\item Jednorázové vykreslenie - vykreslenie jedného merania 
 	\begin{itemize}
-		\item štart pri presiahnutí úrovne napätia
-		\item štart po istom čase 
+		\item štart merania pri presiahnutí úrovne napätia
+	%	\item štart po istom čase 
 	\end{itemize}
 \end{itemize} 
-\section{Vstupný delič napätia}
-Podľa potreby by sme na vstup pripojili delič napätia s dostatočne veľkými odpormi pre určené napätie. Zenerová dióda tam nemusí byť, napätie na MCU by boli napätie medzi svorkami C,D pričom vstupné napätie by sa privádzalo na svorky A,B.
+\section{Náčrt štruktúry programu}
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.4\linewidth]{../Obrazky/inputdivider.pdf}
+	\includegraphics[width=\linewidth]{../Obrazky/basicstructure.pdf}
 \end{figure}
 	
 	
