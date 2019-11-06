@@ -25,7 +25,7 @@
 	\maketitle
 	\thispagestyle{empty}
 	\section{Špecifikácia}
-	Napätie na kanáloch chceme vzorkovať s pevnou periódou. Hodnoty budeme zapisovať do pamäťového buffra cez DMA. Vzorky sa budú prepočítavať podľa nastavení osciloskopu v pamäti mikropočítača(Vertikálny posun, horizontálny posun, vertikálne škálovanie atď.). Prepočítané vzorky sa potom pošlú do GUI na PC cez perifériu USART, kde sa vykreslí priebeh napätí. Nastavenie osciloskopu budeme meniť cez GUI, pri zmene sa pošlú nové nastavenia do mikropočítača cez sériovú linku.
+	Cieľom je zostrojiť osciloskop pre zobrazovanie priebehu napätí do +-20V. Napätie na kanáloch chceme vzorkovať s pevnou periódou. Hodnoty budeme zapisovať do pamäťového buffra cez DMA. Vzorky sa budú prepočítavať podľa nastavení osciloskopu v pamäti mikropočítača(Vertikálny posun, horizontálny posun, vertikálne škálovanie atď.). Prepočítané vzorky sa potom pošlú do GUI na PC cez perifériu USART, kde sa vykreslí priebeh napätí. Nastavenie osciloskopu budeme meniť cez GUI, pri zmene sa pošlú nové nastavenia do mikropočítača cez sériovú linku.
 \section{Funkcie osciloskopu}
 \begin{itemize}
 	\item Meracia mriežka (Graticule) 
@@ -45,13 +45,19 @@
 	%	\item štart po istom čase 
 	\end{itemize}
 \end{itemize} 
-\section{Náčrt štruktúry programu}
 
-\begin{figure}[!h]
-	\centering
-	\includegraphics[width=\linewidth]{../Obrazky/basicstructure.pdf}
-\end{figure}
+	\section{Potrebné súčiastky}
+		\begin{itemize}
+		\item mikropočítač + breadboard
+		\item káble a svorky, odpory na deliče napätia asi 100k a 10k pre napätie do +-20V
+		\item časovač 555 na testovanie, rezistory a kondenzátor na nastavenie PB časovača, 9V batéria napájanie časovača
+		%	\item štart po istom čase 
+	\end{itemize}
+	\section{Náčrt štruktúry programu}
 	
-	
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[width=\linewidth]{../Obrazky/basicstructure.pdf}
+	\end{figure}
 	%\printindex
 \end{document}
