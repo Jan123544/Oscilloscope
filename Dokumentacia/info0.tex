@@ -34,7 +34,6 @@
 	\item X-Y mód (vykreslenie závislosti napätia na kanále Y od napätia na kanále X)
 	\item Horizontálne škálovanie - pre X-kanál v X-Y móde
 	\item Vertikálny posun - pre oba kanály zvlášť
-	\item Horizontálny posun - pre oba kanály zvlášť
 	\item Možnosť zobrazenia časového priebehu napätí na oboch kanáloch zároveň (Prepínanie len Y, len X, oba X aj Y alebo X-Y mód)
 	%\item Tigrovaný vstup - štart zobrazenia pri dosiahnutí dostatočnej úrovne napätia na sledovanom/ných kanáloch
 	%\item Hold-off - po trigrovaní vstupu sa ďalšie vykreslenie nemôže uskutočniť kým neprejde daný čas - cooldown trigrovania
@@ -50,14 +49,42 @@
 		\begin{itemize}
 		\item mikropočítač + breadboard
 		\item káble a svorky, odpory na deliče napätia asi 100k a 10k pre napätie do +-20V
-		\item časovač 555 na testovanie, rezistory a kondenzátor na nastavenie PB časovača, 9V batéria napájanie časovača
 		%	\item štart po istom čase 
 	\end{itemize}
 	\section{Náčrt štruktúry programu}
 	
-	\begin{figure}[!h]
+	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=\linewidth]{../Obrazky/basicstructure.pdf}
 	\end{figure}
-	%\printindex
+
+
+	\pagebreak
+	\section{Komunikačný protokol}
+	\subsection{Dátový protokol}
+	Dáta sa z mikropočítača do GUI posielajú v tomto formáte:
+		\begin{itemize}
+			\item	Start Word [16 bit]	0xEFEF
+			\item n 32 bitových slov (n vzoriek) [32 bit] - horných 16bitov hodnota prvého kanálu (12 bitov zarovnaných doprava, LSB napravo), dolných 16 bitov hodnota druhého kanálu
+			\item End Word [16 bit] 0xEFEF
+		\end{itemize}
+		
+	\subsection{Konfiguračný protokol}
+	Dáta sa z GUI do mikropočítača posielajú v tomto formáte:
+	\begin{itemize}
+		\item Start Word [16 bit] 0xEFEF
+		\item Hodnota časovej základne [8 bit]
+		\item Hodnota vertikálneho škálovania [8 bit]	
+		\item Horizontálne škálovanie X kanálu (v prípade XY módu) [8 bit]
+		\item Hodnota vertikálneho posunu [8 bit]
+		\item Nastavenie typu merania [8bit]
+				\begin{itemize}		
+					\item 	0b**** ***0 - jednorázové meranie
+					\item 	0b**** ***1 - kontinuálne (opakované) meranie
+					\item ostatné rezervované pre budúcnosť
+				\end{itemize}
+		\item Úroveň trigrovania [8bit]
+		\item Hold-off čas [16bit] (ešte neviem koľko bitov sem treba)
+		
+	\end{itemize}
 \end{document}
