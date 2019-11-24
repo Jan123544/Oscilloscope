@@ -13,8 +13,8 @@ public class SerialControlCaretaker {
     }
 
     // Reads the settings of the serial port from the GUI, also converts strings to Integers etc. where needed.
-    public static SerialControlSettings readSerialSettings(Controller c) throws NumberFormatException{
-        SerialControlSettings set = new SerialControlSettings();
+    public static SerialSettings readSerialSettings(Controller c) throws NumberFormatException{
+        SerialSettings set = new SerialSettings();
         set.port = c.serialPortTF.getText();
         set.baudRate = Integer.parseInt(c.serialBaudRateTF.getText());
 

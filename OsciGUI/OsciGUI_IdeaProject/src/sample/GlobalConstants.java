@@ -18,4 +18,5 @@ public class GlobalConstants {
     public static Integer TRIGGER_TYPE_ONE_TIME = 1;
     public static Double TRIGGER_LEVEL_DEFAULT = 2.0;
 
+    public static Integer MEASUREMENT_LEVELS = 4096;
 }

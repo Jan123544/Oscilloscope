@@ -1,6 +1,6 @@
 package sample;
 
-public class SerialControlSettings {
+public class SerialSettings {
     public String port;
     public Integer baudRate;
     public Integer numDataBits;

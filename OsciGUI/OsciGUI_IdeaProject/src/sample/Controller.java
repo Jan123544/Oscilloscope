@@ -18,8 +18,8 @@ public class Controller {
     @FXML
     NumberAxis chartYAxis;
 
-    XYChart.Series<Double, Double> osciSeries = new XYChart.Series<>();
-
+    XYChart.Series<Double, Double> yDataSeries;
+    XYChart.Series<Double, Double> xDataSeries;
 
     // Serial settings
     @FXML
@@ -100,10 +100,6 @@ public class Controller {
         ChartCaretaker.updateChartSettings(this, chart);
     }
 
-   void addData(double x, double y){
-       osciSeries.getData().add(new XYChart.Data<>(x,y));
-   }
-
    // Action handlers
     public void connectButtonHandler(){
         try {
@@ -111,9 +107,17 @@ public class Controller {
             serialStatusL.setText("Connected");
         } catch(SerialPortConnectionFailedException e){
            System.err.println("Serial connection failed");
+           return;
         } catch (BadInputException e){
            System.err.println("Malformed input");
            serialStatusL.setText("Malformed input");
+           return;
         }
+
+        // Start data reader thread.
+        SerialReader sr = new SerialReader(this, port);
+        Thread th = new Thread(sr);
+        th.setDaemon(true);
+        th.start();
     }
 }

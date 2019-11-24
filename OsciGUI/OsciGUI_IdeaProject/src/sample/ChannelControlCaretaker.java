@@ -49,8 +49,8 @@ public class ChannelControlCaretaker {
         c.yOffsetTF.setText(String.valueOf(c.yOffsetS.getValue()));
     }
 
-    public static ChannelControlSettings readChannelControlsSettings(Controller c){
-        ChannelControlSettings set = new ChannelControlSettings();
+    public static ChannelSettings readChannelControlsSettings(Controller c){
+        ChannelSettings set = new ChannelSettings();
         set.ySensitivity = Double.parseDouble(c.ySensitivityTF.getText());
         set.yOffset = Double.parseDouble(c.yOffsetTF.getText());
         set.xSensitivity = Double.parseDouble(c.xSensitivityTF.getText());

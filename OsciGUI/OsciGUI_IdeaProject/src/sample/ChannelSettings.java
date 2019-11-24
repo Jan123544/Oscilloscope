@@ -1,6 +1,6 @@
 package sample;
 
-public class ChannelControlSettings {
+public class ChannelSettings {
     public Double ySensitivity;
     public Double xSensitivity;
     public Double xOffset;

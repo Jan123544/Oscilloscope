@@ -54,11 +54,11 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void startUsartReaderThread(Controller c){
-        SerialReader reader = new SerialReader(c);
-        Thread readerThread = new Thread(reader);
-        readerThread.setDaemon(true);
-        readerThread.start();
-    }
+//    public void startUsartReaderThread(Controller c){
+//        SerialReader reader = new SerialReader(c);
+//        Thread readerThread = new Thread(reader);
+//        readerThread.setDaemon(true);
+//        readerThread.start();
+//    }
 
 }
