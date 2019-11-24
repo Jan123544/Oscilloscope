@@ -48,7 +48,7 @@
 	\section{Potrebné súčiastky}
 		\begin{itemize}
 		\item mikropočítač + breadboard
-		\item káble a svorky, odpory na deliče napätia asi 100k a 10k pre napätie do +-20V
+		\item káble a svorky, odpory na deliče napätia asi 100k a 10k pre napätie do +-20V, meracie sondy
 		%	\item štart po istom čase 
 	\end{itemize}
 	\section{Náčrt štruktúry programu}
@@ -64,8 +64,10 @@
 	\subsection{Dátový protokol}
 	Dáta sa z mikropočítača do GUI posielajú v tomto formáte:
 		\begin{itemize}
-			\item	Start Word [16 bit]	0xEFEF
-			\item n 32 bitových slov (n vzoriek) [32 bit] - horných 16bitov hodnota prvého kanálu (12 bitov zarovnaných doprava, LSB napravo), dolných 16 bitov hodnota druhého kanálu
+			\item Start Word [16 bit]	0xEFEF
+			\item n 16 bitových slov (n vzoriek) [16 bit] - 12bitové hodnoty zarovnané doprava (LSB napravo)
+			\item Next Channel word [16 bit] 0xDFEF
+			\item n 16 bitových slov (n vzoriek) [16 bit] - 12bitové hodnoty zarovnané doprava (LSB napravo)
 			\item End Word [16 bit] 0xEFEF
 		\end{itemize}
 		

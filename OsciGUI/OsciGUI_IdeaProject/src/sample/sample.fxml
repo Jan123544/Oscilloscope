@@ -1,17 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="10" prefHeight="440.0" prefWidth="903.0" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <LineChart fx:id="lc1" axisSortingPolicy="NONE">
+      <LineChart fx:id="chart" alternativeRowFillVisible="false" axisSortingPolicy="NONE" horizontalZeroLineVisible="false" legendVisible="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="420.0" prefWidth="420.0" verticalZeroLineVisible="false">
         <xAxis>
-          <NumberAxis label="Time" side="BOTTOM" />
+          <NumberAxis fx:id="chartXAxis" animated="false" autoRanging="false" minorTickCount="0" minorTickLength="0.0" minorTickVisible="false" tickLength="10.0" tickMarkVisible="false" tickUnit="10.0" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis fx:id="chartYAxis" animated="false" autoRanging="false" minorTickCount="0" minorTickLength="0.0" minorTickVisible="false" side="LEFT" tickLength="10.0" tickMarkVisible="false" tickUnit="10.0" />
         </yAxis>
       </LineChart>
+      <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="446.0" prefWidth="472.0" tabClosingPolicy="UNAVAILABLE" GridPane.columnIndex="1">
+        <tabs>
+          <Tab text="Controls">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="378.0" prefWidth="475.0">
+                     <children>
+                        <GridPane layoutX="9.0" layoutY="6.0" prefHeight="400.0" prefWidth="456.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.0" minWidth="110.0" prefWidth="108.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="18.0" minWidth="8.0" prefWidth="8.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="141.0" minWidth="110.0" prefWidth="140.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="110.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <TextField fx:id="yOffsetTF" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Slider fx:id="yOffsetS" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Offset:" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[Volt]" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Slider fx:id="ySensitivityS" majorTickUnit="5.0" max="255.0" minorTickCount="0" snapToTicks="true" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <TextField fx:id="ySensitivityTF" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="11.0" prefWidth="114.0" text="Sensitivity:" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[Volt/div]" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y channel controls" GridPane.columnSpan="2" />
+                              <TextField GridPane.columnIndex="4" GridPane.rowIndex="4" fx:id="xOffsetTF">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Slider GridPane.columnIndex="3" GridPane.rowIndex="4" fx:id="xOffsetS">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[Volt]" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Offset:" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <Slider GridPane.columnIndex="3" GridPane.rowIndex="2" fx:id="xSensitivityS">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" />
+                                 </GridPane.margin>
+                              </Slider>
+                              <TextField GridPane.columnIndex="4" GridPane.rowIndex="2" fx:id="xSensitivityTF">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Sensitivity:" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[Volt/div]" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                              <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="35.0" prefWidth="228.0" text="X channel control" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Trigger controls" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="99.0" prefWidth="447.0" text="Trigger mode:" GridPane.columnSpan="2147483647" GridPane.rowIndex="7">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" prefHeight="20.0" prefWidth="227.0" text="Time Controls / View Settings" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Time division:" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[ms/div]" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <ChoiceBox fx:id="trigModeChoice" maxHeight="20.0" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" right="15.0" />
+                                 </GridPane.margin>
+                              </ChoiceBox>
+                              <TextField fx:id="timePerDivisionTF" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="81.0" text="Trigger level:" GridPane.rowIndex="9">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="87.0" text="Show channels:" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+                              <GridPane GridPane.columnIndex="4" GridPane.rowIndex="9">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <CheckBox fx:id="yChannelShowCB" mnemonicParsing="false" text="Y">
+                                       <GridPane.margin>
+                                          <Insets left="15.0" />
+                                       </GridPane.margin>
+                                    </CheckBox>
+                                    <CheckBox mnemonicParsing="false" text="X" GridPane.columnIndex="1" fx:id="xChannelShowCB">
+                                       <GridPane.margin>
+                                          <Insets left="15.0" />
+                                       </GridPane.margin>
+                                    </CheckBox>
+                                 </children>
+                              </GridPane>
+                              <TextField fx:id="trigLevelTF" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" right="15.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Trigger level (resolution adjusted):" wrapText="true" GridPane.columnSpan="2147483647" GridPane.rowIndex="11">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </Label>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Validity check:" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.vgrow="ALWAYS" />
+                              <Label fx:id="validSettingsL" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" GridPane.columnIndex="4" GridPane.rowIndex="11" />
+                              <Label fx:id="trigLevelAdjustedL" alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                              <Separator orientation="VERTICAL" prefHeight="400.0" prefWidth="10.0" GridPane.columnIndex="2" GridPane.rowSpan="2147483647" />
+                              <Label alignment="CENTER" layoutX="120.0" layoutY="100.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[Volt]" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                           </children>
+                        </GridPane>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Serial port">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <SplitPane dividerPositions="0.6432748538011696, 0.9005847953216374" layoutX="14.0" layoutY="15.0" orientation="VERTICAL" prefHeight="344.0" prefWidth="443.0">
+                          <items>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="185.0" prefWidth="441.0">
+                                 <children>
+                                    <GridPane layoutX="-2.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="212.0" prefWidth="440.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="188.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="252.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                                      </rowConstraints>
+                                       <children>
+                                          <TextField fx:id="serialBaudRateTF" alignment="CENTER" text="115200" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="15.0" />
+                                             </GridPane.margin>
+                                          </TextField>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Port:" textAlignment="CENTER" wrapText="true" />
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="40.0" prefWidth="188.0" text="BaudRate:" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="1" />
+                                          <TextField fx:id="serialPortTF" alignment="CENTER" text="COM7" GridPane.columnIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="15.0" />
+                                             </GridPane.margin>
+                                          </TextField>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Protocol:" GridPane.rowIndex="2" />
+                                          <ChoiceBox fx:id="serialProtocolChoice" maxHeight="30.0" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="15.0" />
+                                             </GridPane.margin>
+                                          </ChoiceBox>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Flow control:" GridPane.rowIndex="3" />
+                                          <ChoiceBox fx:id="serialFlowControlChoice" maxHeight="30.0" maxWidth="1.7976931348623157E308" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="15.0" />
+                                             </GridPane.margin>
+                                          </ChoiceBox>
+                                          <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Status:" GridPane.rowIndex="4" />
+                                          <Label fx:id="serialStatusL" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                              <GridPane prefHeight="34.0" prefWidth="241.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="385.0" minWidth="10.0" prefWidth="354.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="87.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="100.0" minHeight="0.0" prefHeight="43.0" vgrow="ALWAYS" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="serialConnectB" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#connectButtonHandler" text="Connect" GridPane.columnIndex="1" />
+                                    <ProgressBar fx:id="serialConnectPB" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" />
+                                 </children>
+                              </GridPane>
+                          </items>
+                        </SplitPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
    </children>
+   <columnConstraints>
+      <ColumnConstraints maxWidth="420.0" minWidth="420.0" prefWidth="420.0" />
+      <ColumnConstraints hgrow="ALWAYS" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="420.0" />
+   </rowConstraints>
 </GridPane>

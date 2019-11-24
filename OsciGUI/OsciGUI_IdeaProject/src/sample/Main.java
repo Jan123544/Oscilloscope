@@ -1,23 +1,22 @@
 package sample;
 
-import com.fazecast.jSerialComm.SerialPort;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    FXMLLoader loader;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        loader = new FXMLLoader(getClass().getResource("sample.fxml"));
         Parent root = loader.load();
         Controller c = loader.getController();
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("Osci app");
+        primaryStage.setScene(new Scene(root, 900, 490));
         primaryStage.show();
 /*
         byte[] bBuffer = new byte[1];
@@ -49,16 +48,17 @@ public class Main extends Application {
 
         }
  */
-    startUsartReaderThread(c);
+    //startUsartReaderThread(c);
     }
     public static void main(String[] args) {
         launch(args);
     }
 
     public void startUsartReaderThread(Controller c){
-        UARTReader reader = new UARTReader(c);
+        SerialReader reader = new SerialReader(c);
         Thread readerThread = new Thread(reader);
         readerThread.setDaemon(true);
         readerThread.start();
     }
+
 }
