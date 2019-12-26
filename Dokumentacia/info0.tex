@@ -65,10 +65,8 @@
 	Dáta sa z mikropočítača do GUI posielajú v tomto formáte:
 		\begin{itemize}
 			\item Start Word [16 bit]	0xEFEF
-			\item n 16 bitových slov (n vzoriek) [16 bit] - 12bitové hodnoty zarovnané doprava (LSB napravo)
-			\item Next Channel word [16 bit] 0xDFEF
-			\item n 16 bitových slov (n vzoriek) [16 bit] - 12bitové hodnoty zarovnané doprava (LSB napravo)
-			\item End Word [16 bit] 0xCFEF
+			\item n 16 bitových slov (n vzoriek, n =1024) [16 bit] - 12bitové hodnoty zarovnané doprava (LSB napravo)
+			\item n 16 bitových slov (n vzoriek, n =1024) [16 bit] - 12bitové hodnoty zarovnané doprava (LSB napravo)
 		\end{itemize}
 		
 	\subsection{Konfiguračný protokol}

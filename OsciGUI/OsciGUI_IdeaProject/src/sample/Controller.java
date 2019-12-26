@@ -1,31 +1,33 @@
 package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+
+import java.util.concurrent.Semaphore;
 
 public class Controller {
 
-    // Chart
+    // Cnavas
     @FXML
-    LineChart<Double, Double> chart;
-    @FXML
-    NumberAxis chartXAxis;
-    @FXML
-    NumberAxis chartYAxis;
+    Canvas canvas;
+    GraphicsContext gc;
+    CanvasCaretaker canvasCaretaker;
 
-    XYChart.Series<Double, Double> yDataSeries;
-    XYChart.Series<Double, Double> xDataSeries;
+    byte [] canvasXDataBuffer;
+    byte [] canvasYDataBuffer;
+    //long lastCanvasUpdateTime;
+    Semaphore canvasDrawSemaphore = new  Semaphore(1);
 
     // Serial settings
     @FXML
     ProgressBar serialConnectPB;
     @FXML
     Button serialConnectB;
+    @FXML
+    Button serialDisconnectB;
     @FXML
     ChoiceBox<String> serialProtocolChoice;
     @FXML
@@ -44,9 +46,13 @@ public class Controller {
     @FXML
     ChoiceBox<String> trigModeChoice;
     @FXML
-    Label trigLevelAdjustedL;
+    TextField yTriggerLevelTF;
     @FXML
-    TextField trigLevelTF;
+    Slider yTriggerLevelS;
+    @FXML
+    TextField xTriggerLevelTF;
+    @FXML
+    Slider xTriggerLevelS;
 
     // Y channel
     @FXML
@@ -58,6 +64,8 @@ public class Controller {
     TextField ySensitivityTF;
     @FXML
     TextField yOffsetTF;
+    @FXML
+    ChoiceBox yChannelVoltageRangeChoice;
 
     // X channel
     @FXML
@@ -70,18 +78,39 @@ public class Controller {
     @FXML
     TextField xOffsetTF;
 
+    @FXML
+    ChoiceBox xChannelVoltageRangeChoice;
+
     // Time control / Settings panel
     @FXML
     TextField timePerDivisionTF;
     @FXML
+    Slider timePerDivisionS;
+    @FXML
     CheckBox xChannelShowCB;
     @FXML
     CheckBox yChannelShowCB;
+    @FXML
+    CheckBox xyModeCB;
 
     @FXML
     Label validSettingsL;
 
+    @FXML
+    Button uploadSettingsB;
+
+    // Internal settings
+    @FXML
+    TextField canvasVerticalNormalisationTF;
+    @FXML
+    TextField settingsUpdateRateTF;
+    @FXML
+    CheckBox autoUpdateCB;
+
     public void initialize(){
+
+        // Internal settings init
+        InternalSettingsCaretaker.init(this);
 
         // Serial settings init
         SerialControlCaretaker.initSerialControlSettings(this);
@@ -95,9 +124,10 @@ public class Controller {
         // Time controls / Settings
         TimeControlsCaretaker.initTimeControlSettings(this);
 
+        // Canvas init and update
+        canvasCaretaker = new CanvasCaretaker();
+        canvasCaretaker.init(this);
         // Chart init and update
-        ChartCaretaker.initChartSettings(this);
-        ChartCaretaker.updateChartSettings(this, chart);
     }
 
    // Action handlers
@@ -115,9 +145,31 @@ public class Controller {
         }
 
         // Start data reader thread.
-        SerialReader sr = new SerialReader(this, port);
+        SerialBlockReader sr = new SerialBlockReader(this, port);
+//        SerialReader sr = new SerialReader(this, port);
         Thread th = new Thread(sr);
         th.setDaemon(true);
         th.start();
     }
+
+    public void disconnectButtonHandler(){
+        if (port != null){
+            port.closePort();
+            serialConnectPB.setProgress(50);
+            while(port.isOpen()){};
+        }
+        serialStatusL.setText("Disconnected");
+        serialConnectPB.setProgress(0);
+        autoUpdateCB.setSelected(false);
+    }
+
+    public void uploadSettingsButtonHandler(){
+        if(port.isOpen()){
+            SerialWriter w = new SerialWriter(this, port);
+            Thread t = new Thread(w);
+            t.setDaemon(true);
+            t.start();
+        }
+    }
+
 }
