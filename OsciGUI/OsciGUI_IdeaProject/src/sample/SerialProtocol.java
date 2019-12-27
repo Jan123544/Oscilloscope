@@ -67,7 +67,7 @@ public class SerialProtocol {
         b.put(cset.yVoltageRange);
         b.put(cset.xGraticuleDivisions);
         b.put(cset.yGraticuleDivisions);
-        byte [] res = b.flip().array();
+        byte [] res = (byte[])b.flip().array();
         return res;
     }
 }
