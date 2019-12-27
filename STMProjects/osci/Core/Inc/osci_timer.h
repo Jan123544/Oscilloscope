@@ -13,15 +13,15 @@
 #define TIM1_ID 1
 #define TIM2_ID 2
 
-void osci_timer_init(Osci_ChannelStateMachine*);
-void osci_timer_stop(Osci_ChannelStateMachine*);
-void osci_timer_start(Osci_ChannelStateMachine*);
-void osci_timer_reconfigure_for_measuring(Osci_ChannelStateMachine*);
-void osci_timer_reconfigure_for_monitoring(Osci_ChannelStateMachine*);
+void OSCI_timer_init(Osci_ChannelStateMachine*);
+void OSCI_timer_stop(Osci_ChannelStateMachine*);
+void OSCI_timer_start(Osci_ChannelStateMachine*);
+void OSCI_timer_reconfigure_for_measuring(Osci_ChannelStateMachine*);
+void OSCI_timer_reconfigure_for_monitoring(Osci_ChannelStateMachine*);
 
-void (*osci_timer1_update_callback) (Osci_Application*);
-void (*osci_timer2_update_callback) (Osci_Application*);
+ADC_callback osci_timer1_update_callback;
+ADC_callback osci_timer2_update_callback;
 
-void osci_timer_set_update_callback(Osci_ChannelStateMachine*, void (*) (Osci_Application*));
+void OSCI_timer_set_update_callback(Osci_ChannelStateMachine*, ADC_callback);
 
 #endif /* INC_OSCI_TIMER_H_ */

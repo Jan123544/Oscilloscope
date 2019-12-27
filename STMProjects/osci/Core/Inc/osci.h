@@ -17,5 +17,5 @@
 
 
 Osci_Application* app_IT_reference;
-Osci_Application* osci_init();
+Osci_Application* OSCI_init();
 #endif /* INC_OSCI_H_ */

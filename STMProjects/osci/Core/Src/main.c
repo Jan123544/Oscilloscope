@@ -111,7 +111,7 @@ int main(void)
   LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
   LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
 
-  Osci_Application* app = osci_init();
+  Osci_Application* app = OSCI_init();
   app_IT_reference = app;
 
   /* USER CODE END 2 */
@@ -121,9 +121,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  osci_transceiver_update(&app->transceiver);
-	  osci_channel_update(&app->xChannelStateMachine);
-	  osci_channel_update(&app->yChannelStateMachine);
+	  OSCI_transceiver_update(&app->transceiver);
+	  OSCI_channel_update(&app->xChannelStateMachine);
+	  OSCI_channel_update(&app->yChannelStateMachine);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

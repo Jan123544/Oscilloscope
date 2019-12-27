@@ -25,16 +25,16 @@
 #define OSCI_CHANNEL_STATE_SHUTDING_DOWN 3
 
 // State machine functions and call-backs.
-void osci_channel_init(Osci_ChannelStateMachine* , TIM_TypeDef* , DMA_TypeDef* , uint32_t , ADC_TypeDef* , uint32_t , void (*) (Osci_Application*), void (*) (Osci_Application*), void (*) (Osci_Application*),  void (*) (Osci_Application*),Osci_Transceiver* );
-void osci_channel_update(Osci_ChannelStateMachine* csm);
-void osci_channel_shutdown(Osci_ChannelStateMachine* csm);
-void osci_channel_monitoring_callback_x(Osci_Application*);
-void osci_channel_measuring_callback_x(Osci_Application*);
-void osci_channel_monitoring_callback_y(Osci_Application*);
-void osci_channel_measuring_callback_y(Osci_Application*);
-void osci_channel_measurement_complete_callback_x(Osci_Application*);
-void osci_channel_measurement_complete_callback_y(Osci_Application*);
-void osci_channel_awd_threshold_callback_x(Osci_Application*);
-void osci_channel_awd_threshold_callback_y(Osci_Application*);
+void OSCI_channel_init(Osci_ChannelStateMachine* , TIM_TypeDef* , DMA_TypeDef* , uint32_t , ADC_TypeDef* , uint32_t , void (*) (Osci_Application*), void (*) (Osci_Application*), void (*) (Osci_Application*),  void (*) (Osci_Application*),Osci_Transceiver* );
+void OSCI_channel_update(Osci_ChannelStateMachine* csm);
+void OSCI_channel_shutdown(Osci_ChannelStateMachine* csm);
+void OSCI_channel_monitoring_callback_x(Osci_Application*);
+void OSCI_channel_measuring_callback_x(Osci_Application*);
+void OSCI_channel_monitoring_callback_y(Osci_Application*);
+void OSCI_channel_measuring_callback_y(Osci_Application*);
+void OSCI_channel_measurement_complete_callback_x(Osci_Application*);
+void OSCI_channel_measurement_complete_callback_y(Osci_Application*);
+void OSCI_channel_awd_threshold_callback_x(Osci_Application*);
+void OSCI_channel_awd_threshold_callback_y(Osci_Application*);
 
 #endif /* INC_OSCI_CHANNEL_STATE_MACHINE_H_ */
