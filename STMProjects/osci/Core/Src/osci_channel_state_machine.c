@@ -63,7 +63,7 @@ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
 	csm->state = OSCI_CHANNEL_STATE_MEASURING;
 }
 
-void clear_csm_events(Osci_ChannelStateMachine* csm)
+void Clear_csm_events(Osci_ChannelStateMachine* csm)
 {
 	csm->events.measurement_complete = FALSE;
 	csm->events.shutdown = FALSE;
@@ -105,6 +105,7 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 				csm->events.shutdown = FALSE;
 				return;
 			}
+
 			if(csm->events.start_measuring)
 			{
 				OSCI_channel_start_measuring(csm);
