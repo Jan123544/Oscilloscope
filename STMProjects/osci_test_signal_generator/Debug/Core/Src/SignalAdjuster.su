@@ -1,0 +1,22 @@
+stm32f3xx_ll_dac.h:1220:22:void LL_DAC_ConvertData12LeftAligned(DAC_TypeDef*, uint32_t, uint32_t)	32	static,ignoring_inline_asm
+stm32f3xx_ll_tim.h:1352:22:void LL_TIM_EnableCounter(TIM_TypeDef*)	16	static
+stm32f3xx_ll_tim.h:1363:22:void LL_TIM_DisableCounter(TIM_TypeDef*)	16	static
+stm32f3xx_ll_tim.h:1594:22:void LL_TIM_SetCounter(TIM_TypeDef*, uint32_t)	16	static
+stm32f3xx_ll_tim.h:3986:22:void LL_TIM_ClearFlag_UPDATE(TIM_TypeDef*)	16	static
+stm32f3xx_ll_tim.h:4329:22:void LL_TIM_EnableIT_UPDATE(TIM_TypeDef*)	16	static
+cmath:184:3:constexpr float std::cos(float)	16	static
+cmath:260:3:constexpr float std::floor(float)	16	static
+cmath:425:3:constexpr float std::sin(float)	16	static
+SignalAdjuster.cpp:10:6:void c_putSignalToDAC(void*)	24	static
+SignalAdjuster.cpp:15:6:void c_execute(void*)	24	static
+SignalAdjuster.cpp:21:6:void SignalAdjuster::increaseAmplitude()	16	static
+SignalAdjuster.cpp:32:6:void SignalAdjuster::decreaseAmplitude()	16	static
+SignalAdjuster.cpp:42:6:void SignalAdjuster::increaseFrequency()	16	static
+SignalAdjuster.cpp:45:6:void SignalAdjuster::decreaseFrequency()	16	static
+SignalAdjuster.cpp:51:6:void SignalAdjuster::previousSignal()	16	static
+SignalAdjuster.cpp:69:6:void SignalAdjuster::nextSignal()	16	static
+SignalAdjuster.cpp:88:6:void SignalAdjuster::sample()	40	static
+SignalAdjuster.cpp:111:6:void SignalAdjuster::configureTimer()	24	static
+SignalAdjuster.cpp:128:10:uint32_t SignalAdjuster::quantize(float)	24	static
+SignalAdjuster.cpp:135:6:void SignalAdjuster::execute(char)	16	static
+SignalAdjuster.cpp:151:10:uint32_t SignalAdjuster::getNextSample()	24	static

@@ -1,0 +1,2 @@
+osci_error.c:8:6:osci_error_loop	16	static
+osci_error.c:12:6:osci_error_notify	16	static

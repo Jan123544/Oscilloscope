@@ -1,5 +1,6 @@
 package sample;
 
 public class TimeControlSettings {
-    public float timePerDivision;
+    public float xTimePerDivision;
+    public float yTimePerDivision;
 }

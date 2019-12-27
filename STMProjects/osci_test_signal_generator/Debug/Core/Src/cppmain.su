@@ -1,0 +1,2 @@
+SignalAdjuster.h:47:2:SignalAdjuster::SignalAdjuster(float, float, float, uint32_t, float, uint32_t)	40	static
+cppmain.cpp:13:6:void cppmain()	262192	static

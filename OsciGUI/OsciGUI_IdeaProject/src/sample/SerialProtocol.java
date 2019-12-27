@@ -19,9 +19,10 @@ public class SerialProtocol {
     //Y SENSITIVITY SIZE BYTES = 4;
     //X TRIG LEVEL SIZE BYTES = 4;
     //Y TRIG LEVEL SIZE BYTES = 4;
-    //TIME PER DIV SIZE BYTES = 4;
+    //X TIME PER DIV SIZE BYTES = 4;
+    //Y TIME PER DIV SIZE BYTES = 4;
     //TRIG TYPE/X range/Y range/ SIZE BYTES = 4;
-    public static byte OSCI_SETTINGS_SIZE_BYTES = 36;
+    public static byte OSCI_SETTINGS_SIZE_BYTES = 40;
 
     public static boolean isLowerStartByte(byte b) {
        return (b == SerialProtocol.PROTOCOL_START_WORD_LOW_BYTE);
@@ -57,7 +58,8 @@ public class SerialProtocol {
         b.putInt(Float.floatToIntBits( cset.xSensitivity));
         b.putInt(Float.floatToIntBits(cset.yOffset) );
         b.putInt(Float.floatToIntBits(cset.ySensitivity) );
-        b.putInt(Float.floatToIntBits(tmset.timePerDivision));
+        b.putInt(Float.floatToIntBits(tmset.xTimePerDivision));
+        b.putInt(Float.floatToIntBits(tmset.yTimePerDivision));
         b.putInt(Float.floatToIntBits( tset.xTriggerLevel));
         b.putInt(Float.floatToIntBits(tset.yTriggerLevel));
         b.putInt(tset.triggerType);

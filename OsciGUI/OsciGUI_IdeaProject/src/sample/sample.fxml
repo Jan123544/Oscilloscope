@@ -109,7 +109,7 @@
                                     <Insets left="15.0" right="15.0" />
                                  </GridPane.margin>
                               </ChoiceBox>
-                              <TextField fx:id="timePerDivisionTF" alignment="CENTER" maxHeight="30.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                              <TextField alignment="CENTER" maxWidth="1.7976931348623157E308" GridPane.columnIndex="4" GridPane.rowIndex="9" fx:id="xTimePerDivisionTF">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
@@ -119,7 +119,6 @@
                                     <Insets left="5.0" />
                                  </padding>
                               </Label>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="87.0" text="Viewing mode:" GridPane.columnIndex="3" GridPane.rowIndex="10" />
                               <TextField alignment="CENTER" maxHeight="20.0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="11" fx:id="xTriggerLevelTF">
                                  <GridPane.margin>
                                     <Insets left="15.0" right="15.0" />
@@ -136,7 +135,7 @@
                               </Label>
                               <Separator orientation="VERTICAL" prefHeight="400.0" prefWidth="10.0" GridPane.columnIndex="2" GridPane.rowSpan="2147483647" />
                               <Label alignment="CENTER" layoutX="120.0" layoutY="100.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="[Volts]" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <Button fx:id="uploadSettingsB" maxHeight="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#uploadSettingsButtonHandler" text="Upload" GridPane.columnIndex="4" GridPane.rowIndex="12">
+                              <Button fx:id="uploadSettingsB" maxHeight="20.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#uploadSettingsButtonHandler" text="Update" GridPane.columnIndex="4" GridPane.rowIndex="12">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin></Button>
@@ -159,32 +158,32 @@
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </ChoiceBox>
-                              <Slider fx:id="timePerDivisionS" GridPane.columnIndex="3" GridPane.rowIndex="9">
-                                 <GridPane.margin>
-                                    <Insets left="15.0" />
-                                 </GridPane.margin>
-                              </Slider>
                               <GridPane GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="11">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="89.0" minWidth="-Infinity" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="72.0" minWidth="45.0" prefWidth="45.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="45.0" minWidth="45.0" prefWidth="45.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <CheckBox fx:id="yChannelShowCB" mnemonicParsing="false" text="Y">
+                                    <CheckBox fx:id="yChannelShowCB" mnemonicParsing="false" text="Y" GridPane.columnIndex="1">
                                        <GridPane.margin>
-                                          <Insets left="15.0" />
+                                          <Insets left="5.0" />
                                        </GridPane.margin>
                                     </CheckBox>
-                                    <CheckBox mnemonicParsing="false" text="X" GridPane.columnIndex="1" fx:id="xChannelShowCB">
+                                    <CheckBox mnemonicParsing="false" text="X" GridPane.columnIndex="2" fx:id="xChannelShowCB">
                                        <GridPane.margin>
-                                          <Insets left="15.0" />
+                                          <Insets left="5.0" />
                                        </GridPane.margin>
                                     </CheckBox>
-                                    <CheckBox mnemonicParsing="false" text="X-Y" GridPane.columnIndex="2" fx:id="xyModeCB" />
+                                    <CheckBox mnemonicParsing="false" text="X-Y" GridPane.columnIndex="3" fx:id="xyModeCB">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" />
+                                       </GridPane.margin></CheckBox>
+                                    <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="87.0" text="Viewing mode:" />
                                  </children>
                               </GridPane>
                               <CheckBox fx:id="autoUpdateCB" mnemonicParsing="false" text="Autoupdate" GridPane.columnIndex="3" GridPane.rowIndex="12">
@@ -230,6 +229,45 @@
                                        </GridPane.margin>
                                     </Slider>
                                  </children>
+                              </GridPane>
+                              <TextField fx:id="yTimePerDivisionTF" alignment="CENTER" GridPane.columnIndex="4" GridPane.rowIndex="10">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <GridPane GridPane.columnIndex="3" GridPane.rowIndex="10">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                               <children>
+                               <Label text="Y:" />
+                               <Slider fx:id="yTimePerDivisionS" GridPane.columnIndex="1">
+                                   <GridPane.margin>
+                                       <Insets left="15.0" />
+                                   </GridPane.margin>
+                               </Slider>
+                           </children>
+                        </GridPane>
+                              <GridPane GridPane.columnIndex="3" GridPane.rowIndex="9">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                  <children>
+                                      <Label text="X:" />
+                                      <Slider GridPane.columnIndex="1" fx:id="xTimePerDivisionS">
+                                          <GridPane.margin>
+                                              <Insets left="15.0" />
+                                          </GridPane.margin>
+                                      </Slider>
+                                  </children>
                               </GridPane>
                            </children>
                         </GridPane>

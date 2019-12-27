@@ -1,0 +1,17 @@
+stm32f3xx_ll_adc.h:5170:22:LL_ADC_SetAnalogWDMonitChannels	32	static,ignoring_inline_asm
+stm32f3xx_ll_adc.h:5467:22:LL_ADC_SetAnalogWDThresholds	40	static,ignoring_inline_asm
+stm32f3xx_ll_adc.h:5826:22:LL_ADC_Enable	16	static
+stm32f3xx_ll_adc.h:5971:22:LL_ADC_REG_StopConversion	16	static
+stm32f3xx_ll_adc.h:5987:26:LL_ADC_REG_IsConversionOngoing	16	static
+stm32f3xx_ll_adc.h:6549:22:LL_ADC_ClearFlag_AWD1	16	static
+stm32f3xx_ll_adc.h:6560:22:LL_ADC_ClearFlag_AWD2	16	static
+stm32f3xx_ll_adc.h:6944:22:LL_ADC_EnableIT_AWD1	16	static
+stm32f3xx_ll_adc.h:6955:22:LL_ADC_EnableIT_AWD2	16	static
+stm32f3xx_ll_adc.h:6988:22:LL_ADC_DisableIT_EOC	16	static
+stm32f3xx_ll_adc.h:6999:22:LL_ADC_DisableIT_EOS	16	static
+stm32f3xx_ll_adc.h:7021:22:LL_ADC_DisableIT_EOSMP	16	static
+osci_adc.c:11:6:osci_adc_init	16	static
+osci_adc.c:15:6:osci_adc_stop	16	static
+osci_adc.c:20:6:osci_adc_reconfigure_for_monitoring	24	static
+osci_adc.c:46:6:osci_adc_reconfigure_for_measuring	16	static
+osci_adc.c:58:6:osci_adc_set_awd_callback	16	static

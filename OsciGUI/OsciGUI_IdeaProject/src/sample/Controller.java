@@ -83,9 +83,13 @@ public class Controller {
 
     // Time control / Settings panel
     @FXML
-    TextField timePerDivisionTF;
+    TextField xTimePerDivisionTF;
     @FXML
-    Slider timePerDivisionS;
+    TextField yTimePerDivisionTF;
+    @FXML
+    Slider xTimePerDivisionS;
+    @FXML
+    Slider yTimePerDivisionS;
     @FXML
     CheckBox xChannelShowCB;
     @FXML

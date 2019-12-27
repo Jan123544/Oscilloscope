@@ -1,0 +1,11 @@
+osci_configurator.c:11:6:fill_ranges	16	static
+osci_configurator.c:41:6:fill_sensitivity_and_offset	16	static
+osci_configurator.c:52:6:fill_thresholds	24	static
+osci_configurator.c:57:6:fill_times	24	static
+osci_configurator.c:77:6:switch_relays	16	static
+osci_configurator.c:80:6:wait_for_relays_to_switch	4	static
+osci_configurator.c:85:6:osci_configurator_recalculate_parameters	88	static
+osci_configurator.c:94:6:osci_configurator_switch_relays	16	static
+osci_configurator.c:99:6:fill_default_settings	16	static
+osci_configurator.c:115:6:osci_configurator_config_defaults_ts	16	static
+osci_configurator.c:121:6:osci_configurator_distribute_settings	24	static
