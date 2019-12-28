@@ -203,8 +203,9 @@ void SysTick_Handler(void)
   */
 void DMA1_Channel1_IRQHandler(void)
 {
-	  /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
-  if (LL_DMA_IsActiveFlag_GI1(DMA1)){
+  /* USER CODE BEGIN DMA1_Channel1_IRQn 0 */
+  if (LL_DMA_IsActiveFlag_GI1(DMA1))
+  {
 	  osci_dma_ch1_TC_callback(app_IT_reference);
 	  LL_DMA_ClearFlag_GI1(DMA1);
   }
@@ -221,7 +222,8 @@ void DMA1_Channel1_IRQHandler(void)
 void DMA1_Channel2_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel2_IRQn 0 */
-	  if (LL_DMA_IsActiveFlag_GI2(DMA1)){
+	  if (LL_DMA_IsActiveFlag_GI2(DMA1))
+	  {
 		  osci_dma_ch2_TC_callback(app_IT_reference);
 		  LL_DMA_ClearFlag_GI2(DMA1);
 	  }
@@ -238,7 +240,8 @@ void DMA1_Channel2_IRQHandler(void)
 void DMA1_Channel6_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel6_IRQn 0 */
-	if( LL_DMA_IsActiveFlag_TC6(DMA1)){
+	if( LL_DMA_IsActiveFlag_TC6(DMA1))
+	{
 		osci_transceiver_received_callback(app_IT_reference);
 		LL_DMA_ClearFlag_GI6(DMA1);
 	}
@@ -255,7 +258,8 @@ void DMA1_Channel6_IRQHandler(void)
 void DMA1_Channel7_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel7_IRQn 0 */
-	if( LL_DMA_IsActiveFlag_TC7(DMA1)){
+	if( LL_DMA_IsActiveFlag_TC7(DMA1))
+	{
 		osci_transceiver_sent_callback(app_IT_reference);
 		LL_DMA_ClearFlag_GI7(DMA1);
 	}
@@ -272,12 +276,14 @@ void DMA1_Channel7_IRQHandler(void)
 void ADC1_2_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC1_2_IRQn 0 */
-  if(LL_ADC_IsActiveFlag_AWD1(ADC1)){
+  if(LL_ADC_IsActiveFlag_AWD1(ADC1))
+  {
 	  osci_adc_awd1_callback(app_IT_reference);
 	  LL_ADC_ClearFlag_AWD1(ADC1);
   }
 
-  if(LL_ADC_IsActiveFlag_AWD2(ADC2)){
+  if(LL_ADC_IsActiveFlag_AWD2(ADC2))
+  {
 	  osci_adc_awd2_callback(app_IT_reference);
 	  LL_ADC_ClearFlag_AWD1(ADC2);
   }
@@ -294,7 +300,8 @@ void ADC1_2_IRQHandler(void)
 void TIM1_UP_TIM16_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 0 */
-	if (LL_TIM_IsActiveFlag_UPDATE(TIM1)){
+	if (LL_TIM_IsActiveFlag_UPDATE(TIM1))
+	{
 		osci_timer1_update_callback(app_IT_reference);
 		LL_TIM_ClearFlag_UPDATE(TIM1);
 	}
@@ -312,7 +319,7 @@ void TIM1_CC_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM1_CC_IRQn 0 */
 
-	  LL_mDelay(1);
+	LL_mDelay(1);
   /* USER CODE END TIM1_CC_IRQn 0 */
   /* USER CODE BEGIN TIM1_CC_IRQn 1 */
 
@@ -325,7 +332,8 @@ void TIM1_CC_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-  if (LL_TIM_IsActiveFlag_UPDATE(TIM2)){
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM2))
+  {
 	  osci_timer2_update_callback(app_IT_reference);
 	  LL_TIM_ClearFlag_UPDATE(TIM2);
   }

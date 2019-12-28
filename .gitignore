@@ -32,3 +32,5 @@
 *.app
 
 out/
+STMProjects/osci/
+STMProjects/metadata/

@@ -21,11 +21,11 @@
 #define OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS 3
 #define OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS 4
 
-void osci_transceiver_init(Osci_Transceiver*, USART_TypeDef*, DMA_TypeDef*, uint32_t, uint32_t, Osci_ChannelStateMachine*, Osci_ChannelStateMachine*);
+void OSCI_transceiver_init(Osci_Transceiver*, USART_TypeDef*, DMA_TypeDef*, uint32_t, uint32_t, Osci_ChannelStateMachine*, Osci_ChannelStateMachine*);
 
-void osci_transceiver_update(Osci_Transceiver*);
+void OSCI_transceiver_update(Osci_Transceiver*);
 
-void (*osci_transceiver_received_callback) (Osci_Application*);
-void (*osci_transceiver_sent_callback) (Osci_Application*);
+ADC_callback osci_transceiver_received_callback;
+ADC_callback osci_transceiver_sent_callback;
 
 #endif /* INC_OSCI_TRANSCEIVER_H_ */

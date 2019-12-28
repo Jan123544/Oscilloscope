@@ -8,7 +8,7 @@
 #ifndef INC_OSCI_ERROR_H_
 #define INC_OSCI_ERROR_H_
 
-void osci_error_loop(char*);
-void osci_error_notify(char*);
+void OSCI_error_loop(char*);
+void OSCI_error_notify(char*);
 
 #endif /* INC_OSCI_ERROR_H_ */

@@ -10,14 +10,14 @@
 #include "osci.h"
 #include "osci_channel_state_machine.h"
 
-void osci_adc_init(Osci_ChannelStateMachine*);
-void osci_adc_stop(Osci_ChannelStateMachine*);
-void osci_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine*);
-void osci_adc_reconfigure_for_measuring(Osci_ChannelStateMachine*);
+void OSCI_adc_init(Osci_ChannelStateMachine*);
+void OSCI_adc_stop(Osci_ChannelStateMachine*);
+void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine*);
+void OSCI_adc_reconfigure_for_measuring(Osci_ChannelStateMachine*);
 
-void (*osci_adc_awd1_callback) (Osci_Application*);
-void (*osci_adc_awd2_callback) (Osci_Application*);
+ADC_callback osci_adc_awd1_callback;
+ADC_callback osci_adc_awd2_callback;
 
-void osci_adc_set_awd_callback(Osci_ChannelStateMachine*);
+void OSCI_adc_set_awd_callback(Osci_ChannelStateMachine*);
 
 #endif /* INC_OSCI_ADC_H_ */

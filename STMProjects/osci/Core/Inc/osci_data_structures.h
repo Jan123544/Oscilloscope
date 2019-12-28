@@ -14,16 +14,19 @@
 typedef struct osci_transceiver Osci_Transceiver;
 typedef struct osci_application Osci_Application;
 
-typedef struct osci_timersettings{
+typedef struct osci_timersettings
+{
 	uint32_t psc;
 	uint32_t arr;
 } Osci_TimerSettings;
 
-typedef struct osci_channelmeasurement{
+typedef struct osci_channelmeasurement
+{
 	uint16_t values [NUM_SAMPLES];
 } Osci_ChannelMeasurement;
 
-typedef struct osci_channelparameters{
+typedef struct osci_channelparameters
+{
 	float offset;
 	float sensitivity;
 	Osci_TimerSettings timerSettings;
@@ -32,14 +35,20 @@ typedef struct osci_channelparameters{
 	uint8_t graticuleDivisions;
 } Osci_ChannelParameters;
 
-typedef struct osci_channelevents{
+typedef struct osci_channelevents
+{
 	uint8_t shutdown;
 	uint8_t start_monitoring;
 	uint8_t start_measuring;
 	uint8_t measurement_complete;
 } Osci_ChannelEvents;
 
-typedef struct osci_channelstatemachine{
+typedef void (*ADC_callback) (Osci_Application*);
+typedef void (*Measurement_complete_callback) (Osci_Application*);
+typedef void (*Awd_threshold_callback) (Osci_Application*);
+
+typedef struct osci_channelstatemachine
+{
 	Osci_ChannelParameters params;
 
 	TIM_TypeDef* timer;
@@ -55,10 +64,10 @@ typedef struct osci_channelstatemachine{
 	Osci_ChannelMeasurement measurement;
 	uint32_t state;
 
-	void (*monitoring_callback) (Osci_Application*);
-	void (*measuring_callback) (Osci_Application*);
-	void (*measurement_complete_callback) (Osci_Application*);
-	void (*awd_threshold_callback) (Osci_Application*);
+	ADC_callback monitoring_callback;
+	ADC_callback measuring_callback;
+	Measurement_complete_callback measurement_complete_callback;
+	Awd_threshold_callback awd_threshold_callback;
 
 	Osci_ChannelEvents events;
 
@@ -66,13 +75,15 @@ typedef struct osci_channelstatemachine{
 
 } Osci_ChannelStateMachine;
 
-typedef struct osci_dataframe{
+typedef struct osci_dataframe
+{
 	uint16_t start_word;
 	Osci_ChannelMeasurement xChannel;
 	Osci_ChannelMeasurement yChannel;
 } Osci_DataFrame;
 
-typedef struct osci_settings{
+typedef struct osci_settings
+{
 	float xOffset;
 	float xSensitivity;
 	float yOffset;
@@ -88,7 +99,8 @@ typedef struct osci_settings{
 	uint8_t yGraticuleDivisions;
 } Osci_Settings;
 
-typedef struct osci_calculatedparameters{
+typedef struct osci_calculatedparameters
+{
 	//float levels_per_volt_x;
 	//float levels_per_volt_y;
 	float divider_bypass_scaling_x;
@@ -109,12 +121,14 @@ typedef struct osci_calculatedparameters{
 	Osci_TimerSettings yTimerSettings;
 } Osci_CalculatedParameters;
 
-typedef struct osci_transceiverevents{
+typedef struct osci_transceiverevents
+{
 	uint8_t received_settings;
 	uint8_t send_requested;
 } Osci_TransceiverEvents;
 
-struct osci_transceiver{
+struct osci_transceiver
+{
 	USART_TypeDef* usart;
 	DMA_TypeDef* dma;
 	uint32_t dmaReceiverChannel;
@@ -134,7 +148,8 @@ struct osci_transceiver{
 	Osci_TransceiverEvents events;
 };
 
-struct osci_application{
+struct osci_application
+{
 	Osci_Transceiver transceiver;
 	Osci_ChannelStateMachine xChannelStateMachine;
 	Osci_ChannelStateMachine yChannelStateMachine;

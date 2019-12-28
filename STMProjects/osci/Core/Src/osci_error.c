@@ -5,10 +5,12 @@
  *      Author: dot
  */
 #include "osci_error.h"
-void osci_error_loop(char* str){
+void OSCI_error_loop(char* str)
+{
 	while(1){};
 }
 
-void osci_error_notify(char *str){
+void OSCI_error_notify(char *str)
+{
 	return;
 }

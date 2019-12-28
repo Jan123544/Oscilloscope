@@ -7,9 +7,12 @@
 #include "osci_defines.h"
 #include "osci_data_structures.h"
 #include "osci_configurator.h"
+#include "osci_error.h"
 
-void fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters){
-	switch(settings->xVoltageRange){
+void Fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
+{
+	switch(settings->xVoltageRange)
+	{
 		case 5:
 			new_parameters->divider_max_volts_x = OSCI_MEASUREMENT_MAX_X_WITH_RANGE_5;
 			new_parameters->x_active_range = 5.0f;
@@ -22,8 +25,13 @@ void fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_paramet
 			new_parameters->divider_max_volts_x = OSCI_MEASUREMENT_MAX_X_WITH_RANGE_20;
 			new_parameters->x_active_range = 20.0f;
 			break;
+		default:
+			OSCI_error_loop("invalid xVoltageRange");
+			break;
 	}
-	switch(settings->yVoltageRange){
+
+	switch(settings->yVoltageRange)
+	{
 		case 5:
 			new_parameters->divider_max_volts_y = OSCI_MEASUREMENT_MAX_Y_WITH_RANGE_5;
 			new_parameters->y_active_range = 5.0f;
@@ -36,9 +44,14 @@ void fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_paramet
 			new_parameters->divider_max_volts_y = OSCI_MEASUREMENT_MAX_Y_WITH_RANGE_20;
 			new_parameters->y_active_range = 20.0f;
 			break;
+		default:
+			OSCI_error_loop("invalid yVoltageRange");
+			break;
 	}
 }
-void fill_sensitivity_and_offset(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters){
+
+void Fill_sensitivity_and_offset(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
+{
 	new_parameters->levels_per_volt_x = OSCI_MEASUREMENT_MAX_LEVELS/new_parameters->x_active_range;
 	new_parameters->divider_bypass_scaling_x = new_parameters->x_active_range/new_parameters->divider_max_volts_x;
 	new_parameters->sensitivity_conversion_x = OSCI_MEASUREMENT_MAX_LEVELS/(settings->xSensitivity*settings->xGraticuleDivisions*new_parameters->levels_per_volt_x);
@@ -49,12 +62,15 @@ void fill_sensitivity_and_offset(Osci_Settings* settings, Osci_CalculatedParamet
 	new_parameters->sensitivity_conversion_y = OSCI_MEASUREMENT_MAX_LEVELS/(settings->ySensitivity*settings->yGraticuleDivisions*new_parameters->levels_per_volt_y);
 	new_parameters->offset_conversion_y = new_parameters->sensitivity_conversion_y*new_parameters->levels_per_volt_y;
 }
-void fill_thresholds(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters){
+
+void Fill_thresholds(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
+{
 	new_parameters->xThresholdInLevels = floor(new_parameters->levels_per_volt_x*settings->xtriggerLevel);
 	new_parameters->yThresholdInLevels = floor(new_parameters->levels_per_volt_y*settings->ytriggerLevel);
 }
 
-void fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters){
+void Fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
+{
 	// Assumes 32MHZ timer clock
 	new_parameters->xTimerSettings.arr = floor(32000000*settings->xTimePerDivision*settings->xGraticuleDivisions/(NUM_SAMPLES -1));
 	new_parameters->yTimerSettings.arr = floor(32000000*settings->yTimePerDivision*settings->yGraticuleDivisions/(NUM_SAMPLES -1));
@@ -63,40 +79,82 @@ void fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_paramete
 	new_parameters->yTimerSettings.psc = 0;
 
 	//Adjust prescaler so that arr < 2^16
-	if(new_parameters->xTimerSettings.arr > 65535){
+	if(new_parameters->xTimerSettings.arr > 65535)
+	{
 		new_parameters->xTimerSettings.psc = floor(new_parameters->xTimerSettings.arr/65536);
 		new_parameters->xTimerSettings.arr = new_parameters->xTimerSettings.arr%65536;
 	}
 
-	if(new_parameters->yTimerSettings.arr > 65535){
+	if(new_parameters->yTimerSettings.arr > 65535)
+	{
 		new_parameters->yTimerSettings.psc = floor(new_parameters->yTimerSettings.arr/65536);
 		new_parameters->yTimerSettings.arr = new_parameters->yTimerSettings.arr%65536;
 	}
 }
 
-void switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p){
-	// TODO
+void Switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)
+{
+	switch (s->xVoltageRange)
+	{
+		case 5:
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0);
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_1);
+			break;
+		case 10:
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0);
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_1);
+			break;
+		case 20:
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0);
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_1);
+			break;
+		default:
+			OSCI_error_loop("invalid xVoltageRange");
+			break;
+	}
+
+	switch(s->yVoltageRange)
+	{
+		case 5:
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
+			break;
+		case 10:
+			LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
+			break;
+		case 20:
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_6);
+			LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_7);
+			break;
+		default:
+			OSCI_error_loop("invalid yVoltageRange");
+			break;
+	}
 }
-void wait_for_relays_to_switch(){
-	// TODO
+void Wait_for_relays_to_switch()
+{
+	LL_mDelay(5);
 }
 
-
-void osci_configurator_recalculate_parameters(Osci_Settings* s, Osci_CalculatedParameters* p){
+void OSCI_configurator_recalculate_parameters(Osci_Settings* s, Osci_CalculatedParameters* p)
+{
 	Osci_CalculatedParameters new_p = {0};
-	fill_ranges(s, &new_p);
-	fill_sensitivity_and_offset(s, &new_p);
-	fill_thresholds(s, &new_p);
-	fill_times(s, &new_p);
+	Fill_ranges(s, &new_p);
+	Fill_sensitivity_and_offset(s, &new_p);
+	Fill_thresholds(s, &new_p);
+	Fill_times(s, &new_p);
 	*p = new_p;
 }
 
-void osci_configurator_switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p){
-	switch_relays(s, p);
-	wait_for_relays_to_switch();
+void OSCI_configurator_switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)
+{
+	Switch_relays(s, p);
+	Wait_for_relays_to_switch();
 }
 
-void fill_default_settings(Osci_Settings* osci_settings){
+void Fill_default_settings(Osci_Settings* osci_settings)
+{
 	osci_settings->xtriggerLevel = OSCI_SETTINGS_DEFAULT_XTRIGGERLEVEL;
 	osci_settings->ytriggerLevel = OSCI_SETTINGS_DEFAULT_YTRIGGERLEVEL;
 	osci_settings->xOffset = OSCI_SETTINGS_DEFAULT_XOFFSET;
@@ -112,13 +170,15 @@ void fill_default_settings(Osci_Settings* osci_settings){
 	osci_settings->yGraticuleDivisions = OSCI_SETTINGS_DEFAULT_YGRATICULEDIVISIONS;
 }
 
-void osci_configurator_config_defaults_ts(Osci_Transceiver* ts){
-	fill_default_settings(&ts->receiveCompleteBuffer);
-	fill_default_settings(&ts->receiveCompleteBuffer);
-	osci_configurator_recalculate_parameters(&ts->receiveCompleteBuffer, &ts->allReceivedParameters);
+void OSCI_configurator_config_defaults_ts(Osci_Transceiver* ts)
+{
+	Fill_default_settings(&ts->receiveCompleteBuffer);
+
+	OSCI_configurator_recalculate_parameters(&ts->receiveCompleteBuffer, &ts->allReceivedParameters);
 }
 
-void osci_configurator_distribute_settings(Osci_ChannelStateMachine*xcsm, Osci_ChannelStateMachine*ycsm, Osci_Settings* s, Osci_CalculatedParameters* p){
+void OSCI_configurator_distribute_settings(Osci_ChannelStateMachine*xcsm, Osci_ChannelStateMachine*ycsm, Osci_Settings* s, Osci_CalculatedParameters* p)
+{
 	xcsm->params.graticuleDivisions = s->xGraticuleDivisions;
 	xcsm->params.offset = p->offset_conversion_x*s->xOffset;
 	xcsm->params.sensitivity = p->sensitivity_conversion_x;

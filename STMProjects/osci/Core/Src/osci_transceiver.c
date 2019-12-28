@@ -5,12 +5,11 @@
  *      Author: dot
  */
 
-
 #include "osci_transceiver.h"
 #include "osci_channel_state_machine.h"
 
-
-void gather_data(Osci_Transceiver* ts){
+void Gather_data(Osci_Transceiver* ts)
+{
 	// Make sure dataframe has the start word
 	ts->sendingBuffer.start_word = OSCI_DATA_START_WORD;
 
@@ -19,27 +18,37 @@ void gather_data(Osci_Transceiver* ts){
 	ts->sendingBuffer.yChannel = ts->y_channel_state_machine->measurement;
 }
 
-void transform_data(Osci_Transceiver* ts){
-	osci_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params, ts->y_channel_state_machine->params);
+void Transform_data(Osci_Transceiver* ts)
+{
+	OSCI_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params, ts->y_channel_state_machine->params);
 }
 
-void send_data(Osci_Transceiver* ts){
-	if (LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel)) { osci_error_notify("new data send skip"); return; }; // Do not do anything if data is still being sent
+void Send_data(Osci_Transceiver* ts)
+{
+	if (LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel)) // Do not do anything if data is still being sent
+	{
+		OSCI_error_notify("new data send skip");
+		return;
+	};
+
 	LL_DMA_SetDataLength(ts->dma, ts->dmaTransmissionChannel, sizeof(Osci_DataFrame));
 	LL_DMA_SetMemoryAddress(ts->dma, ts->dmaTransmissionChannel, (uint32_t)&ts->sendingBuffer);
 	LL_DMA_EnableChannel(ts->dma, ts->dmaTransmissionChannel);
 }
 
-void received_callback(Osci_Application* app){
+void Received_callback(Osci_Application* app)
+{
 	app->transceiver.receiveCompleteBuffer = app->transceiver.recveiveBuffer;
 	app->transceiver.events.received_settings = TRUE;
 }
 
-void sent_callback(Osci_Application* app){
+void Sent_callback(Osci_Application* app)
+{
 	LL_DMA_DisableChannel(app->transceiver.dma, app->transceiver.dmaTransmissionChannel);
 }
 
-void configure_usart(Osci_Transceiver* ts){
+void Configure_usart(Osci_Transceiver* ts)
+{
 	// Configure USART channels, set buffer addresses etc.
 	LL_USART_Disable(ts->usart);
 
@@ -62,9 +71,10 @@ void configure_usart(Osci_Transceiver* ts){
 	LL_USART_EnableDMAReq_TX(ts->usart);
 
 	LL_USART_Enable(ts->usart);
-	}
+}
 
-void osci_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeDef* dma, uint32_t dmaReceiverChannel, uint32_t dmaTransmissionChannel, Osci_ChannelStateMachine* x_channel_state_machine, Osci_ChannelStateMachine* y_channel_state_machine){
+void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeDef* dma, uint32_t dmaReceiverChannel, uint32_t dmaTransmissionChannel, Osci_ChannelStateMachine* x_channel_state_machine, Osci_ChannelStateMachine* y_channel_state_machine)
+{
 	ts->usart = usart;
 	ts->dma = dma;
 	ts->dmaReceiverChannel = dmaReceiverChannel;
@@ -73,62 +83,71 @@ void osci_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 	ts->y_channel_state_machine = y_channel_state_machine;
 
 	// Configure USART channels, set buffer addresses etc.
-	configure_usart(ts);
+	Configure_usart(ts);
 
 	// This unfortunately has to be set manually.
-	osci_transceiver_received_callback = received_callback;
-	osci_transceiver_sent_callback = sent_callback;
+	osci_transceiver_received_callback = &Received_callback;
+	osci_transceiver_sent_callback = &Sent_callback;
 
 	// Fill in default settings (offsets, sensitivity, ...).
-	osci_configurator_config_defaults_ts(ts);
+	OSCI_configurator_config_defaults_ts(ts);
 
 	// Enable DMA channel for receiving new settings.
 	LL_DMA_EnableChannel(ts->dma, ts->dmaReceiverChannel);
 
 	ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
-
 }
 
-
-
-void osci_transceiver_update(Osci_Transceiver* ts){
-	switch(ts->state){
+void OSCI_transceiver_update(Osci_Transceiver* ts)
+{
+	switch(ts->state)
+	{
 		case OSCI_TRANSCEIVER_STATE_IDLE:
-			if (ts->events.received_settings) {
+		{
+			if (ts->events.received_settings)
+			{
 				ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
 				ts->events.received_settings = FALSE;
 			}
-			if (ts->events.send_requested){
-				gather_data(ts);
-				transform_data(ts);
-				send_data(ts);
+
+			if (ts->events.send_requested)
+			{
+				Gather_data(ts);
+				Transform_data(ts);
+				Send_data(ts);
 				ts->events.send_requested = FALSE;
 			}
 			break;
+		}
 		case OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS:
+		{
 			ts->x_channel_state_machine->events.shutdown = TRUE;
 			ts->y_channel_state_machine->events.shutdown = TRUE;
 			ts->state = OSCI_TRANSCEIVER_STATE_WAITING_FOR_CHANNELS_TO_SHUTDOWN;
 			break;
+		}
 		case OSCI_TRANSCEIVER_STATE_WAITING_FOR_CHANNELS_TO_SHUTDOWN:
-				if( (ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN) && (ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)) {
-					ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
-				}
+		{
+			if( (ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
+					&& (ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN))
+				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 			break;
-		case OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS:{
-					Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
-					osci_configurator_recalculate_parameters(&settingsCopy, &ts->allReceivedParameters);
-					osci_configurator_switch_relays(&settingsCopy, &ts->allReceivedParameters);
-					osci_configurator_distribute_settings(ts->x_channel_state_machine, ts->y_channel_state_machine, &settingsCopy, &ts->allReceivedParameters);
-					ts->state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS;
+		}
+		case OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS:
+		{
+			Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
+			OSCI_configurator_recalculate_parameters(&settingsCopy, &ts->allReceivedParameters);
+			OSCI_configurator_switch_relays(&settingsCopy, &ts->allReceivedParameters);
+			OSCI_configurator_distribute_settings(ts->x_channel_state_machine, ts->y_channel_state_machine, &settingsCopy, &ts->allReceivedParameters);
+			ts->state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS;
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS:
-				ts->x_channel_state_machine->events.start_monitoring = TRUE;
-				ts->y_channel_state_machine->events.start_monitoring = TRUE;
-				ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
+		{
+			ts->x_channel_state_machine->events.start_monitoring = TRUE;
+			ts->y_channel_state_machine->events.start_monitoring = TRUE;
+			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
 			break;
+		}
 	}
 }
-
-

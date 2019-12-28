@@ -14,6 +14,6 @@
 #include "osci_channel_state_machine.h"
 
 //void osci_transform_apply_transforms();
-void osci_transform_apply(Osci_DataFrame* df, Osci_ChannelParameters px, Osci_ChannelParameters py);
+void OSCI_transform_apply(Osci_DataFrame* df, Osci_ChannelParameters px, Osci_ChannelParameters py);
 
 #endif /* INC_OSCI_TRANSFORM_H_ */
