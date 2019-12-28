@@ -1,0 +1,9 @@
+#red-pBar{
+    -fx-accent: red;
+}
+#green-pBar{
+    -fx-accent: green;
+}
+#blue-pBar{
+    -fx-accent: blue;
+}
