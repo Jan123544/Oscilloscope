@@ -52,8 +52,8 @@ osci_test_signal_generator.list \
 all: osci_test_signal_generator.elf secondary-outputs
 
 # Tool invocations
-osci_test_signal_generator.elf: $(OBJS) $(USER_OBJS) C:\Users\dot\STM32CubeIDE\workspace_1.0.2\osci_test_signal_generator\STM32F303K8TX_FLASH.ld
-	arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\dot\STM32CubeIDE\workspace_1.0.2\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+osci_test_signal_generator.elf: $(OBJS) $(USER_OBJS) C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld
+	arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

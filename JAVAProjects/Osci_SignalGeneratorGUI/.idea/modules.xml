@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OsciGUI_IdeaProject.iml" filepath="$PROJECT_DIR$/OsciGUI_IdeaProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Osci_SignalGeneratorGUI.iml" filepath="$PROJECT_DIR$/Osci_SignalGeneratorGUI.iml" />
     </modules>
   </component>
 </project>
