@@ -10,7 +10,20 @@
 
 void OSCI_adc_init(Osci_ChannelStateMachine* csm)
 {
+	/*if(LL_ADC_IsInternalRegulatorEnabled(csm->adc)){
+		OSCI_error_loop("calibartion while adc vreg not running");
+	}
+	if(LL_ADC_IsEnabled(csm->adc)){
+		OSCI_error_loop("calibartion while adc enabled");
+	}
+
+	LL_ADC_StartCalibration(ADCx, LL_ADC_SINGLE_ENDED);
+	while(LL_ADC_IsCalibrationOnGoing(csm->adc)){}; // Wait for calibartion
+	csm->params->calibrationFactor = LL_ADC_GetCalibrationFactor(ADC1, LL_ADC_SINGLE_ENDED);
+	LL_ADC_Enable
+	LL_ADC_REG_StartConversion(ADC1);*/
 	LL_ADC_Enable(csm->adc);
+	while(!LL_ADC_IsEnabled(csm->adc)); // Wait for startup
 }
 
 void OSCI_adc_stop(Osci_ChannelStateMachine* csm)
@@ -53,14 +66,6 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 void OSCI_adc_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
 {
 	csm->adc->CFGR |= 0x1; // Enable DMA requests
-	/*switch(csm->awd){
-		case LL_ADC_AWD1:
-			LL_ADC_DisableIT_AWD1(csm->adc);
-			break;
-		case LL_ADC_AWD2:
-			LL_ADC_DisableIT_AWD2(csm->adc);
-			break;
-	}*/
 }
 
 void OSCI_adc_set_awd_callback(Osci_ChannelStateMachine* csm)

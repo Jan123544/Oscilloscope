@@ -28,4 +28,8 @@ public class GlobalConstants {
     public static Integer INTERNAL_CANVAS_VERTICAL_NORMALISATION = 4096;
     public static Float INTERNAL_SETTINGS_UPDATE_RATE = 1.0f;
     public static Integer INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS = 10;
+
+    public static byte OSCI_SETTINGS_DOMEASUREMENT_NO = 0;
+    public static byte OSCI_SETTINGS_DOMEASUREMENT_X = 1;
+    public static byte OSCI_SETTINGS_DOMEASUREMENT_Y = 2;
 }

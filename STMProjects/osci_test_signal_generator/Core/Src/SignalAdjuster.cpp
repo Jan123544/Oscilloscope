@@ -43,6 +43,7 @@ void SignalAdjuster::decreaseAmplitude() {
 
 	sample();
 }
+
 void SignalAdjuster::increaseFrequency() {
 	frequency++;
 

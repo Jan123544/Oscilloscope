@@ -52,6 +52,7 @@ public:
 					amplitudePerLevel), sampleIndex(startSampleIndex) {
 		tim1_callback = c_putSignalToDAC;
 		usart2_rxne_callback = c_execute;
+		sample();
 	}
 
 	void execute(char cmd);

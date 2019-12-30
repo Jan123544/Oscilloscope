@@ -33,6 +33,8 @@ typedef struct osci_channelparameters
 	uint32_t triggerLevel;
 	uint8_t voltageRange;
 	uint8_t graticuleDivisions;
+	float rangeWhenMeasured;
+	float alpha;
 } Osci_ChannelParameters;
 
 typedef struct osci_channelevents
@@ -90,31 +92,33 @@ typedef struct osci_settings
 	float ySensitivity;
 	float xTimePerDivision;
 	float yTimePerDivision;
-	float xtriggerLevel;
-	float ytriggerLevel;
+	float xThreshold;
+	float yThreshold;
 	uint32_t triggerType;
 	uint8_t xVoltageRange;
 	uint8_t yVoltageRange;
 	uint8_t xGraticuleDivisions;
 	uint8_t yGraticuleDivisions;
+	uint8_t doMeasurement;
+	uint8_t pad0;
+	uint8_t pad1;
+	uint8_t pad2;
 } Osci_Settings;
 
 typedef struct osci_calculatedparameters
 {
-	//float levels_per_volt_x;
-	//float levels_per_volt_y;
-	float divider_bypass_scaling_x;
-	float divider_bypass_scaling_y;
-	float divider_max_volts_x;
-	float divider_max_volts_y;
-	float sensitivity_conversion_x;
-	float sensitivity_conversion_y;
-	float offset_conversion_x;
-	float offset_conversion_y;
-	float x_active_range;
-	float y_active_range;
-	float levels_per_volt_x;
-	float levels_per_volt_y;
+	float xAlpha;
+	float yAlpha;
+	float xOffset;
+	float yOffset;
+	float xSensitivity;
+	float ySensitivity;
+	uint32_t xDivisions;
+	uint32_t yDivisions;
+	float xRange;
+	float yRange;
+	float xRangeWhenMeasured;
+	float yRangeWhenMeasured;
 	uint32_t xThresholdInLevels;
 	uint32_t yThresholdInLevels;
 	Osci_TimerSettings xTimerSettings;

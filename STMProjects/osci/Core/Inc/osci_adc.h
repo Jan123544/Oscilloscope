@@ -10,7 +10,7 @@
 #include "osci.h"
 #include "osci_channel_state_machine.h"
 
-void OSCI_adc_init(Osci_ChannelStateMachine*);
+void OSCI_adc_init(Osci_ChannelStateMachine* csm);
 void OSCI_adc_stop(Osci_ChannelStateMachine*);
 void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine*);
 void OSCI_adc_reconfigure_for_measuring(Osci_ChannelStateMachine*);

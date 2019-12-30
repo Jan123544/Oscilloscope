@@ -13,7 +13,7 @@
 #include "osci_data_structures.h"
 
 void OSCI_configurator_config_defaults_ts(Osci_Transceiver*);
-void OSCI_configurator_switch_relays(Osci_Settings*, Osci_CalculatedParameters*);
-void OSCI_configurator_recalculate_parameters(Osci_Settings*, Osci_CalculatedParameters*);
-void OSCI_configurator_distribute_settings(Osci_ChannelStateMachine*, Osci_ChannelStateMachine*, Osci_Settings*, Osci_CalculatedParameters*);
+void OSCI_configurator_switch_relays(Osci_Transceiver* ts, Osci_Settings* s);
+void OSCI_configurator_recalculate_parameters(Osci_Transceiver* ts, Osci_Settings* s);
+void OSCI_configurator_distribute_settings(Osci_Transceiver* ts, Osci_Settings* s);
 #endif /* INC_OSCI_CONFIGURATOR_H_ */

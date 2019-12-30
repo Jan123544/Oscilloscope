@@ -98,18 +98,25 @@ public class Controller {
     CheckBox xyModeCB;
 
     @FXML
-    Label validSettingsL;
+    CheckBox yDoMeasurementCB;
 
     @FXML
-    Button uploadSettingsB;
+    CheckBox xDoMeasurementCB;
+
+    @FXML
+    Button measureB;
 
     // Internal settings
     @FXML
     TextField canvasVerticalNormalisationTF;
     @FXML
     TextField settingsUpdateRateTF;
-    @FXML
-    CheckBox autoUpdateCB;
+
+    // Caretakers
+    GeneralMeasurementSettingsCaretaker generalMeasurementSettingsCaretaker;
+
+    // Serial port settings writer
+    SerialWriter serialWriter;
 
     public void initialize(){
 
@@ -131,7 +138,12 @@ public class Controller {
         // Canvas init and update
         canvasCaretaker = new CanvasCaretaker();
         canvasCaretaker.init(this);
-        // Chart init and update
+
+        // General settings (which channel to measure if at all etc.)
+        generalMeasurementSettingsCaretaker = new GeneralMeasurementSettingsCaretaker(xDoMeasurementCB, yDoMeasurementCB);
+
+        serialWriter = new SerialWriter(this);
+        SerialWriter.launch(serialWriter);
     }
 
    // Action handlers
@@ -154,26 +166,26 @@ public class Controller {
         Thread th = new Thread(sr);
         th.setDaemon(true);
         th.start();
+
     }
 
     public void disconnectButtonHandler(){
         if (port != null){
+            serialWriter.stopSending();
+            serialWriter.waitUntilStopped();
             port.closePort();
             serialConnectPB.setProgress(50);
             while(port.isOpen()){};
         }
         serialStatusL.setText("Disconnected");
         serialConnectPB.setProgress(0);
-        autoUpdateCB.setSelected(false);
     }
 
-    public void uploadSettingsButtonHandler(){
+    public void measureButtonHandler(){
         if(port.isOpen()){
-            SerialWriter w = new SerialWriter(this, port);
-            Thread t = new Thread(w);
-            t.setDaemon(true);
-            t.start();
+            serialWriter.stopSending();
+            serialWriter.waitUntilStopped();
+            SerialWriter.sendOnce(this, port);
         }
     }
-
 }

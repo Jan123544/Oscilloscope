@@ -24,8 +24,8 @@ void OSCI_transform_apply(Osci_DataFrame* df, Osci_ChannelParameters px, Osci_Ch
 {
 	for(uint32_t i = 0; i < NUM_SAMPLES;i++)
 	{
-		df->xChannel.values[i] = MIN(MAX(floor(px.sensitivity*df->xChannel.values[i] + px.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
-		df->yChannel.values[i] = MIN(MAX(floor(py.sensitivity*df->yChannel.values[i] + py.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
+		df->xChannel.values[i] = MIN(MAX(floor(1/px.sensitivity*df->xChannel.values[i]*px.alpha + px.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
+		df->yChannel.values[i] = MIN(MAX(floor(1/py.sensitivity*df->yChannel.values[i]*py.alpha + py.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
 	}
 }
 

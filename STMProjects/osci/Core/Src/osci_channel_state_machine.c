@@ -34,7 +34,6 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_Ty
 
 void OSCI_channel_shutdown(Osci_ChannelStateMachine* csm)
 {
-	//osci_timer_stop(csm);
 	OSCI_adc_stop(csm);
 }
 
@@ -159,6 +158,7 @@ void OSCI_channel_measuring_callback_x(Osci_Application* app)
 
 	if(app->xChannelStateMachine.measurements_left > 0)
 	{
+		if(!LL_ADC_IsActiveFlag_ADRDY(app->xChannelStateMachine.adc)) {OSCI_error_loop("adc started when not ready");}
 		LL_ADC_REG_StartConversion(app->xChannelStateMachine.adc);
 		app->xChannelStateMachine.measurements_left--;
 	}
@@ -195,6 +195,7 @@ void OSCI_channel_measuring_callback_y(Osci_Application* app)
 
 	if(app->yChannelStateMachine.measurements_left > 0)
 	{
+		if(!LL_ADC_IsActiveFlag_ADRDY(app->yChannelStateMachine.adc)) {OSCI_error_loop("adc started when not ready");}
 		LL_ADC_REG_StartConversion(app->yChannelStateMachine.adc);
 		app->yChannelStateMachine.measurements_left--;
 	}

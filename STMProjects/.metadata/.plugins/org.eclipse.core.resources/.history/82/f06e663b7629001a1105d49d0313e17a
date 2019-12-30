@@ -1,0 +1,21 @@
+/*
+ * SignalAdjuster.cpp
+ *
+ *  Created on: Dec 27, 2019
+ *      Author: dot
+ */
+
+#include "SignalAdjuster.h"
+
+void c_putSignalToDAC(void*v){
+	SignalAdjuster* p = (SignalAdjuster*) v;
+	LL_DAC_ConvertData12LeftAligned(DAC1, LL_DAC_CHANNEL_1, p->getNextSample());
+}
+
+void c_execute(void*v){
+	SignalAdjuster* p = (SignalAdjuster*) v;
+	char cmd = USART2->RDR;
+	p->execute(cmd);
+}
+
+

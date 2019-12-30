@@ -22,7 +22,9 @@ public class SerialProtocol {
     //X TIME PER DIV SIZE BYTES = 4;
     //Y TIME PER DIV SIZE BYTES = 4;
     //TRIG TYPE/X range/Y range/ SIZE BYTES = 4;
-    public static byte OSCI_SETTINGS_SIZE_BYTES = 40;
+    //DoMeasurement SIZE BYTES = 1
+    //padding SIZE BYTES = 3
+    public static byte OSCI_SETTINGS_SIZE_BYTES = 44;
 
     public static boolean isLowerStartByte(byte b) {
        return (b == SerialProtocol.PROTOCOL_START_WORD_LOW_BYTE);
@@ -47,7 +49,7 @@ public class SerialProtocol {
         return (b == SerialProtocol.PROTOCOL_NEXT_CHANNEL_HIGH_BYTE);
     }
 
-    public static byte[] packageConfig(Controller c) {
+    public static byte[] packageConfig(Controller c, byte doMeasurement) {
         ChannelSettings cset = ChannelControlCaretaker.readChannelControlsSettings(c);
         TriggerControlSettings tset = TriggerControlCaretaker.readTriggerControlSettings(c);
         TimeControlSettings tmset = TimeControlsCaretaker.readTimeSettings(c);
@@ -67,6 +69,10 @@ public class SerialProtocol {
         b.put(cset.yVoltageRange);
         b.put(cset.xGraticuleDivisions);
         b.put(cset.yGraticuleDivisions);
+        b.put(doMeasurement);
+        b.put((byte)0);
+        b.put((byte)0);
+        b.put((byte)0);
         byte [] res = (byte[])b.flip().array();
         return res;
     }

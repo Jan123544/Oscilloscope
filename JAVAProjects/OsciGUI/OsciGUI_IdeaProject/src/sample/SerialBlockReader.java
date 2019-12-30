@@ -68,17 +68,13 @@ public class SerialBlockReader implements Runnable{
                 if(!port.isOpen()){return;}
                 state = WAITING_FOR_LOWER_START_BYTE;
 
-                //d = new Date();
-                //System.err.print("Read time:");
-                //System.err.println(d.getTime() - lastUpdateTime);
-
-
                 //debugPrintData();
                 c.canvasCaretaker.requestCanvasUpdate(c, xDataBuffer, yDataBuffer);
-                //ChartCaretaker.requestChartUpdate(c, xDataBuffer, SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES, yDataBuffer, SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES);
-                //d = new Date();
-                //System.err.print("Chart update time:");
-                //System.err.println(d.getTime() - lastUpdateTime);
+                System.err.println("xBuffer avg: " + GeneralOperations.bufferAverage(xDataBuffer, chunkSize));
+                System.err.println("yBuffer avg: " + GeneralOperations.bufferAverage(yDataBuffer, chunkSize));
+                if(c.serialWriter.isStopped()){
+                    c.serialWriter.startSending(port);
+                }
                 continue;
             }
         }
@@ -107,16 +103,4 @@ public class SerialBlockReader implements Runnable{
         }
         System.err.println("");
     }
-
-    //private void scheduleGUIUpdate() {
-    //    msgId++;
-    //    XYChart.Series series = new XYChart.Series();
-    //    Platform.runLater(new Runnable() {
-    //        @Override
-    //        public void run() {
-    //            c.addData(msgId, bBuffer[0]);
-    //        }
-    //    });
-    //    System.out.println((char) bBuffer[0]);
-    //}
 }

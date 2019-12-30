@@ -27,4 +27,12 @@ public class GeneralOperations {
         sl.setValue(inRangeValue);
         tf.setText(String.format(Locale.US, "%g",inRangeValue));
     }
+
+    static float bufferAverage(byte [] buffer, int bufflen){
+        float sum = 0;
+        for(int i = 0;i<bufflen;i+=2){
+            sum += GeneralOperations.extractUShort(buffer[i], buffer[i+1]);
+        }
+        return sum/bufflen;
+    }
 }
