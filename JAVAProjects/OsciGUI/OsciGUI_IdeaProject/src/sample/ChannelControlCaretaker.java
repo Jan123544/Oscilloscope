@@ -3,18 +3,29 @@ package sample;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableIntegerArray;
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 
 import java.util.Locale;
 
-public class ChannelControlCaretaker {
-    public static ObservableList<String> xVoltageRanges;
-    public static ObservableList<String> yVoltageRanges;
+class ChannelControlCaretaker {
+    private static ObservableList<String> xVoltageRanges;
+    private static ObservableList<String> yVoltageRanges;
 
-    public static void initChannelControls(Controller c){
+    static float idxToRange(int idx){
+        switch(idx){
+            case 0:
+                return 5.0f;
+            case 1:
+                return 10.0f;
+            case 2:
+                return 20.0f;
+            default:
+                throw new InvalidVoltageRangeException();
+        }
+    }
+
+    static void initChannelControls(Controller c){
         xVoltageRanges = FXCollections.observableArrayList("5", "10", "20");
         yVoltageRanges = FXCollections.observableArrayList("5", "10", "20");
 
@@ -24,12 +35,8 @@ public class ChannelControlCaretaker {
         c.xChannelVoltageRangeChoice.getSelectionModel().select(0);
         c.yChannelVoltageRangeChoice.getSelectionModel().select(0);
         // Make sure sliders are cropped if voltage range is changed
-        c.xChannelVoltageRangeChoice.setOnAction( (event) -> {
-            TriggerControlCaretaker.setXTriggerVoltageRangeModifyCallbacks(c, 0, Float.parseFloat(xVoltageRanges.get(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex())));
-        });
-        c.yChannelVoltageRangeChoice.setOnAction( (event) -> {
-            TriggerControlCaretaker.setYTriggerVoltageRangeModifyCallbacks(c, 0, Float.parseFloat(yVoltageRanges.get(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex())));
-        });
+        c.xChannelVoltageRangeChoice.setOnAction( (event) -> TriggerControlCaretaker.updateSliderRangeX(c));
+        c.yChannelVoltageRangeChoice.setOnAction( (event) -> TriggerControlCaretaker.updateSliderRangeY(c));
 
         c.ySensitivityTF.setText(String.valueOf(GlobalConstants.CHANNEL_SENSITIVITY_DEFAULT));
         c.ySensitivityTF.setOnKeyReleased( (key) -> {
@@ -64,45 +71,25 @@ public class ChannelControlCaretaker {
         c.ySensitivityS.setMin(GlobalConstants.CHANNEL_SENSITIVITY_MIN);
         c.ySensitivityS.setMax(GlobalConstants.CHANNEL_SENSITIVITY_MAX);
         c.ySensitivityS.setValue(GlobalConstants.CHANNEL_SENSITIVITY_DEFAULT);
-        c.ySensitivityS.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                c.ySensitivityTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
-            }
-        });
+        c.ySensitivityS.valueProperty().addListener((observableValue, number, t1) -> c.ySensitivityTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
 
         c.xSensitivityS.setMin(GlobalConstants.CHANNEL_SENSITIVITY_MIN);
         c.xSensitivityS.setMax(GlobalConstants.CHANNEL_SENSITIVITY_MAX);
         c.xSensitivityS.setValue(GlobalConstants.CHANNEL_SENSITIVITY_DEFAULT);
-        c.xSensitivityS.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                c.xSensitivityTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
-            }
-        });
+        c.xSensitivityS.valueProperty().addListener((observableValue, number, t1) -> c.xSensitivityTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
 
         c.xOffsetS.setMin(GlobalConstants.CHANNEL_OFFSET_MIN);
         c.xOffsetS.setMax(GlobalConstants.CHANNEL_OFFSET_MAX);
         c.xOffsetS.setValue(GlobalConstants.CHANNEL_OFFSET_DEFAULT);
-        c.xOffsetS.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                c.xOffsetTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
-            }
-        });
+        c.xOffsetS.valueProperty().addListener((observableValue, number, t1) -> c.xOffsetTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
 
         c.yOffsetS.setMin(GlobalConstants.CHANNEL_OFFSET_MIN);
         c.yOffsetS.setMax(GlobalConstants.CHANNEL_OFFSET_MAX);
         c.yOffsetS.setValue(GlobalConstants.CHANNEL_OFFSET_DEFAULT);
-        c.yOffsetS.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                c.yOffsetTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
-            }
-        });
+        c.yOffsetS.valueProperty().addListener((observableValue, number, t1) -> c.yOffsetTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
     }
 
-    public static ChannelSettings readChannelControlsSettings(Controller c){
+    static ChannelSettings readChannelControlsSettings(Controller c){
         ChannelSettings set = new ChannelSettings();
         set.ySensitivity = Float.parseFloat(c.ySensitivityTF.getText());
         set.yOffset = Float.parseFloat(c.yOffsetTF.getText());
