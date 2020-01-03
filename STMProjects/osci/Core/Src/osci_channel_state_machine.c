@@ -82,7 +82,7 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			csm->events.start_measuring = FALSE;
 
 			// Check for transitions
-			if(csm->events.start_monitoring)
+			if (csm->events.start_monitoring)
 			{
 				OSCI_channel_start_monitoring(csm);
 				csm->state = OSCI_CHANNEL_STATE_MONITORING;
@@ -158,7 +158,9 @@ void OSCI_channel_measuring_callback_x(Osci_Application* app)
 
 	if(app->xChannelStateMachine.measurements_left > 0)
 	{
-		if(!LL_ADC_IsActiveFlag_ADRDY(app->xChannelStateMachine.adc)) {OSCI_error_loop("adc started when not ready");}
+		if(!LL_ADC_IsActiveFlag_ADRDY(app->xChannelStateMachine.adc))
+			OSCI_error_loop("adc started when not ready");
+
 		LL_ADC_REG_StartConversion(app->xChannelStateMachine.adc);
 		app->xChannelStateMachine.measurements_left--;
 	}

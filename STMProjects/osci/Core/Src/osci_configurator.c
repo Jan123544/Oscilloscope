@@ -9,21 +9,24 @@
 #include "osci_configurator.h"
 #include "osci_error.h"
 
-float Calculate_alpha(uint32_t beta5, uint32_t beta10, uint32_t beta20, uint32_t range, float calib5, float calib10, float calib20){
-	switch(range){
-	case 5:
-		return (float)OSCI_MEASUREMENT_MAX_LEVELS/beta5*calib5;
-	case 10:
-		return (float)OSCI_MEASUREMENT_MAX_LEVELS/beta10*calib10;
-	case 20:
-		return (float)OSCI_MEASUREMENT_MAX_LEVELS/beta20*calib20;
-	default:
-		OSCI_error_loop("bad range while calculating alpha [Calculate_alpha]);");
-		return 0;
+float Calculate_alpha(uint32_t beta5, uint32_t beta10, uint32_t beta20, uint32_t range, float calib5, float calib10, float calib20)
+{
+	switch(range)
+	{
+		case 5:
+			return (float)OSCI_MEASUREMENT_MAX_LEVELS/beta5*calib5;
+		case 10:
+			return (float)OSCI_MEASUREMENT_MAX_LEVELS/beta10*calib10;
+		case 20:
+			return (float)OSCI_MEASUREMENT_MAX_LEVELS/beta20*calib20;
+		default:
+			OSCI_error_loop("bad range while calculating alpha [Calculate_alpha]);");
+			return 0;
 	}
 }
 
-void Fill_alphas(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters){
+void Fill_alphas(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
+{
 	new_parameters->xAlpha = Calculate_alpha(OSCI_MEASUREMENT_BETA_5_X, OSCI_MEASUREMENT_BETA_10_X, OSCI_MEASUREMENT_BETA_20_X, settings->xVoltageRange, OSCI_MEASUREMENT_ADCCALIB_5_X, OSCI_MEASUREMENT_ADCCALIB_10_X, OSCI_MEASUREMENT_ADCCALIB_20_X);
 	new_parameters->yAlpha = Calculate_alpha(OSCI_MEASUREMENT_BETA_5_Y, OSCI_MEASUREMENT_BETA_10_Y, OSCI_MEASUREMENT_BETA_20_Y, settings->yVoltageRange, OSCI_MEASUREMENT_ADCCALIB_5_Y, OSCI_MEASUREMENT_ADCCALIB_10_Y, OSCI_MEASUREMENT_ADCCALIB_20_Y);
 }
@@ -32,17 +35,21 @@ void Fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_paramet
 {
 	new_parameters->xRange = settings->xVoltageRange;
 	new_parameters->yRange = settings->yVoltageRange;
-	if(settings->doMeasurement){
+
+	if(settings->doMeasurement)
+	{
 		new_parameters->xRangeWhenMeasured = settings->xVoltageRange;
 		new_parameters->yRangeWhenMeasured = settings->yVoltageRange;
 	}
 }
 
-float Calculate_sensitivity(float sensitvityVoltPerDiv, float range, uint32_t divisions){
+float Calculate_sensitivity(float sensitvityVoltPerDiv, float range, uint32_t divisions)
+{
 	return sensitvityVoltPerDiv*divisions/range;
 }
 
-float Calculate_offset(float offsetInVolts, float sensitivityInVolts, uint32_t divisions){
+float Calculate_offset(float offsetInVolts, float sensitivityInVolts, uint32_t divisions)
+{
 	return offsetInVolts/(sensitivityInVolts*divisions)*OSCI_MEASUREMENT_MAX_LEVELS;
 }
 
@@ -55,7 +62,8 @@ void Fill_sensitivity_and_offset(Osci_Settings* settings, Osci_CalculatedParamet
 	new_parameters->yOffset = Calculate_offset(settings->yOffset, settings->ySensitivity, new_parameters->yDivisions);
 }
 
-uint32_t Calculate_threshold(float thresholdInVolts, float range, float alpha, uint32_t maxThreshold){
+uint32_t Calculate_threshold(float thresholdInVolts, float range, float alpha, uint32_t maxThreshold)
+{
 	return floor(thresholdInVolts/range*maxThreshold/alpha);
 }
 
@@ -128,25 +136,30 @@ void Switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)
 			break;
 	}
 }
+
 void Wait_for_relays_to_switch()
 {
 	LL_mDelay(10);
 }
 
-void Fill_divisions(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters){
+void Fill_divisions(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
+{
 	new_parameters->xDivisions = settings->xGraticuleDivisions;
 	new_parameters->yDivisions = settings->yGraticuleDivisions;
 }
 
-void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_CalculatedParameters* new_parameters){
-	if(s->doMeasurement){
+void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_CalculatedParameters* new_parameters)
+{
+	if(s->doMeasurement)
+	{
 		new_parameters->xRangeWhenMeasured = s->xVoltageRange;
 		new_parameters->yRangeWhenMeasured = s->yVoltageRange;
-	}else{
+	}
+	else
+	{
 		new_parameters->xRangeWhenMeasured = ts->x_channel_state_machine->params.rangeWhenMeasured;
 		new_parameters->yRangeWhenMeasured = ts->y_channel_state_machine->params.rangeWhenMeasured;
 	}
-
 }
 
 void OSCI_configurator_recalculate_parameters(Osci_Transceiver* ts, Osci_Settings* s)
@@ -193,24 +206,21 @@ void OSCI_configurator_config_defaults_ts(Osci_Transceiver* ts)
 
 void OSCI_configurator_distribute_settings(Osci_Transceiver* ts, Osci_Settings* s)
 {
+	ts->x_channel_state_machine->params.graticuleDivisions = ts->allReceivedParameters.xDivisions;
+	ts->x_channel_state_machine->params.offset = ts->allReceivedParameters.xOffset;
+	ts->x_channel_state_machine->params.sensitivity = ts->allReceivedParameters.xSensitivity;
+	ts->x_channel_state_machine->params.timerSettings = ts->allReceivedParameters.xTimerSettings;
+	ts->x_channel_state_machine->params.triggerLevel = ts->allReceivedParameters.xThresholdInLevels;
+	ts->x_channel_state_machine->params.alpha = ts->allReceivedParameters.xAlpha;
+	ts->x_channel_state_machine->params.voltageRange = ts->allReceivedParameters.xRange;
+	ts->x_channel_state_machine->params.rangeWhenMeasured = ts->allReceivedParameters.xRangeWhenMeasured;
 
-		ts->x_channel_state_machine->params.graticuleDivisions = ts->allReceivedParameters.xDivisions;
-		ts->x_channel_state_machine->params.offset = ts->allReceivedParameters.xOffset;
-		ts->x_channel_state_machine->params.sensitivity = ts->allReceivedParameters.xSensitivity;
-		ts->x_channel_state_machine->params.timerSettings = ts->allReceivedParameters.xTimerSettings;
-		ts->x_channel_state_machine->params.triggerLevel = ts->allReceivedParameters.xThresholdInLevels;
-		ts->x_channel_state_machine->params.alpha = ts->allReceivedParameters.xAlpha;
-		ts->x_channel_state_machine->params.voltageRange = ts->allReceivedParameters.xRange;
-		ts->x_channel_state_machine->params.rangeWhenMeasured = ts->allReceivedParameters.xRangeWhenMeasured;
-
-
-		ts->y_channel_state_machine->params.graticuleDivisions = ts->allReceivedParameters.yDivisions;
-		ts->y_channel_state_machine->params.offset = ts->allReceivedParameters.yOffset;
-		ts->y_channel_state_machine->params.sensitivity = ts->allReceivedParameters.ySensitivity;
-		ts->y_channel_state_machine->params.timerSettings = ts->allReceivedParameters.yTimerSettings;
-		ts->y_channel_state_machine->params.triggerLevel = ts->allReceivedParameters.yThresholdInLevels;
-		ts->y_channel_state_machine->params.alpha = ts->allReceivedParameters.yAlpha;
-		ts->y_channel_state_machine->params.voltageRange = ts->allReceivedParameters.yRange;
-		ts->y_channel_state_machine->params.rangeWhenMeasured = ts->allReceivedParameters.yRangeWhenMeasured;
-
+	ts->y_channel_state_machine->params.graticuleDivisions = ts->allReceivedParameters.yDivisions;
+	ts->y_channel_state_machine->params.offset = ts->allReceivedParameters.yOffset;
+	ts->y_channel_state_machine->params.sensitivity = ts->allReceivedParameters.ySensitivity;
+	ts->y_channel_state_machine->params.timerSettings = ts->allReceivedParameters.yTimerSettings;
+	ts->y_channel_state_machine->params.triggerLevel = ts->allReceivedParameters.yThresholdInLevels;
+	ts->y_channel_state_machine->params.alpha = ts->allReceivedParameters.yAlpha;
+	ts->y_channel_state_machine->params.voltageRange = ts->allReceivedParameters.yRange;
+	ts->y_channel_state_machine->params.rangeWhenMeasured = ts->allReceivedParameters.yRangeWhenMeasured;
 }
