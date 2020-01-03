@@ -22,6 +22,7 @@ void OSCI_adc_init(Osci_ChannelStateMachine* csm)
 	csm->params->calibrationFactor = LL_ADC_GetCalibrationFactor(ADC1, LL_ADC_SINGLE_ENDED);
 	LL_ADC_Enable
 	LL_ADC_REG_StartConversion(ADC1);*/
+	LL_ADC_DisableIT_EOSMP(csm->adc);
 	LL_ADC_Enable(csm->adc);
 	while(!LL_ADC_IsEnabled(csm->adc)); // Wait for startup
 }
