@@ -1,7 +1,7 @@
 package sample;
 
-public class TriggerControlSettings {
-    public Float yTriggerLevel;
-    public Float xTriggerLevel;
-    public byte triggerType;
+class TriggerControlSettings {
+    Float yTriggerLevel;
+    Float xTriggerLevel;
+    int triggerCommand;
 }

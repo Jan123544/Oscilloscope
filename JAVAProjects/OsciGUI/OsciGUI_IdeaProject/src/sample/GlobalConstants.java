@@ -22,8 +22,6 @@ class GlobalConstants {
      static Float TIME_PER_DIVISION_MIN = 0.0001f;
      static Float TIME_PER_DIVISION_MIN_LOG10 = -4f;
 
-     static byte TRIGGER_TYPE_CONTINUOUS = 0;
-     static byte TRIGGER_TYPE_ONE_TIME = 1;
      static Float TRIGGER_LEVEL_RESOLUTION_X = 1/4096.0f;
      static Float TRIGGER_LEVEL_RESOLUTION_Y = 1/256.0f;
      static Float TRIGGER_LEVEL_DEFAULT_MAX = 5.0f;
@@ -32,7 +30,12 @@ class GlobalConstants {
      static Float INTERNAL_SETTINGS_UPDATE_RATE = 1.0f;
      static Integer INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS = 10;
 
-     static byte OSCI_SETTINGS_DOMEASUREMENT_NO = 0;
-     static byte OSCI_SETTINGS_DOMEASUREMENT_X = 1;
-     static byte OSCI_SETTINGS_DOMEASUREMENT_Y = 2;
+     static Integer TRIGGER_COMMAND_TRANSFORM = 0;
+     static Integer TRIGGER_COMMAND_MEASURE_SINGLE_X = 1;
+     static Integer TRIGGER_COMMAND_MEASURE_SINGLE_Y = 2;
+     static Integer TRIGGER_COMMAND_MEASURE_CONTINUOUS_X = 4;
+     static Integer TRIGGER_COMMAND_MEASURE_CONTINUOUS_Y = 8;
+     static Integer TRIGGER_COMMAND_STOP = 16;
+
+     static Integer NUM_SAMPLES = 512;
 }

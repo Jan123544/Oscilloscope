@@ -7,9 +7,13 @@ import java.util.Locale;
 
 
 class TriggerControlCaretaker {
+
     static void initTriggerControlSettings(Controller c){
-        c.trigModeChoice.setItems(FXCollections.observableArrayList("Continuous", "One-time"));
-        c.trigModeChoice.getSelectionModel().select(0);
+        c.xTriggerModeCH.setItems(FXCollections.observableArrayList("Single", "Continuous"));
+        c.xTriggerModeCH.getSelectionModel().select(0);
+
+        c.yTriggerModeCH.setItems(FXCollections.observableArrayList("Single", "Continuous"));
+        c.yTriggerModeCH.getSelectionModel().select(0);
 
         float defaultMinimumTriggerLevelX = GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_X);
         c.xTriggerLevelTF.setText(String.valueOf(defaultMinimumTriggerLevelX));
@@ -74,14 +78,32 @@ class TriggerControlCaretaker {
 
     static TriggerControlSettings readTriggerControlSettings(Controller c) throws BadInputException{
         TriggerControlSettings set = new TriggerControlSettings();
-        switch (c.trigModeChoice.getSelectionModel().getSelectedIndex()){
+
+        set.triggerCommand = GlobalConstants.TRIGGER_COMMAND_TRANSFORM; // Default is not triggering, just adjust transform parameters.
+
+        // Assumes Single mode is index 0 in observable arraylist of choicebox and continous mode is index 1
+        switch(c.xTriggerModeCH.getSelectionModel().getSelectedIndex()){
             case 0:
-                set.triggerType = GlobalConstants.TRIGGER_TYPE_CONTINUOUS;
+                set.triggerCommand |= GlobalConstants.TRIGGER_COMMAND_MEASURE_SINGLE_X;
                 break;
             case 1:
-                set.triggerType = GlobalConstants.TRIGGER_TYPE_ONE_TIME;
+                set.triggerCommand |= GlobalConstants.TRIGGER_COMMAND_MEASURE_CONTINUOUS_X;
                 break;
+            default:
+                throw new InvalidTriggerModeException();
         }
+
+        switch(c.yTriggerModeCH.getSelectionModel().getSelectedIndex()){
+            case 0:
+                set.triggerCommand |= GlobalConstants.TRIGGER_COMMAND_MEASURE_SINGLE_Y;
+                break;
+            case 1:
+                set.triggerCommand |= GlobalConstants.TRIGGER_COMMAND_MEASURE_CONTINUOUS_Y;
+                break;
+            default:
+                throw new InvalidTriggerModeException();
+        }
+
         set.xTriggerLevel = Float.parseFloat(c.xTriggerLevelTF.getText());
         set.yTriggerLevel = Float.parseFloat(c.yTriggerLevelTF.getText());
 

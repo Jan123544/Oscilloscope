@@ -1,9 +1,6 @@
 package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
-import javafx.application.Platform;
-
-import java.util.concurrent.Semaphore;
 
 public class SerialWriter implements  Runnable{
     private Controller c;
@@ -28,7 +25,7 @@ public class SerialWriter implements  Runnable{
         int numSent = 0;
         // Send update frame and update gui state.
         if (port.isOpen()) {
-            byte[] config = SerialProtocol.packageConfig(c, c.generalMeasurementSettingsCaretaker.readGeneralMeasurementSettings().doMeasurement);
+            byte[] config = SerialProtocol.packageConfig(c);
             numSent = port.writeBytes(config, SerialProtocol.OSCI_SETTINGS_SIZE_BYTES);
             if (numSent == SerialProtocol.OSCI_SETTINGS_SIZE_BYTES) {
                 System.err.println("Sent " + String.valueOf(numSent));
@@ -71,7 +68,7 @@ public class SerialWriter implements  Runnable{
 
                 // Send update frame and update gui state.
                 if (port.isOpen()) {
-                    byte[] config = SerialProtocol.packageConfig(c, GlobalConstants.OSCI_SETTINGS_DOMEASUREMENT_NO);
+                    byte[] config = SerialProtocol.packageConfig(c);
                     numSent = port.writeBytes(config, SerialProtocol.OSCI_SETTINGS_SIZE_BYTES);
                     if (numSent == SerialProtocol.OSCI_SETTINGS_SIZE_BYTES) {
                         System.err.println("Sent " + String.valueOf(numSent));

@@ -3,38 +3,39 @@ package sample;
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 
-public class CanvasCaretaker {
-    double labelMargin;
+class CanvasCaretaker {
+    private double labelMargin;
 
-    public void init(Controller c){
-        c.yChannelShowCB.setSelected(true);
-        c.xChannelShowCB.setSelected(true);
+    CanvasCaretaker (Controller c, byte [] initialXData, byte [] initialYData){
         c.gc = c.canvas.getGraphicsContext2D();
 
         c.canvasXDataBuffer = new byte[SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES];
         c.canvasYDataBuffer = new byte[SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES];
 
         // Default settings
-        labelMargin = 20;
+        labelMargin = 35;
+
+        // Initial drawing with zeroed out data
+        requestCanvasUpdate(c, initialXData, initialYData);
     }
 
-    public double getDrawableWidth(Controller c){
+    private double getDrawableWidth(Controller c){
        return  c.canvas.getWidth() - 2*labelMargin;
     }
 
-    public double getDrawableHeight(Controller c){
+    private double getDrawableHeight(Controller c){
         return  c.canvas.getHeight() - 2*labelMargin;
     }
 
-    public double drawingXOffset(){
+    private double drawingXOffset(){
         return  labelMargin;
     }
 
-    public double drawingYOffset(){
+    private double drawingYOffset(){
         return  labelMargin;
     }
 
-    public void drawGraticule(Controller c){
+    private void drawGraticule(Controller c){
         double horizontalGraticuleStep = getDrawableWidth(c)/GlobalConstants.GRATICULE_X_DIVISIONS;
         double verticalGraticuleStep = getDrawableHeight(c)/GlobalConstants.GRATICULE_Y_DIVISIONS;
 
@@ -51,14 +52,26 @@ public class CanvasCaretaker {
         c.gc.setLineDashes(0);
     }
 
-    public void drawLabels(Controller c, CanvasSettings set, ChannelSettings cset){
+    private void drawLabels(Controller c, CanvasSettings set, ChannelSettings cset){
 
-        //double horizontalGraticuleStep = getDrawableWidth(c)/GlobalConstants.GRATICULE_X_DIVISIONS;
-        //double verticalGraticuleStep = getDrawableHeight(c)/GlobalConstants.GRATICULE_Y_DIVISIONS;
+        double horizontalGraticuleStep = getDrawableWidth(c)/GlobalConstants.GRATICULE_X_DIVISIONS;
+        double verticalGraticuleStep = getDrawableHeight(c)/GlobalConstants.GRATICULE_Y_DIVISIONS;
 
+        c.gc.setFill(Color.RED);
+        for(int i=0;i<=GlobalConstants.GRATICULE_Y_DIVISIONS;i++){
+            c.gc.fillText(String.format("%.2f",  i*c.xSensitivityS.getValue() - c.xOffsetS.getValue()),5, c.canvas.getHeight() - (drawingYOffset() + 0.25*drawingYOffset()+  i*verticalGraticuleStep));
+        }
         //for(int i=0;i<=GlobalConstants.GRATICULE_X_DIVISIONS;i++){
-        //    c.gc.fillText(String.format("%g",  i*c.xSensitivityS.getValue()),drawingXOffset() + i*horizontalGraticuleStep, 0.5*drawingYOffset());
+        //    c.gc.fillText(String.format("%2.1e",  i*Math.pow(10, c.xTimePerDivisionS.getValue())),drawingXOffset() +  i*horizontalGraticuleStep, c.canvas.getHeight() - (5 + 0.20*drawingYOffset()));
         //}
+        c.gc.setFill(Color.YELLOW);
+        for(int i=0;i<=GlobalConstants.GRATICULE_Y_DIVISIONS;i++){
+            c.gc.fillText(String.format("%.2f",  i*c.ySensitivityS.getValue() - c.yOffsetS.getValue()),5, c.canvas.getHeight() - (drawingYOffset() - 0.25*drawingYOffset()+  i*verticalGraticuleStep));
+        }
+        //for(int i=0;i<=GlobalConstants.GRATICULE_X_DIVISIONS;i++){
+        //    c.gc.fillText(String.format("%2.1e",  i*Math.pow(10, c.yTimePerDivisionS.getValue())),drawingXOffset() + i*horizontalGraticuleStep, c.canvas.getHeight() - (5 - 0.20*drawingYOffset()));
+        //}
+        c.gc.setFill(Color.BLACK);
     }
 
     private  void drawDatapoint(Controller c, double x, double y){
@@ -96,7 +109,9 @@ public class CanvasCaretaker {
     }
 
     private static void clearCanvas(Controller c){
-        c.gc.clearRect(0,0,c.canvas.getWidth(), c.canvas.getHeight());
+        //c.gc.clearRect(0,0,c.canvas.getWidth(), c.canvas.getHeight());
+        c.gc.setFill(Color.BLACK);
+        c.gc.fillRect(0,0,c.canvas.getWidth(), c.canvas.getHeight());
     }
 
     public  void requestClearCanvas(Controller c){
@@ -148,9 +163,9 @@ public class CanvasCaretaker {
     public  CanvasSettings readCanvasSettings(Controller c) throws BadInputException{
             CanvasSettings set = new CanvasSettings();
 
-            set.yShowing = c.yChannelShowCB.isSelected();
-            set.xShowing = c.xChannelShowCB.isSelected();
-            set.xyMode = c.xyModeCB.isSelected();
+            set.yShowing = c.viewSettingsCaretaker.isYShowing();
+            set.xShowing = c.viewSettingsCaretaker.isXShowing();
+            set.xyMode = c.viewSettingsCaretaker.isXYMode();
             set.canvasVerticalNormalisation = Integer.parseInt(c.canvasVerticalNormalisationTF.getText());
 
             return set;

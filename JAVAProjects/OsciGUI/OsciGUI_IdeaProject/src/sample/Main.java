@@ -16,7 +16,7 @@ public class Main extends Application {
         Parent root = loader.load();
         Controller c = loader.getController();
         primaryStage.setTitle("Osci app");
-        Scene osciScene = new Scene(root, 900, 490);
+        Scene osciScene = new Scene(root, 1024, 546);
         osciScene.getStylesheets().add(this.getClass().getResource("oscistyle.css").toExternalForm());
         primaryStage.setScene(osciScene);
         primaryStage.setResizable(false);

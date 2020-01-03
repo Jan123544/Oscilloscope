@@ -44,7 +44,11 @@ public class Controller {
     //// Controls
     // Trig
     @FXML
-    ChoiceBox<String> trigModeChoice;
+    ChoiceBox<String> xTriggerModeCH;
+
+    @FXML
+    ChoiceBox<String> yTriggerModeCH;
+
     @FXML
     TextField yTriggerLevelTF;
     @FXML
@@ -90,12 +94,6 @@ public class Controller {
     Slider xTimePerDivisionS;
     @FXML
     Slider yTimePerDivisionS;
-    @FXML
-    CheckBox xChannelShowCB;
-    @FXML
-    CheckBox yChannelShowCB;
-    @FXML
-    CheckBox xyModeCB;
 
     @FXML
     CheckBox yDoMeasurementCB;
@@ -112,11 +110,15 @@ public class Controller {
     @FXML
     TextField settingsUpdateRateTF;
 
-    // Caretakers
-    GeneralMeasurementSettingsCaretaker generalMeasurementSettingsCaretaker;
-
     // Serial port settings writer
     SerialWriter serialWriter;
+
+
+    // View settings : X channel only, y channel only, x and y channel, or x-y mode.
+    @FXML
+    ChoiceBox viewModeCH;
+
+    ViewSettingsCaretaker viewSettingsCaretaker;
 
     public void initialize(){
 
@@ -135,15 +137,16 @@ public class Controller {
         // Time controls / Settings
         TimeControlsCaretaker.initTimeControlSettings(this);
 
-        // Canvas init and update
-        canvasCaretaker = new CanvasCaretaker();
-        canvasCaretaker.init(this);
+        viewSettingsCaretaker = new ViewSettingsCaretaker(viewModeCH);
 
-        // General settings (which channel to measure if at all etc.)
-        generalMeasurementSettingsCaretaker = new GeneralMeasurementSettingsCaretaker(xDoMeasurementCB, yDoMeasurementCB);
+        // Canvas init and update
+        byte [] initialXData = new byte [SerialProtocol.SAMPLE_SIZE_BYTES*SerialProtocol.NUM_SAMPLES];
+        byte [] initialYData = new byte [SerialProtocol.SAMPLE_SIZE_BYTES*SerialProtocol.NUM_SAMPLES];
+        canvasCaretaker = new CanvasCaretaker(this, initialXData, initialYData);
 
         serialWriter = new SerialWriter(this);
         SerialWriter.launch(serialWriter);
+
     }
 
    // Action handlers
