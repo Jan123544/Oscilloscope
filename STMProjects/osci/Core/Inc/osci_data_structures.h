@@ -94,15 +94,11 @@ typedef struct osci_settings
 	float yTimePerDivision;
 	float xThreshold;
 	float yThreshold;
-	uint32_t triggerType;
+	uint32_t triggerCommand;
 	uint8_t xVoltageRange;
 	uint8_t yVoltageRange;
 	uint8_t xGraticuleDivisions;
 	uint8_t yGraticuleDivisions;
-	uint8_t doMeasurement;
-	uint8_t pad0;
-	uint8_t pad1;
-	uint8_t pad2;
 } Osci_Settings;
 
 typedef struct osci_calculatedparameters

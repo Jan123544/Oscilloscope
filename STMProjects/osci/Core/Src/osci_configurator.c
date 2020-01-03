@@ -35,12 +35,6 @@ void Fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_paramet
 {
 	new_parameters->xRange = settings->xVoltageRange;
 	new_parameters->yRange = settings->yVoltageRange;
-
-	if(settings->doMeasurement)
-	{
-		new_parameters->xRangeWhenMeasured = settings->xVoltageRange;
-		new_parameters->yRangeWhenMeasured = settings->yVoltageRange;
-	}
 }
 
 float Calculate_sensitivity(float sensitvityVoltPerDiv, float range, uint32_t divisions)
@@ -150,14 +144,17 @@ void Fill_divisions(Osci_Settings* settings, Osci_CalculatedParameters* new_para
 
 void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_CalculatedParameters* new_parameters)
 {
-	if(s->doMeasurement)
+	// We need to remember the range at which the signal was measured, so it can be displayed properly even if the range in the GUI is changed.
+	if(s->triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
 	{
 		new_parameters->xRangeWhenMeasured = s->xVoltageRange;
-		new_parameters->yRangeWhenMeasured = s->yVoltageRange;
-	}
-	else
-	{
+	}else{
+		// If there is no measurement request, for example only transform request, then the range when measured stays constant.
 		new_parameters->xRangeWhenMeasured = ts->x_channel_state_machine->params.rangeWhenMeasured;
+	}
+	if(s->triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y){
+		new_parameters->yRangeWhenMeasured = s->yVoltageRange;
+	}else {
 		new_parameters->yRangeWhenMeasured = ts->y_channel_state_machine->params.rangeWhenMeasured;
 	}
 }
@@ -191,7 +188,7 @@ void Fill_default_settings(Osci_Settings* osci_settings)
 	osci_settings->xSensitivity = OSCI_SETTINGS_DEFAULT_XSENSITIVITY;
 	osci_settings->xTimePerDivision = OSCI_SETTINGS_DEFAULT_TIMEPERDIVISION;
 	osci_settings->yTimePerDivision = OSCI_SETTINGS_DEFAULT_TIMEPERDIVISION;
-	osci_settings->triggerType = OSCI_SETTINGS_DEFAULT_TRIGGERTYPE;
+	osci_settings->triggerCommand = OSCI_SETTINGS_DEFAULT_TRIGGERCMD;
 	osci_settings->xVoltageRange = OSCI_SETTINGS_DEFAULT_XVOLTAGERANGE;
 	osci_settings->yVoltageRange = OSCI_SETTINGS_DEFAULT_YVOLTAGERANGE;
 	osci_settings->xGraticuleDivisions = OSCI_SETTINGS_DEFAULT_XGRATICULEDIVISIONS;

@@ -8,7 +8,6 @@
 
 void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_TypeDef* dma, uint32_t dmaChannel, ADC_TypeDef* adc, uint32_t awd, ADC_callback monitoring_callback, ADC_callback measuring_callback, Measurement_complete_callback measurement_complete_callback, Awd_threshold_callback awd_threshold_callback, Osci_Transceiver* transceiver)
 {
-	// Assign pointers.
 	csm->timer = timer;
 	csm->adc = adc;
 	csm->awd = awd;
@@ -20,7 +19,6 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_Ty
 	csm->awd_threshold_callback = awd_threshold_callback;
 	csm->transceiver = transceiver;
 
-	// Set call-backs, which are dummies at this point, because enabling update event on timer generates an interrupt, so the call-backs must be non-null.
 	OSCI_callback_set_monitoring_callbacks(csm);
 	// Initialize nested structures.
 	OSCI_timer_init(csm);

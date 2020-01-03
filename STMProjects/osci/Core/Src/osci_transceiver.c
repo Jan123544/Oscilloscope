@@ -107,32 +107,37 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 
 void Send_shutdown_event(Osci_Transceiver* ts)
 {
-	if(ts->receiveCompleteBuffer.doMeasurement & OSCI_SETTINGS_DOMEASUREMENT_X)
+	// Send shutdown event to CSM's based on the trigger command.
+	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
 		ts->x_channel_state_machine->events.shutdown = TRUE;
 
-	if(ts->receiveCompleteBuffer.doMeasurement & OSCI_SETTINGS_DOMEASUREMENT_Y)
+	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y)
 		ts->y_channel_state_machine->events.shutdown = TRUE;
 }
 
 void Switch_to_reconfiguring_after_shutdown(Osci_Transceiver* ts)
 {
-	switch(ts->receiveCompleteBuffer.doMeasurement)
+	// Wait for CSM's to shutdown and then switch to reconfiguring state.
+	switch(ts->receiveCompleteBuffer.triggerCommand)
 	{
-		case (OSCI_SETTINGS_DOMEASUREMENT_X | OSCI_SETTINGS_DOMEASUREMENT_Y):
-		{
-			if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN && ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
-				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
-			break;
-		}
-		case OSCI_SETTINGS_DOMEASUREMENT_X:
+		// Only wait for X CSM to shutdown here.
+		case OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X:
 		{
 			if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 			break;
 		}
-		case OSCI_SETTINGS_DOMEASUREMENT_Y:
+		// Only wait for Y CSM to shutdown here.
+		case OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y:
 		{
 			if(ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN )
+				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
+			break;
+		}
+		// Wait for both CSM's to shutdown.
+		default:
+		{
+			if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN && ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 			break;
 		}
@@ -144,16 +149,15 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 	Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
 	OSCI_configurator_recalculate_parameters(ts, &settingsCopy);
 	OSCI_configurator_switch_relays(ts, &settingsCopy);
-
 	OSCI_configurator_distribute_settings(ts, &settingsCopy);
 }
 
 void Start_monitoring(Osci_Transceiver* ts)
 {
-	if(ts->receiveCompleteBuffer.doMeasurement & OSCI_SETTINGS_DOMEASUREMENT_X)
+	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
 		ts->x_channel_state_machine->events.start_monitoring = TRUE;
 
-	if(ts->receiveCompleteBuffer.doMeasurement & OSCI_SETTINGS_DOMEASUREMENT_Y)
+	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y)
 		ts->y_channel_state_machine->events.start_monitoring = TRUE;
 }
 
@@ -165,7 +169,7 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		{
 			if (ts->events.received_settings)
 			{
-				if(ts->receiveCompleteBuffer.doMeasurement)
+				if(ts->receiveCompleteBuffer.triggerCommand)
 				{
 					ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
 				}
