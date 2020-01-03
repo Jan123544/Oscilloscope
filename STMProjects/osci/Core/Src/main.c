@@ -120,10 +120,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
 	  OSCI_transceiver_update(&app->transceiver);
 	  OSCI_channel_update(&app->xChannelStateMachine);
 	  OSCI_channel_update(&app->yChannelStateMachine);
+    /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
