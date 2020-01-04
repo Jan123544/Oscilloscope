@@ -148,13 +148,19 @@ void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_Calcul
 	if(s->triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
 	{
 		new_parameters->xRangeWhenMeasured = s->xVoltageRange;
-	}else{
+	}
+	else
+	{
 		// If there is no measurement request, for example only transform request, then the range when measured stays constant.
 		new_parameters->xRangeWhenMeasured = ts->x_channel_state_machine->params.rangeWhenMeasured;
 	}
-	if(s->triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y){
+
+	if(s->triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y)
+	{
 		new_parameters->yRangeWhenMeasured = s->yVoltageRange;
-	}else {
+	}
+	else
+	{
 		new_parameters->yRangeWhenMeasured = ts->y_channel_state_machine->params.rangeWhenMeasured;
 	}
 }

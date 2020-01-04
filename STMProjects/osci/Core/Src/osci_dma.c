@@ -29,15 +29,15 @@ void OSCI_dma_channel_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
 }
 
-void OSCI_dma_set_TC_callback(Osci_ChannelStateMachine* csm)
+void OSCI_dma_set_TC_callback(Osci_ChannelStateMachine* csm, Measurement_complete_callback measurement_complete_callback)
 {
 	switch(csm->dmaChannel)
 	{
 		case LL_DMA_CHANNEL_1:
-			osci_dma_ch1_TC_callback = csm->measurement_complete_callback;
+			osci_dma_ch1_TC_callback = measurement_complete_callback;
 			break;
 		case LL_DMA_CHANNEL_2:
-			osci_dma_ch2_TC_callback = csm->measurement_complete_callback;
+			osci_dma_ch2_TC_callback = measurement_complete_callback;
 			break;
 	}
 }

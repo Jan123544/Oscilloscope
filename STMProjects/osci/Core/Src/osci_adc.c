@@ -10,21 +10,14 @@
 
 void OSCI_adc_init(Osci_ChannelStateMachine* csm)
 {
-	/*if(LL_ADC_IsInternalRegulatorEnabled(csm->adc)){
-		OSCI_error_loop("calibartion while adc vreg not running");
-	}
-	if(LL_ADC_IsEnabled(csm->adc)){
-		OSCI_error_loop("calibartion while adc enabled");
-	}
-	*/
 	LL_ADC_StartCalibration(csm->adc, LL_ADC_SINGLE_ENDED);
 	while(LL_ADC_IsCalibrationOnGoing(csm->adc)){}; // Wait for calibartion
-	//csm->params->calibrationFactor = LL_ADC_GetCalibrationFactor(ADC1, LL_ADC_SINGLE_ENDED);
-	//LL_ADC_Enable
-	//LL_ADC_REG_StartConversion(ADC1);*/
-	LL_ADC_DisableIT_EOSMP(csm->adc);
+
 	LL_ADC_Enable(csm->adc);
+
 	while(!LL_ADC_IsEnabled(csm->adc)); // Wait for startup
+
+	LL_ADC_DisableIT_EOSMP(csm->adc);
 }
 
 void OSCI_adc_stop(Osci_ChannelStateMachine* csm)
@@ -41,6 +34,8 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 	LL_ADC_DisableIT_EOS(csm->adc);
 	LL_ADC_DisableIT_EOC(csm->adc);
 	LL_ADC_DisableIT_EOSMP(csm->adc);
+
+	LL_ADC_REG_SetContinuousMode(csm->adc, LL_ADC_REG_CONV_CONTINUOUS);
 
 	switch(csm->awd)
 	{
@@ -66,18 +61,20 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 
 void OSCI_adc_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
 {
+	LL_ADC_REG_SetContinuousMode(csm->adc, LL_ADC_REG_CONV_SINGLE);
+
 	csm->adc->CFGR |= 0x1; // Enable DMA requests
 }
 
-void OSCI_adc_set_awd_callback(Osci_ChannelStateMachine* csm)
+void OSCI_adc_set_awd_callback(Osci_ChannelStateMachine* csm, Awd_threshold_callback awd_threshold_callback)
 {
 	switch(csm->awd)
 	{
 		case LL_ADC_AWD1:
-			osci_adc_awd1_callback = csm->awd_threshold_callback;
+			osci_adc_awd1_callback = awd_threshold_callback;
 			break;
 		case LL_ADC_AWD2:
-			osci_adc_awd2_callback = csm->awd_threshold_callback;
+			osci_adc_awd2_callback = awd_threshold_callback;
 			break;
 	}
 }

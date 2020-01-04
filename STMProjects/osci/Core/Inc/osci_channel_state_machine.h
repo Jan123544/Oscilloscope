@@ -15,7 +15,6 @@
 #include "osci_timer.h"
 #include "osci_dma.h"
 #include "osci_adc.h"
-#include "osci_callback.h"
 #include "osci_configurator.h"
 
 // Define possible states of the state machine.
@@ -25,12 +24,9 @@
 #define OSCI_CHANNEL_STATE_SHUTDING_DOWN 3
 
 // State machine functions and call-backs.
-void OSCI_channel_init(Osci_ChannelStateMachine* , TIM_TypeDef* , DMA_TypeDef* , uint32_t , ADC_TypeDef* , uint32_t , void (*) (Osci_Application*), void (*) (Osci_Application*), void (*) (Osci_Application*),  void (*) (Osci_Application*),Osci_Transceiver* );
+void OSCI_channel_init(Osci_ChannelStateMachine*, TIM_TypeDef*, DMA_TypeDef*, uint32_t, ADC_TypeDef*, uint32_t, ADC_callback, Measurement_complete_callback, Awd_threshold_callback, Osci_Transceiver* );
 void OSCI_channel_update(Osci_ChannelStateMachine* csm);
-void OSCI_channel_shutdown(Osci_ChannelStateMachine* csm);
-void OSCI_channel_monitoring_callback_x(Osci_Application*);
 void OSCI_channel_measuring_callback_x(Osci_Application*);
-void OSCI_channel_monitoring_callback_y(Osci_Application*);
 void OSCI_channel_measuring_callback_y(Osci_Application*);
 void OSCI_channel_measurement_complete_callback_x(Osci_Application*);
 void OSCI_channel_measurement_complete_callback_y(Osci_Application*);

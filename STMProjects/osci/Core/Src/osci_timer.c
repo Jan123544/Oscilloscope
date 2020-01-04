@@ -10,36 +10,16 @@
 
 void OSCI_timer_stop(Osci_ChannelStateMachine* csm)
 {
-	//LL_TIM_DisableUpdateEvent(csm->timer);
 	LL_TIM_DisableCounter(csm->timer);
 }
 
 void OSCI_timer_start(Osci_ChannelStateMachine* csm)
 {
-	//LL_TIM_EnableUpdateEvent(csm->timer);
-	LL_TIM_SetCounter(csm->timer, 0);
-	LL_TIM_EnableCounter(csm->timer);
-	//LL_TIM_EnableIT_UPDATE(csm->timer);
-}
-
-void OSCI_timer_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
-{
-	// TODO
-	csm->timer->PSC = csm->params.timerSettings.psc;
-	csm->timer->ARR = csm->params.timerSettings.arr;
-}
-
-void OSCI_timer_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
-{
-	csm->timer->PSC = 63; // 500KHZ at 32MHZ CLK
-	csm->timer->ARR = 19; // 25KHZ
-}
-
-void OSCI_timer_init(Osci_ChannelStateMachine* csm)
-{
-	// This must be called only after handles of update interrupt are initialized in osci_channel_init(), otherwise it generates an interrupt with null callback functions, which results in hard_fault
 	LL_TIM_EnableUpdateEvent(csm->timer);
 	LL_TIM_EnableIT_UPDATE(csm->timer);
+
+	LL_TIM_SetCounter(csm->timer, 0);
+	LL_TIM_EnableCounter(csm->timer);
 }
 
 void OSCI_timer_set_update_callback(Osci_ChannelStateMachine* csm, ADC_callback new_callback)

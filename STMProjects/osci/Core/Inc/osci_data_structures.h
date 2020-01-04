@@ -66,11 +66,6 @@ typedef struct osci_channelstatemachine
 	Osci_ChannelMeasurement measurement;
 	uint32_t state;
 
-	ADC_callback monitoring_callback;
-	ADC_callback measuring_callback;
-	Measurement_complete_callback measurement_complete_callback;
-	Awd_threshold_callback awd_threshold_callback;
-
 	Osci_ChannelEvents events;
 
 	Osci_Transceiver* transceiver;
