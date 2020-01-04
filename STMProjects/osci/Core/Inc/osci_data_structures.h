@@ -126,6 +126,7 @@ struct osci_transceiver
 {
 	USART_TypeDef* usart;
 	DMA_TypeDef* dma;
+	TIM_TypeDef* timer; // periodic update timer
 	uint32_t dmaReceiverChannel;
 	uint32_t dmaTransmissionChannel;
 
