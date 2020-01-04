@@ -69,13 +69,14 @@ typedef struct osci_channelstatemachine
 
 	Osci_Transceiver* transceiver;
 
+	uint16_t channelOpcode;
+
 } Osci_ChannelStateMachine;
 
 typedef struct osci_dataframe
 {
-	uint16_t start_word;
-	Osci_ChannelMeasurement xChannel;
-	Osci_ChannelMeasurement yChannel;
+	uint16_t opcode;
+	Osci_ChannelMeasurement channelData;
 } Osci_DataFrame;
 
 typedef struct osci_settings
@@ -118,7 +119,7 @@ typedef struct osci_calculatedparameters
 typedef struct osci_transceiverevents
 {
 	uint8_t received_settings;
-	uint8_t send_requested;
+	uint8_t send_requested[2];
 } Osci_TransceiverEvents;
 
 struct osci_transceiver

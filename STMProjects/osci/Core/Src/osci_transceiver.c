@@ -9,19 +9,13 @@
 #include "osci_channel_state_machine.h"
 #include "osci_timer.h"
 
-void Gather_data(Osci_Transceiver* ts)
+void Gather_data(Osci_Transceiver* ts, Osci_ChannelStateMachine* csm)
 {
 	// Make sure dataframe has the start word
-	ts->sendingBuffer.start_word = OSCI_DATA_START_WORD;
+	ts->sendingBuffer.opcode = csm->channelOpcode;
 
 	// Copy last complete measurement
-	ts->sendingBuffer.xChannel = ts->x_channel_state_machine->measurement;
-	ts->sendingBuffer.yChannel = ts->y_channel_state_machine->measurement;
-}
-
-void Transform_data(Osci_Transceiver* ts)
-{
-	OSCI_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params, ts->y_channel_state_machine->params);
+	ts->sendingBuffer.channelData = csm->measurement;
 }
 
 void Send_data(Osci_Transceiver* ts)
@@ -77,7 +71,8 @@ void Configure_usart(Osci_Transceiver* ts)
 void Clear_events_ts(Osci_Transceiver* ts)
 {
 	ts->events.received_settings = FALSE;
-	ts->events.send_requested = FALSE;
+	ts->events.send_requested[0] = FALSE;
+	ts->events.send_requested[1] = FALSE;
 }
 
 void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeDef* dma, uint32_t dmaReceiverChannel, uint32_t dmaTransmissionChannel, Osci_ChannelStateMachine* x_channel_state_machine, Osci_ChannelStateMachine* y_channel_state_machine, TIM_TypeDef* timer)
@@ -203,16 +198,8 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 				ts->events.received_settings = FALSE;
 			}
 
-			if (ts->events.send_requested)
-			{
-				// wait for second channel to complete measurement
-				if (ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_MEASURING
-						|| ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_MEASURING)
-					break;
-
+			if (ts->events.send_requested[0] || ts->events.send_requested[1])
 				ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
-				ts->events.send_requested = FALSE;
-			}
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS:
@@ -240,9 +227,24 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		}
 		case OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING:
 		{
-			Gather_data(ts);
-			Transform_data(ts);
-			Send_data(ts);
+			if (ts->events.send_requested[0])
+			{
+				Gather_data(ts, ts->x_channel_state_machine);
+				OSCI_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params);
+				Send_data(ts);
+
+				ts->events.send_requested[0] = FALSE;
+			}
+
+			if (ts->events.send_requested[1])
+			{
+				Gather_data(ts, ts->y_channel_state_machine);
+				OSCI_transform_apply(&ts->sendingBuffer, ts->y_channel_state_machine->params);
+				Send_data(ts);
+
+				ts->events.send_requested[1] = FALSE;
+			}
+
 			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
 
 			ts->receiveCompleteBuffer.triggerCommand &= ~(MEASURE_SINGLE_X | MEASURE_SINGLE_Y);

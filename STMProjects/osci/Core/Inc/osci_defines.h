@@ -11,11 +11,6 @@
 // Number of measured samples
 #define NUM_SAMPLES 512
 
-// Communication protocol constants
-#define OSCI_DATA_START_WORD 0xEFEF
-#define DATA_MAX_VALUE 4096
-#define DATA_MIN_VALUE 0
-
 // Should be calibrated with measurement
 // These are used in calculations indirectly
 #define OSCI_MEASUREMENT_BETA_5_X 4016
@@ -58,6 +53,16 @@ enum OsciSettingsTriggerCommand
 	MEASURE_CONTINUOUS_X	= 0x04,
 	MEASURE_CONTINUOUS_Y	= 0x08,
 	MEASURE_STOP			= 0x10, // is this realy required?
+};
+
+// Communication protocol constants
+#define DATA_MAX_VALUE 4095
+#define DATA_MIN_VALUE 0
+
+enum Opcodes
+{
+	SMSG_CHANNEL_X_DATA		= 0xFEFE,
+	SMSG_CHANNEL_Y_DATA		= 0xFDFE,
 };
 
 #define MIN(a,b) (a)<(b)?(a):(b)

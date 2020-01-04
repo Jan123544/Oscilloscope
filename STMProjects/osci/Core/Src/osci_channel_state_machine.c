@@ -6,7 +6,7 @@
  */
 #include "osci_channel_state_machine.h"
 
-void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_TypeDef* dma, uint32_t dmaChannel, ADC_TypeDef* adc, uint32_t awd, Measurement_complete_callback measurement_complete_callback, Awd_threshold_callback awd_threshold_callback, Osci_Transceiver* transceiver)
+void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_TypeDef* dma, uint32_t dmaChannel, ADC_TypeDef* adc, uint32_t awd, Measurement_complete_callback measurement_complete_callback, Awd_threshold_callback awd_threshold_callback, Osci_Transceiver* transceiver, uint16_t channelOpcode)
 {
 	csm->timer = timer;
 	csm->adc = adc;
@@ -19,6 +19,7 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_Ty
 	csm->events.shutdown = FALSE;
 	csm->events.start_measuring = FALSE;
 	csm->events.start_monitoring = FALSE;
+	csm->channelOpcode = channelOpcode;
 
 	// Initialize static callbacks.
 	OSCI_dma_set_TC_callback(csm, measurement_complete_callback);
@@ -129,7 +130,12 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			{
 				OSCI_adc_stop(csm);
 				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
-				csm->transceiver->events.send_requested = TRUE;
+
+				if (csm == csm->transceiver->x_channel_state_machine)
+					csm->transceiver->events.send_requested[0] = TRUE;
+				else
+					csm->transceiver->events.send_requested[1] = TRUE;
+
 				csm->events.measurement_complete = FALSE;
 				return;
 			}

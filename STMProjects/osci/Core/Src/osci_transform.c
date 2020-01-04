@@ -7,12 +7,9 @@
 
 #include"osci_transform.h"
 
-void OSCI_transform_apply(Osci_DataFrame* df, Osci_ChannelParameters px, Osci_ChannelParameters py)
+void OSCI_transform_apply(Osci_DataFrame* df, Osci_ChannelParameters params)
 {
 	for(uint32_t i = 0; i < NUM_SAMPLES;i++)
-	{
-		df->xChannel.values[i] = MIN(MAX(floor(1/px.sensitivity*df->xChannel.values[i]*px.alpha + px.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
-		df->yChannel.values[i] = MIN(MAX(floor(1/py.sensitivity*df->yChannel.values[i]*py.alpha + py.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
-	}
+		df->channelData.values[i] = MIN(MAX(floor(1/params.sensitivity*df->channelData.values[i]*params.alpha + params.offset), DATA_MIN_VALUE), DATA_MAX_VALUE);
 }
 
