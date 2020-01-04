@@ -108,10 +108,10 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 void Send_shutdown_event(Osci_Transceiver* ts)
 {
 	// Send shutdown event to CSM's based on the trigger command.
-	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
+	if(ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_X)
 		ts->x_channel_state_machine->events.shutdown = TRUE;
 
-	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y)
+	if(ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_Y)
 		ts->y_channel_state_machine->events.shutdown = TRUE;
 }
 
@@ -121,14 +121,14 @@ void Switch_to_reconfiguring_after_shutdown(Osci_Transceiver* ts)
 	switch(ts->receiveCompleteBuffer.triggerCommand)
 	{
 		// Only wait for X CSM to shutdown here.
-		case OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X:
+		case MEASURE_SINGLE_X:
 		{
 			if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 			break;
 		}
 		// Only wait for Y CSM to shutdown here.
-		case OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y:
+		case MEASURE_SINGLE_Y:
 		{
 			if(ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN )
 				ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
@@ -154,7 +154,7 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 
 void Start_monitoring(Osci_Transceiver* ts)
 {
-	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
+	if(ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_X)
 	{
 		if (ts->x_channel_state_machine->params.triggerLevel)
 			ts->x_channel_state_machine->events.start_monitoring = TRUE;
@@ -162,7 +162,7 @@ void Start_monitoring(Osci_Transceiver* ts)
 			ts->x_channel_state_machine->events.start_measuring = TRUE;
 	}
 
-	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y)
+	if(ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_Y)
 	{
 		if (ts->y_channel_state_machine->params.triggerLevel)
 			ts->y_channel_state_machine->events.start_monitoring = TRUE;
