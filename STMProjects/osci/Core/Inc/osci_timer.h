@@ -10,8 +10,6 @@
 #include "main.h"
 #include "osci_data_structures.h"
 
-ADC_callback osci_timer1_update_callback;
-ADC_callback osci_timer2_update_callback;
 ADC_callback osci_timer3_update_callback;
 
 void OSCI_timer_stop(TIM_TypeDef*);

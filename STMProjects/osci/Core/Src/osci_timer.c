@@ -24,10 +24,6 @@ void OSCI_timer_start(TIM_TypeDef* timer)
 
 void OSCI_timer_set_update_callback(TIM_TypeDef* timer, ADC_callback new_callback)
 {
-	if (timer == TIM1)
-		osci_timer1_update_callback = new_callback;
-	else if (timer == TIM2)
-		osci_timer2_update_callback = new_callback;
-	else if (timer == TIM3)
+	if (timer == TIM3)
 		osci_timer3_update_callback = new_callback;
 }

@@ -205,6 +205,11 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 
 			if (ts->events.send_requested)
 			{
+				// wait for second channel to complete measurement
+				if (ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_MEASURING
+						|| ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_MEASURING)
+					break;
+
 				ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
 				ts->events.send_requested = FALSE;
 			}

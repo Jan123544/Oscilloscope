@@ -61,7 +61,6 @@ typedef struct osci_channelstatemachine
 	uint32_t adcID;
 	uint32_t awd;
 
-	uint32_t measurements_left;
 	Osci_ChannelMeasurement measurementDMABuffer;
 	Osci_ChannelMeasurement measurement;
 	uint32_t state;
