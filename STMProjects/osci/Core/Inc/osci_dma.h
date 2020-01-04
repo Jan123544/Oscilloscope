@@ -14,7 +14,6 @@
 
 void OSCI_dma_channel_init(Osci_ChannelStateMachine*);
 void OSCI_dma_channel_reconfigure_for_measuring(Osci_ChannelStateMachine*);
-void OSCI_dma_channel_reconfigure_for_monitoring(Osci_ChannelStateMachine*);
 
 ADC_callback osci_dma_ch1_TC_callback;
 ADC_callback osci_dma_ch2_TC_callback;

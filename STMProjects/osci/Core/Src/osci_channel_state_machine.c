@@ -34,9 +34,9 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 {
 	OSCI_adc_stop(csm);
 	OSCI_timer_stop(csm);
+	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
 
 	OSCI_adc_reconfigure_for_monitoring(csm);
-	OSCI_dma_channel_reconfigure_for_monitoring(csm);
 
 	csm->state = OSCI_CHANNEL_STATE_MONITORING;
 
@@ -47,6 +47,7 @@ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
 {
 	OSCI_adc_stop(csm);
 	OSCI_timer_stop(csm);
+	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
 
 	csm->timer->PSC = csm->params.timerSettings.psc;
 	csm->timer->ARR = csm->params.timerSettings.arr;
@@ -69,7 +70,6 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			// Clear invalid event flags
 			csm->events.measurement_complete = FALSE;
 			csm->events.shutdown = FALSE;
-			csm->events.start_measuring = FALSE;
 
 			// Check for transitions
 			if (csm->events.start_monitoring)
@@ -77,6 +77,14 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 				OSCI_channel_start_monitoring(csm);
 				csm->state = OSCI_CHANNEL_STATE_MONITORING;
 				csm->events.start_monitoring = FALSE;
+			}
+
+			if(csm->events.start_measuring)
+			{
+				OSCI_channel_start_measuring(csm);
+				csm->state = OSCI_CHANNEL_STATE_MEASURING;
+				csm->events.start_measuring = FALSE;
+				return;
 			}
 			break;
 		}

@@ -24,11 +24,6 @@ void OSCI_dma_channel_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
 	LL_DMA_EnableChannel(csm->dma, csm->dmaChannel);
 }
 
-void OSCI_dma_channel_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
-{
-	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
-}
-
 void OSCI_dma_set_TC_callback(Osci_ChannelStateMachine* csm, Measurement_complete_callback measurement_complete_callback)
 {
 	switch(csm->dmaChannel)

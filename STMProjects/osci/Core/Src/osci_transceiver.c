@@ -155,10 +155,20 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 void Start_monitoring(Osci_Transceiver* ts)
 {
 	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_X)
-		ts->x_channel_state_machine->events.start_monitoring = TRUE;
+	{
+		if (ts->x_channel_state_machine->params.triggerLevel)
+			ts->x_channel_state_machine->events.start_monitoring = TRUE;
+		else
+			ts->x_channel_state_machine->events.start_measuring = TRUE;
+	}
 
 	if(ts->receiveCompleteBuffer.triggerCommand & OSCI_SETTINGS_TRIGGER_COMMAND_MEASURE_SINGLE_Y)
-		ts->y_channel_state_machine->events.start_monitoring = TRUE;
+	{
+		if (ts->y_channel_state_machine->params.triggerLevel)
+			ts->y_channel_state_machine->events.start_monitoring = TRUE;
+		else
+			ts->y_channel_state_machine->events.start_measuring = TRUE;
+	}
 }
 
 void OSCI_transceiver_update(Osci_Transceiver* ts)
