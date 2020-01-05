@@ -17,6 +17,24 @@ public class GeneralOperations {
         return v;
     };
 
+    static double putInRange(double v, double min, double max){
+        if (v > max){
+            return max;
+        }else if(v < min){
+            return min;
+        }
+        return v;
+    };
+
+    static int putInRange(int v, int min, int max){
+        if (v > max){
+            return max;
+        }else if(v < min){
+            return min;
+        }
+        return v;
+    }
+
     static Integer extractUShort(byte lower, byte upper){
         int tmp;
         tmp = (0x000000ff & (int)lower);

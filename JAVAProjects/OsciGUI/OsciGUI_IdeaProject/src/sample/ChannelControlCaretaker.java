@@ -25,6 +25,15 @@ class ChannelControlCaretaker {
         }
     }
 
+    static double getXRange(Controller c){
+        return idxToRange(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
+    }
+
+    static double getYRange(Controller c){
+        return idxToRange(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
+    }
+
+
     static void initChannelControls(Controller c){
         xVoltageRanges = FXCollections.observableArrayList("5", "10", "20");
         yVoltageRanges = FXCollections.observableArrayList("5", "10", "20");

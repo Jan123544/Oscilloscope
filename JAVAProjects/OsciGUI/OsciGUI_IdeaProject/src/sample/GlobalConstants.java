@@ -57,4 +57,7 @@ class GlobalConstants {
      //X GRATICULE DIVISIONS 1B
      //Y GRATICULE DIVISIONS 1B
      final static byte OSCI_SETTINGS_SIZE_BYTES = 40;
+
+     final static int X_CHANNEL_ID  = 0;
+     final static int Y_CHANNEL_ID  = 1;
 }

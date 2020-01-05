@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
 import java.util.concurrent.Semaphore;
@@ -22,6 +24,43 @@ public class Controller {
 
     @FXML
     Polyline yPolyline;
+
+    @FXML
+    Line xScanLine;
+    @FXML
+    Line xThresholdLine;
+    @FXML
+    Line yThresholdLine;
+    @FXML
+    Line yScanLine;
+    @FXML
+    Label xScanLineLabel;
+    @FXML
+    Label yScanLineLabel;
+    @FXML
+    Label xThresholdLineLabel;
+    @FXML
+    Label yThresholdLineLabel;
+    @FXML
+    Polygon yThresholdLineHandle;
+    @FXML
+    Polygon xThresholdLineHandle;
+    @FXML
+    Polygon yScanLineHandle;
+    @FXML
+    Polygon xScanLineHandle;
+    @FXML
+    Label lowerUnitLabel;
+    @FXML
+    Label upperUnitLabel;
+    @FXML
+    CheckBox enableXScanLineCB;
+    @FXML
+    CheckBox enableYScanLineCB;
+    @FXML
+    CheckBox enableXThresholdLineCB;
+    @FXML
+    CheckBox enableYThresholdLineCB;
 
 
     // Serial settings
@@ -143,9 +182,10 @@ public class Controller {
         viewSettingsCaretaker = new ViewSettingsCaretaker(viewModeCH);
 
         // Canvas init and update
-        //byte [] initialXData = new byte [GlobalConstants.SAMPLE_SIZE_BYTES*GlobalConstants.NUM_SAMPLES];
-        //byte [] initialYData = new byte [GlobalConstants.SAMPLE_SIZE_BYTES*GlobalConstants.NUM_SAMPLES];
-        canvasCaretaker = new CanvasCaretaker(this, xPolyline, yPolyline);
+        canvasCaretaker = new CanvasCaretaker(this, xPolyline, yPolyline, xThresholdLine, yThresholdLine, xScanLine,
+                yScanLine, xScanLineLabel, yScanLineLabel, xThresholdLineLabel, yThresholdLineLabel,
+                xScanLineHandle, yScanLineHandle, xThresholdLineHandle, yThresholdLineHandle, lowerUnitLabel, upperUnitLabel,
+                enableXScanLineCB, enableYScanLineCB, enableXThresholdLineCB, enableYThresholdLineCB);
 
         serialWriter = new SerialWriter(this);
         SerialWriter.launch(serialWriter);

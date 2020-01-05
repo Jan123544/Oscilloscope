@@ -8,6 +8,7 @@ import java.util.Locale;
 
 class TriggerControlCaretaker {
 
+
     static void initTriggerControlSettings(Controller c){
         c.xTriggerModeCH.setItems(FXCollections.observableArrayList("Single", "Continuous"));
         c.xTriggerModeCH.getSelectionModel().select(0);
@@ -24,8 +25,19 @@ class TriggerControlCaretaker {
                 float activeMaximumTriggerLevelX = getMaximumTriggerLevelX(c);
                 // Put read value into range, update slider and also update TF with value in range.
                 GeneralOperations.setTFSControlsAndCropInRange(c.xTriggerLevelTF, c.xTriggerLevelS, Float.parseFloat(c.xTriggerLevelTF.getText()), activeMinimumTriggerLevelX, activeMaximumTriggerLevelX);
+                c.canvasCaretaker.setXThresholdLineVoltage(c.xTriggerLevelS.getValue());
             }
         });
+        c.xTriggerLevelTF.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if(!t1){
+                float activeMinimumTriggerLevelX = getMinimumTriggerLevelX(c);
+                float activeMaximumTriggerLevelX = getMaximumTriggerLevelX(c);
+                // Put read value into range, update slider and also update TF with value in range.
+                GeneralOperations.setTFSControlsAndCropInRange(c.xTriggerLevelTF, c.xTriggerLevelS, Float.parseFloat(c.xTriggerLevelTF.getText()), activeMinimumTriggerLevelX, activeMaximumTriggerLevelX);
+                c.canvasCaretaker.setXThresholdLineVoltage(c.xTriggerLevelS.getValue());
+            }
+        });
+
 
         float defaultMinimumTriggerLevelY = getMinimumTriggerLevelYDefault();
         c.yTriggerLevelTF.setText(String.valueOf(defaultMinimumTriggerLevelY));
@@ -36,18 +48,43 @@ class TriggerControlCaretaker {
                 float activeMaximumTriggerLevelY = getMaximumTriggerLevelY(c);
                 // Put read value into range, update slider and also update TF with value in range.
                 GeneralOperations.setTFSControlsAndCropInRange(c.yTriggerLevelTF, c.yTriggerLevelS, Float.parseFloat(c.yTriggerLevelTF.getText()), activeMinimumTriggerLevelY, activeMaximumTriggerLevelY);
+                c.canvasCaretaker.setYThresholdLineVoltage(c.yTriggerLevelS.getValue());
+            }
+        });
+        c.yTriggerLevelTF.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if(!t1){
+                // Get the minimum trigger level for the active range.
+                float activeMinimumTriggerLevelY = getMinimumTriggerLevelY(c);
+                float activeMaximumTriggerLevelY = getMaximumTriggerLevelY(c);
+                // Put read value into range, update slider and also update TF with value in range.
+                GeneralOperations.setTFSControlsAndCropInRange(c.yTriggerLevelTF, c.yTriggerLevelS, Float.parseFloat(c.yTriggerLevelTF.getText()), activeMinimumTriggerLevelY, activeMaximumTriggerLevelY);
+                c.canvasCaretaker.setYThresholdLineVoltage(c.yTriggerLevelS.getValue());
             }
         });
 
         c.xTriggerLevelS.setMin(defaultMinimumTriggerLevelX);
         c.xTriggerLevelS.setMax(GlobalConstants.TRIGGER_LEVEL_DEFAULT_MAX);
         c.xTriggerLevelS.setValue(defaultMinimumTriggerLevelX);
-        c.xTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> c.xTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
+        c.xTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> {
+            c.xTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
+            c.canvasCaretaker.setXThresholdLineVoltage(t1.doubleValue());
+        });
 
         c.yTriggerLevelS.setMin(defaultMinimumTriggerLevelY);
         c.yTriggerLevelS.setMax(GlobalConstants.TRIGGER_LEVEL_DEFAULT_MAX);
         c.yTriggerLevelS.setValue(defaultMinimumTriggerLevelY);
-        c.yTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> c.yTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
+        c.yTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> {
+            c.yTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
+            c.canvasCaretaker.setYThresholdLineVoltage(t1.doubleValue());
+        });
+    }
+
+    static double getThresholdX(Controller c){
+        return c.xTriggerLevelS.getValue();
+    }
+
+    static double getThresholdY(Controller c){
+        return c.yTriggerLevelS.getValue();
     }
 
     private static float getMinimumTriggerLevelXDefault(){
