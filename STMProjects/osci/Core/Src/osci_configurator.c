@@ -139,7 +139,7 @@ void Fill_divisions(Osci_Settings* settings, Osci_CalculatedParameters* new_para
 void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_CalculatedParameters* new_parameters)
 {
 	// We need to remember the range at which the signal was measured, so it can be displayed properly even if the range in the GUI is changed.
-	if(s->triggerCommand & (MEASURE_SINGLE_X | MEASURE_CONTINUOUS_X))
+	if (OSCI_is_channel_active(ts, CHANNEL_X))
 	{
 		new_parameters->xRangeWhenMeasured = s->xVoltageRange;
 	}
@@ -149,7 +149,7 @@ void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_Calcul
 		new_parameters->xRangeWhenMeasured = ts->x_channel_state_machine->params.rangeWhenMeasured;
 	}
 
-	if(s->triggerCommand & (MEASURE_SINGLE_Y | MEASURE_CONTINUOUS_Y))
+	if (OSCI_is_channel_active(ts, CHANNEL_Y))
 	{
 		new_parameters->yRangeWhenMeasured = s->yVoltageRange;
 	}

@@ -59,6 +59,12 @@ enum OsciSettingsTriggerCommand
 #define DATA_MAX_VALUE 4095
 #define DATA_MIN_VALUE 0
 
+enum Channels
+{
+	CHANNEL_X = 0,
+	CHANNEL_Y = 1,
+};
+
 enum Opcodes
 {
 	SMSG_CHANNEL_X_DATA		= 0xFEFE,
