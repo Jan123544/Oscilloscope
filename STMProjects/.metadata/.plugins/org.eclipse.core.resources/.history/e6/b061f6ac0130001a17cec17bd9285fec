@@ -200,7 +200,7 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 				{
 					Reconfigure_channels(ts);
 					ts->events.send_requested[0] = TRUE;
-					ts->events.send_requested[1] = TRUE;
+					ts->events.send_requested[0] = TRUE;
 					ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
 				}
 

@@ -7,15 +7,11 @@ import java.nio.ByteOrder;
 
 public class SerialWriter implements  Runnable{
     private Controller c;
-    private SerialPort port;
     private long lastUpdateTime;
-    private boolean shouldSend;
-    //Semaphore stopLock = new  Semaphore(1);
 
     public SerialWriter(Controller c){
         this.c = c;
         lastUpdateTime = 0;
-        shouldSend = false;
     }
 
     public static void launch(SerialWriter writer){
@@ -28,7 +24,7 @@ public class SerialWriter implements  Runnable{
         int numSent = 0;
         // Send update frame and update gui state.
         if (port.isOpen()) {
-            byte[] config = packageConfig(c);
+            byte[] config = packageConfig(c, false);
             numSent = port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
             if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
                 System.err.println("Sent " + String.valueOf(numSent));
@@ -38,24 +34,7 @@ public class SerialWriter implements  Runnable{
         }
     }
 
-    boolean isStopped(){
-        return !shouldSend;
-    }
-
-    void waitUntilStopped(){
-        while(shouldSend);
-    }
-
-    void stopSending(){
-        shouldSend = false;
-    }
-
-    void startSending(SerialPort port){
-        this.port = port;
-        shouldSend = true;
-    }
-
-    static byte[] packageConfig(Controller c) {
+    static byte[] packageConfig(Controller c, boolean isOnlyTransform) {
         ChannelSettings cset = ChannelControlCaretaker.readChannelControlsSettings(c);
         TriggerControlSettings tset = TriggerControlCaretaker.readTriggerControlSettings(c);
         TimeControlSettings tmset = TimeControlsCaretaker.readTimeSettings(c);
@@ -70,7 +49,11 @@ public class SerialWriter implements  Runnable{
         b.putInt(Float.floatToIntBits(tmset.yTimePerDivision));
         b.putInt(Float.floatToIntBits(tset.xTriggerLevel));
         b.putInt(Float.floatToIntBits(tset.yTriggerLevel));
-        b.putInt(tset.triggerCommand);
+        if(isOnlyTransform) {
+            b.putInt(0);
+        } else{
+            b.putInt(tset.triggerCommand);
+        }
         b.put(cset.xVoltageRange);
         b.put(cset.yVoltageRange);
         b.put(cset.xGraticuleDivisions);
@@ -83,28 +66,27 @@ public class SerialWriter implements  Runnable{
     public void run() {
         InternalSettings iSet;
         int numSent = 0;
-        while(true){
-            if(this.shouldSend){
-                iSet = InternalSettingsCaretaker.readInternalSettings(c);
-                // Do not send update too often.
-                if (System.currentTimeMillis() - lastUpdateTime < (double) 1000 * iSet.settingsUpdateRate) {
-                    // Retry after delay
-                    try { Thread.sleep(GlobalConstants.INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS); } catch (InterruptedException e){};
-                    continue;
-                }
 
-                // Send update frame and update gui state.
-                if (port.isOpen()) {
-                    byte[] config = packageConfig(c);
-                    numSent = port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
-                    if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
-                        System.err.println("Sent " + String.valueOf(numSent));
-                    }
-                }
-
-                // Retry only after delay
-                lastUpdateTime = System.currentTimeMillis();
+        while(c.port.isOpen()){
+            iSet = InternalSettingsCaretaker.readInternalSettings(c);
+            // Do not send update too often.
+            if (System.currentTimeMillis() - lastUpdateTime < (double) 1000 * iSet.settingsUpdateRate) {
+                // Retry after delay
+                try { Thread.sleep(GlobalConstants.INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS); } catch (InterruptedException e){};
+                continue;
             }
+
+            // Send update frame and update gui state.
+            if (c.port.isOpen()) {
+                byte[] config = packageConfig(c, true);
+                numSent = c.port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
+                if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
+                    System.err.println("Sent " + String.valueOf(numSent));
+                }
+            }
+
+            // Retry only after delay
+            lastUpdateTime = System.currentTimeMillis();
         }
     }
 }

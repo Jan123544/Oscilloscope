@@ -138,13 +138,8 @@ public class Controller {
     Slider yTimePerDivisionS;
 
     @FXML
-    CheckBox yDoMeasurementCB;
-
-    @FXML
-    CheckBox xDoMeasurementCB;
-
-    @FXML
     Button measureB;
+    boolean isFirstMeasurement;
 
     // Internal settings
     @FXML
@@ -188,8 +183,7 @@ public class Controller {
                 enableXScanLineCB, enableYScanLineCB, enableXThresholdLineCB, enableYThresholdLineCB);
 
         serialWriter = new SerialWriter(this);
-        SerialWriter.launch(serialWriter);
-
+        isFirstMeasurement = true;
     }
 
    // Action handlers
@@ -208,7 +202,6 @@ public class Controller {
 
         // Start data reader thread.
         SerialBlockReader sr = new SerialBlockReader(this, port);
-//        SerialReader sr = new SerialReader(this, port);
         Thread th = new Thread(sr);
         th.setDaemon(true);
         th.start();
@@ -217,20 +210,21 @@ public class Controller {
 
     public void disconnectButtonHandler(){
         if (port != null){
-            serialWriter.stopSending();
-            serialWriter.waitUntilStopped();
             port.closePort();
             serialConnectPB.setProgress(50);
             while(port.isOpen()){};
         }
         serialStatusL.setText("Disconnected");
         serialConnectPB.setProgress(0);
+        isFirstMeasurement = true;
     }
 
     public void measureButtonHandler(){
         if(port.isOpen()){
-            serialWriter.stopSending();
-            serialWriter.waitUntilStopped();
+            if(isFirstMeasurement){
+                SerialWriter.launch(serialWriter);
+                isFirstMeasurement = false;
+            }
             SerialWriter.sendOnce(this, port);
         }
     }
