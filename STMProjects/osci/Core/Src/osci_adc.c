@@ -36,6 +36,7 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 	LL_ADC_DisableIT_EOSMP(csm->adc);
 
 	LL_ADC_REG_SetContinuousMode(csm->adc, LL_ADC_REG_CONV_CONTINUOUS);
+	LL_ADC_REG_SetTriggerSource(csm->adc, LL_ADC_REG_TRIG_SOFTWARE);
 
 	switch(csm->awd)
 	{
@@ -62,6 +63,10 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 void OSCI_adc_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
 {
 	LL_ADC_REG_SetContinuousMode(csm->adc, LL_ADC_REG_CONV_SINGLE);
+	if (csm->adc == ADC1)
+		LL_ADC_REG_SetTriggerSource(csm->adc, LL_ADC_REG_TRIG_EXT_TIM1_TRGO);
+	else
+		LL_ADC_REG_SetTriggerSource(csm->adc, LL_ADC_REG_TRIG_EXT_TIM2_TRGO);
 
 	csm->adc->CFGR |= 0x1; // Enable DMA requests
 }
