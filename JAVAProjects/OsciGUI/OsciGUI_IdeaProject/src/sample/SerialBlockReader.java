@@ -2,14 +2,11 @@ package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
 
-import java.nio.ByteBuffer;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class SerialBlockReader implements Runnable{
-    // State machine
-    private byte WAITING_FOR_LOWER_START_BYTE = 0;
-    private byte GOT_LOWER_START_BYTE = 1;
-    private byte state = WAITING_FOR_LOWER_START_BYTE;
 
     // Serial data
     private SerialPort port;
@@ -24,83 +21,58 @@ public class SerialBlockReader implements Runnable{
     public SerialBlockReader(Controller c, SerialPort port){
         this.c = c;
         this.port = port;
-        xDataBuffer = new byte [SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES];
-        yDataBuffer = new byte [SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES];
+        xDataBuffer = new byte [GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
+        yDataBuffer = new byte [GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
         byteBuffer = new byte[2];
+    }
+
+    private void readIntoBuffer(byte [] buffer) {
+        int numRead = port.readBytes(buffer, GlobalConstants.NUM_DATA_BYTES);
+        if (numRead != GlobalConstants.NUM_DATA_BYTES) {
+            System.err.println("Error reading channel. Read " + String.valueOf(numRead) + " instead of " + String.valueOf(GlobalConstants.NUM_DATA_BYTES));
+        }
+    }
+
+    private ArrayList<Byte> convertBufferToArrayList(byte [] buffer, int len){
+        ArrayList<Byte> ret = new ArrayList<>();
+        for (int i =0;i<len;i++){
+            ret.add(buffer[i]);
+        }
+        return ret;
+    }
+
+    private void readAndUpdateX() {
+        readIntoBuffer(xDataBuffer);
+        c.canvasCaretaker.requestXChannelUpdate(convertBufferToArrayList(xDataBuffer, GlobalConstants.NUM_DATA_BYTES));
+    }
+
+    private void readAndUpdateY() {
+        readIntoBuffer(yDataBuffer);
+        c.canvasCaretaker.requestYChannelUpdate(convertBufferToArrayList(yDataBuffer, GlobalConstants.NUM_DATA_BYTES));
+    }
+
+    private void tickUpdateTime(){
+        System.out.println(String.format("Update received. Time from last update: %d", System.currentTimeMillis() - lastUpdateTime));
+        lastUpdateTime = System.currentTimeMillis();
     }
 
     @Override
     public void run() {
-        int numRead = 0;
-        int chunkSize = SerialProtocol.SAMPLE_SIZE_BYTES*SerialProtocol.NUM_SAMPLES;
         while (port.isOpen()) {
-            // state 0 is waiting for start byte
-            if (state == WAITING_FOR_LOWER_START_BYTE) {
-                // Wait for start byte
+            port.readBytes(byteBuffer, 1);
+            if(byteBuffer[0] == GlobalConstants.START_WORD_LOWER_BYTE) {
                 port.readBytes(byteBuffer, 1);
-                if (!SerialProtocol.isLowerStartByte(byteBuffer[0])) {
-                    continue;
+                switch (byteBuffer[0]) {
+                    case GlobalConstants.X_START_WORD_UPPER_BYTE:
+                        readAndUpdateX();
+                        tickUpdateTime();
+                        break;
+                    case GlobalConstants.Y_START_WORD_UPPER_BYTE:
+                        readAndUpdateY();
+                        tickUpdateTime();
+                        break;
                 }
-                state = GOT_LOWER_START_BYTE;
-            }
-
-            if (state == GOT_LOWER_START_BYTE){
-                port.readBytes(byteBuffer, 1);
-                if(!SerialProtocol.isUpperStartByte(byteBuffer[0])){
-                    state = WAITING_FOR_LOWER_START_BYTE;
-                    continue;
-                }
-
-                // Read data and update
-                Date d = new Date();
-                System.err.print("Last update time:");
-                System.err.println(d.getTime() - lastUpdateTime);
-                lastUpdateTime = d.getTime();
-                numRead = port.readBytes(xDataBuffer, chunkSize);
-                if (numRead != chunkSize){
-                    System.err.println("Error reading y channel. Read " + String.valueOf(numRead) + " instead of " + String.valueOf(chunkSize));
-                }
-                numRead = port.readBytes(yDataBuffer, chunkSize);
-                if (numRead != chunkSize){
-                    System.err.println("Error reading x channel. Read " + String.valueOf(numRead) + " instead of " + String.valueOf(chunkSize));
-                }
-                // If the port was closed after or while reading, then don't perform this update, because it's probably corrupted.
-                if(!port.isOpen()){return;}
-                state = WAITING_FOR_LOWER_START_BYTE;
-
-                //debugPrintData();
-                c.canvasCaretaker.requestCanvasUpdate(c, xDataBuffer, yDataBuffer);
-                System.err.println("xBuffer avg: " + GeneralOperations.bufferAverage(xDataBuffer, chunkSize));
-                System.err.println("yBuffer avg: " + GeneralOperations.bufferAverage(yDataBuffer, chunkSize));
-                if(c.serialWriter.isStopped()){
-                    c.serialWriter.startSending(port);
-                }
-                continue;
             }
         }
-    }
-
-    public void debugPrintData(){
-        int tmp = 0;
-        long numBytesReceived = SerialProtocol.NUM_SAMPLES*SerialProtocol.SAMPLE_SIZE_BYTES;
-        System.err.println("Received for X channel:");
-        for(int i = 0;i<numBytesReceived;i+=2){
-           tmp = 0;
-           tmp = (0x000000ff & (int)xDataBuffer[i]);
-           tmp |= (0x0000ff00 & ((int)(xDataBuffer[i+1]) << 8));
-           System.err.print(tmp);
-           System.err.print(" ");
-        }
-        System.err.println("");
-
-        System.err.println("Received for Y channel:");
-        for(int i = 0;i<numBytesReceived;i+=2){
-            tmp = 0;
-            tmp = (0x000000ff & (int)yDataBuffer[i]);
-            tmp |= (0x0000ff00 & ((int)yDataBuffer[i+1] << 8));
-            System.err.print(tmp);
-            System.err.print(" ");
-        }
-        System.err.println("");
     }
 }

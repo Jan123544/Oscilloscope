@@ -70,24 +70,18 @@ void Fill_thresholds(Osci_Settings* settings, Osci_CalculatedParameters* new_par
 void Fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
 {
 	// Assumes 32MHZ timer clock
-	new_parameters->xTimerSettings.arr = floor(32000000*settings->xTimePerDivision*settings->xGraticuleDivisions/(NUM_SAMPLES -1));
-	new_parameters->yTimerSettings.arr = floor(32000000*settings->yTimePerDivision*settings->yGraticuleDivisions/(NUM_SAMPLES -1));
+	float xCyclesRequired = 32000000*settings->xTimePerDivision*settings->xGraticuleDivisions/(NUM_SAMPLES -1);
+	float yCyclesRequired = 32000000*settings->yTimePerDivision*settings->yGraticuleDivisions/(NUM_SAMPLES -1);
 
-	new_parameters->xTimerSettings.psc = 0;
-	new_parameters->yTimerSettings.psc = 0;
+	uint16_t xOverflows = floor(xCyclesRequired/MAX_16BIT);
+	uint16_t yOverflows = floor(yCyclesRequired/MAX_16BIT);
 
-	//Adjust prescaler so that arr < 2^16
-	if(new_parameters->xTimerSettings.arr > 65535)
-	{
-		new_parameters->xTimerSettings.psc = floor(new_parameters->xTimerSettings.arr/65536);
-		new_parameters->xTimerSettings.arr = new_parameters->xTimerSettings.arr%65536;
-	}
+	new_parameters->xTimerSettings.psc = xOverflows;
+	new_parameters->yTimerSettings.psc = yOverflows;
 
-	if(new_parameters->yTimerSettings.arr > 65535)
-	{
-		new_parameters->yTimerSettings.psc = floor(new_parameters->yTimerSettings.arr/65536);
-		new_parameters->yTimerSettings.arr = new_parameters->yTimerSettings.arr%65536;
-	}
+	new_parameters->xTimerSettings.arr = xCyclesRequired/(xOverflows + 1);
+	new_parameters->yTimerSettings.arr = yCyclesRequired/(yOverflows + 1);
+
 }
 
 void Switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)

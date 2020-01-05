@@ -69,5 +69,8 @@ enum Opcodes
 #define MAX(a,b) (a)>(b)?(a):(b)
 #define TRUE 1
 #define FALSE 0
+#define MAX_16BIT 65535
+#define MAX_12BIT 4095
+#define MAX_8BIT 255
 
 #endif /* INC_OSCI_DEFINES_H_ */

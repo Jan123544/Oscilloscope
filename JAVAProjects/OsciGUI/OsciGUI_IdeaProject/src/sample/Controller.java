@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.shape.Polyline;
 
 import java.util.concurrent.Semaphore;
 
@@ -16,10 +17,12 @@ public class Controller {
     GraphicsContext gc;
     CanvasCaretaker canvasCaretaker;
 
-    byte [] canvasXDataBuffer;
-    byte [] canvasYDataBuffer;
-    //long lastCanvasUpdateTime;
-    Semaphore canvasDrawSemaphore = new  Semaphore(1);
+    @FXML
+    Polyline xPolyline;
+
+    @FXML
+    Polyline yPolyline;
+
 
     // Serial settings
     @FXML
@@ -140,9 +143,9 @@ public class Controller {
         viewSettingsCaretaker = new ViewSettingsCaretaker(viewModeCH);
 
         // Canvas init and update
-        byte [] initialXData = new byte [SerialProtocol.SAMPLE_SIZE_BYTES*SerialProtocol.NUM_SAMPLES];
-        byte [] initialYData = new byte [SerialProtocol.SAMPLE_SIZE_BYTES*SerialProtocol.NUM_SAMPLES];
-        canvasCaretaker = new CanvasCaretaker(this, initialXData, initialYData);
+        //byte [] initialXData = new byte [GlobalConstants.SAMPLE_SIZE_BYTES*GlobalConstants.NUM_SAMPLES];
+        //byte [] initialYData = new byte [GlobalConstants.SAMPLE_SIZE_BYTES*GlobalConstants.NUM_SAMPLES];
+        canvasCaretaker = new CanvasCaretaker(this, xPolyline, yPolyline);
 
         serialWriter = new SerialWriter(this);
         SerialWriter.launch(serialWriter);

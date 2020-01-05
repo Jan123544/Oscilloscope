@@ -45,6 +45,12 @@ class ChannelControlCaretaker {
                 GeneralOperations.setTFSControlsAndCropInRange(c.ySensitivityTF, c.ySensitivityS, Float.parseFloat(c.ySensitivityTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
             }
         });
+        c.ySensitivityTF.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                GeneralOperations.setTFSControlsAndCropInRange(c.ySensitivityTF, c.ySensitivityS, Float.parseFloat(c.ySensitivityTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
+            }
+        });
 
         c.xSensitivityTF.setText(String.valueOf(GlobalConstants.CHANNEL_SENSITIVITY_DEFAULT));
         c.xSensitivityTF.setOnKeyReleased( (key) -> {
@@ -53,6 +59,13 @@ class ChannelControlCaretaker {
                 GeneralOperations.setTFSControlsAndCropInRange(c.xSensitivityTF, c.xSensitivityS, Float.parseFloat(c.xSensitivityTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
             }
         });
+        c.xSensitivityTF.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                GeneralOperations.setTFSControlsAndCropInRange(c.xSensitivityTF, c.xSensitivityS, Float.parseFloat(c.xSensitivityTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
+            }
+        });
+
         c.yOffsetTF.setText(String.valueOf(GlobalConstants.CHANNEL_OFFSET_DEFAULT));
         c.yOffsetTF.setOnKeyReleased( (key) -> {
             if (key.getCode() == KeyCode.ENTER){
@@ -60,10 +73,23 @@ class ChannelControlCaretaker {
                 GeneralOperations.setTFSControlsAndCropInRange(c.yOffsetTF, c.yOffsetS, Float.parseFloat(c.yOffsetTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
             }
         });
+        c.yOffsetTF.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                GeneralOperations.setTFSControlsAndCropInRange(c.yOffsetTF, c.yOffsetS, Float.parseFloat(c.yOffsetTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
+            }
+        });
+
         c.xOffsetTF.setText(String.valueOf(GlobalConstants.CHANNEL_OFFSET_DEFAULT));
         c.xOffsetTF.setOnKeyReleased( (key) -> {
             if (key.getCode() == KeyCode.ENTER){
                 // Put read value into range, update slider and also update TF with value in range.
+                GeneralOperations.setTFSControlsAndCropInRange(c.xOffsetTF, c.xOffsetS, Float.parseFloat(c.xOffsetTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
+            }
+        });
+        c.xOffsetTF.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 GeneralOperations.setTFSControlsAndCropInRange(c.xOffsetTF, c.xOffsetS, Float.parseFloat(c.xOffsetTF.getText()), GlobalConstants.CHANNEL_OFFSET_MIN, GlobalConstants.CHANNEL_OFFSET_MAX);
             }
         });

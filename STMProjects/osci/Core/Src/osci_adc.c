@@ -11,7 +11,7 @@
 void OSCI_adc_init(Osci_ChannelStateMachine* csm)
 {
 	LL_ADC_StartCalibration(csm->adc, LL_ADC_SINGLE_ENDED);
-	while(LL_ADC_IsCalibrationOnGoing(csm->adc)){}; // Wait for calibartion
+	while(LL_ADC_IsCalibrationOnGoing(csm->adc)){}; // Wait for calibration
 
 	LL_ADC_Enable(csm->adc);
 

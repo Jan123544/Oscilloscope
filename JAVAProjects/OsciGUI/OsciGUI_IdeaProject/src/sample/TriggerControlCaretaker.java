@@ -15,7 +15,7 @@ class TriggerControlCaretaker {
         c.yTriggerModeCH.setItems(FXCollections.observableArrayList("Single", "Continuous"));
         c.yTriggerModeCH.getSelectionModel().select(0);
 
-        float defaultMinimumTriggerLevelX = GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_X);
+        float defaultMinimumTriggerLevelX = getMinimumTriggerLevelXDefault();
         c.xTriggerLevelTF.setText(String.valueOf(defaultMinimumTriggerLevelX));
         c.xTriggerLevelTF.setOnKeyReleased( (key) -> {
             if (key.getCode() == KeyCode.ENTER){
@@ -27,7 +27,7 @@ class TriggerControlCaretaker {
             }
         });
 
-        float defaultMinimumTriggerLevelY = GlobalConstants.TRIGGER_LEVEL_RESOLUTION_Y*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_Y);
+        float defaultMinimumTriggerLevelY = getMinimumTriggerLevelYDefault();
         c.yTriggerLevelTF.setText(String.valueOf(defaultMinimumTriggerLevelY));
         c.yTriggerLevelTF.setOnKeyReleased( (key) -> {
             if (key.getCode() == KeyCode.ENTER){
@@ -50,12 +50,24 @@ class TriggerControlCaretaker {
         c.yTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> c.yTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue())));
     }
 
+    private static float getMinimumTriggerLevelXDefault(){
+        // return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_X);
+        return 0;
+    }
+
+    private static float getMinimumTriggerLevelYDefault(){
+        //return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_Y*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_Y);
+        return 0;
+    }
+
     private static float getMinimumTriggerLevelX(Controller c){
-        return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
+        //return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
+        return 0;
     }
 
     private static float getMinimumTriggerLevelY(Controller c){
-        return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_Y*ChannelControlCaretaker.idxToRange(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
+        //return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_Y*ChannelControlCaretaker.idxToRange(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
+        return 0;
     }
 
     private static float getMaximumTriggerLevelY(Controller c){

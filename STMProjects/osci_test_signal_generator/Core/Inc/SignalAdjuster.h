@@ -14,7 +14,7 @@
 #define SIGNAL_COSINE 1
 #define SIGNAL_TANGENT 2
 #define SIGNAL_RANDOM 3
-#define NUM_SAMPLES 1024
+#define NUM_SAMPLES 512
 
 void c_putSignalToDAC(void *v);
 void c_execute(void *v);
@@ -44,7 +44,7 @@ private:
 	uint32_t quantize(float v);
 
 public:
-	SignalAdjuster(float amplitude=1, float frequency=1, float offset=1,
+	SignalAdjuster(float amplitude=0.5, float frequency=1000, float offset=1,
 			uint32_t numberOfQuantizationLevels=4096, float amplitudePerLevel=1.0f/2048,
 			uint32_t startSampleIndex=0, uint32_t startSignal=0) :
 				 signal(startSignal), amplitude(amplitude), frequency(frequency), offset(offset), numberOfQuantizationLevels(
@@ -52,9 +52,9 @@ public:
 					amplitudePerLevel), sampleIndex(startSampleIndex) {
 		tim1_callback = c_putSignalToDAC;
 		usart2_rxne_callback = c_execute;
-		sample();
 	}
 
+	void start();
 	void execute(char cmd);
 	uint32_t getNextSample();
 };

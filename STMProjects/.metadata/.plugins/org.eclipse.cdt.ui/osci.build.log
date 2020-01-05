@@ -1,10 +1,10 @@
-14:25:54 **** Incremental Build of configuration Debug for project osci ****
+16:27:59 **** Incremental Build of configuration Debug for project osci ****
 make -j4 all 
 arm-none-eabi-size   osci.elf 
    text	   data	    bss	    dec	    hex	filename
-  21320	    112	   1616	  23048	   5a08	osci.elf
+  20740	    112	   1616	  22468	   57c4	osci.elf
 Finished building: default.size.stdout
  
 
-14:26:02 Build Finished. 0 errors, 0 warnings. (took 7s.793ms)
+16:28:03 Build Finished. 0 errors, 0 warnings. (took 4s.165ms)
 

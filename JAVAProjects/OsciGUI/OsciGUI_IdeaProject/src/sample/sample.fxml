@@ -4,6 +4,7 @@
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 
 <GridPane alignment="center" maxHeight="546.0" maxWidth="1024.0" minHeight="546.0" minWidth="1024.0" prefHeight="546.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
@@ -343,7 +344,7 @@
                                                 <Insets />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="canvasVerticalNormalisationTF" alignment="CENTER" text="4096" GridPane.columnIndex="1" />
+                                          <TextField fx:id="canvasVerticalNormalisationTF" alignment="CENTER" text="4095" GridPane.columnIndex="1" />
                                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Max setings update rate [1/s]" GridPane.rowIndex="1" />
                                           <TextField fx:id="settingsUpdateRateTF" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                        </children>
@@ -372,8 +373,16 @@
           </Tab>
         </tabs>
       </TabPane>
-      <Canvas fx:id="canvas" height="546.0" width="546.0" />
       <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" />
+      <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="546.0" minWidth="545.0">
+         <children>
+            <Canvas fx:id="canvas" height="546.0" width="545.0" />
+            <Polyline fill="#ff000000" stroke="RED" strokeType="INSIDE" strokeWidth="19.0" fx:id="xPolyline">
+            </Polyline>
+            <Polyline fx:id="yPolyline" fill="TRANSPARENT" strokeLineJoin="ROUND" strokeWidth="3.0">
+            </Polyline>
+         </children>
+      </Pane>
    </children>
    <columnConstraints>
       <ColumnConstraints maxWidth="547.0" minWidth="400.0" prefWidth="545.0" />

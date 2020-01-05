@@ -31,6 +31,13 @@ void Send_data(Osci_Transceiver* ts)
 	LL_DMA_EnableChannel(ts->dma, ts->dmaTransmissionChannel);
 }
 
+void Send_data_blocking(Osci_Transceiver* ts)
+{
+	Send_data(ts);
+	// Block until data is sent
+	while(LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel)){};
+}
+
 void Received_callback(Osci_Application* app)
 {
 	app->transceiver.receiveCompleteBuffer = app->transceiver.recveiveBuffer;
@@ -231,7 +238,7 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				Gather_data(ts, ts->x_channel_state_machine);
 				OSCI_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params);
-				Send_data(ts);
+				Send_data_blocking(ts);
 
 				ts->events.send_requested[0] = FALSE;
 			}
@@ -240,7 +247,7 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				Gather_data(ts, ts->y_channel_state_machine);
 				OSCI_transform_apply(&ts->sendingBuffer, ts->y_channel_state_machine->params);
-				Send_data(ts);
+				Send_data_blocking(ts);
 
 				ts->events.send_requested[1] = FALSE;
 			}

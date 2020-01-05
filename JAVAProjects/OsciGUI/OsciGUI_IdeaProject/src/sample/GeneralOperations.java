@@ -3,6 +3,8 @@ package sample;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 public class GeneralOperations {
@@ -20,6 +22,17 @@ public class GeneralOperations {
         tmp = (0x000000ff & (int)lower);
         tmp |= (0x0000ff00 & ((int)upper << 8));
         return tmp;
+    }
+
+    static ArrayList<Double> convertUShort(ArrayList<Byte> buffer){
+        if(buffer.size() %2 != 0){
+            throw new UnsupportedOperationException("convertUShort needs even number of bytes on input");
+        }
+        ArrayList<Double> ret = new ArrayList<>();
+        for(int i=0;i<buffer.size();i+=2){
+            ret.add(extractUShort(buffer.get(i), buffer.get(i+1)).doubleValue());
+        }
+        return ret;
     }
 
     public static void setTFSControlsAndCropInRange(TextField tf, Slider sl, float value, float rangeMin, float rangeMax){

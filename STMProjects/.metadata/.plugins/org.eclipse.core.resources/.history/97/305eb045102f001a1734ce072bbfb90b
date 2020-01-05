@@ -1,0 +1,56 @@
+/*
+ * cppmain.cpp
+ *
+ *  Created on: Dec 27, 2019
+ *      Author: dot
+ */
+
+
+#include "cppmain.h"
+#include "main.h"
+#include "SignalAdjuster.h"
+
+void usart_init(){
+	LL_USART_EnableIT_RXNE(USART2);
+}
+
+void dac_init(){
+	LL_DAC_Enable(DAC, LL_DAC_CHANNEL_1);
+}
+
+int sampleNum = 0;
+uint16_t dacValue = 0;
+void timer_callback(void * adj){
+	if(sampleNum == 511){
+		if(dacValue == 4095){
+			dacValue = 0;
+		}else{
+			dacValue = 4095;
+		}
+	}
+	sampleNum ++;
+	sampleNum %= 512;
+}
+
+void Timer_512At1KHZ(){
+	uint32_t arr = floor(TIM1_CLOCK_SPEED / frequency / (NUM_SAMPLES - 1));
+	if (arr > TIM1_MAX_ARR) {
+		TIM1->PSC = arr / TIM1_MAX_ARR;
+		TIM1->ARR = arr % TIM1_MAX_ARR;
+	}else{
+		TIM1->ARR = arr;
+	}
+
+}
+
+void cppmain(){
+	usart_init();
+	dac_init();
+
+	tim1_callback = timer_callback();
+
+	while(1){
+
+	}
+}
+

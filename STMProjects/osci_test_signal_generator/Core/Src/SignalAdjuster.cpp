@@ -122,7 +122,7 @@ void SignalAdjuster::configureTimer() {
 	LL_TIM_ClearFlag_UPDATE(TIM1);
 	LL_TIM_SetCounter(TIM1, 0);
 
-	// Asumes TIM1 is used with 32MHZ clock speed
+	// Asumes TIM1 is used with 8MHZ clock speed
 
 	uint32_t arr = floor(TIM1_CLOCK_SPEED / frequency / (NUM_SAMPLES - 1));
 	if (arr > TIM1_MAX_ARR) {
@@ -185,4 +185,8 @@ uint32_t SignalAdjuster::getNextSample() {
 	++sampleIndex;
 	sampleIndex %= NUM_SAMPLES;
 	return ret;
+}
+
+void SignalAdjuster::start(){
+	sample();
 }
