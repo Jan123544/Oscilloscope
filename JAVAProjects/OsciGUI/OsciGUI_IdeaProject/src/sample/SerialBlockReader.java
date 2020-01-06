@@ -30,7 +30,7 @@ public class SerialBlockReader implements Runnable{
         byteBuffer = new byte[2];
     }
 
-    private void readIntoBuffer(byte [] buffer) {
+    static private void readDataIntoBuffer(byte [] buffer, SerialPort port) {
         int numRead = port.readBytes(buffer, GlobalConstants.NUM_DATA_BYTES);
         if (numRead != GlobalConstants.NUM_DATA_BYTES) {
             System.err.println("Error reading channel. Read " + String.valueOf(numRead) + " instead of " + String.valueOf(GlobalConstants.NUM_DATA_BYTES));
@@ -45,20 +45,14 @@ public class SerialBlockReader implements Runnable{
         return ret;
     }
 
-    private void readFrameType(byte [] buffer){
-        if(port.isOpen()) {
-            port.readBytes(buffer, 1);
-        }
-    }
-
     private void readAndUpdateX() {
-        readIntoBuffer(xDataBuffer);
+        readDataIntoBuffer(xDataBuffer, port);
         //readUpdateType(xUpdateTypeBuffer);
         c.canvasCaretaker.requestXChannelUpdate(convertBufferToArrayList(xDataBuffer, GlobalConstants.NUM_DATA_BYTES), xUpdateTypeBuffer[0]);
     }
 
     private void readAndUpdateY() {
-        readIntoBuffer(yDataBuffer);
+        readDataIntoBuffer(yDataBuffer, port);
         //readUpdateType(yUpdateTypeBuffer);
         c.canvasCaretaker.requestYChannelUpdate(convertBufferToArrayList(yDataBuffer, GlobalConstants.NUM_DATA_BYTES), yUpdateTypeBuffer[0]);
     }
@@ -67,6 +61,42 @@ public class SerialBlockReader implements Runnable{
         System.out.println(String.format("Update received. Time from last update: %d", System.currentTimeMillis() - lastUpdateTime));
         lastUpdateTime = System.currentTimeMillis();
     }
+
+    static OsciDataFrame catchPong(SerialPort port, int bytesLookup){
+        byte [] opcode = sniffPongOpcode(port, bytesLookup);
+        if(opcode[0] == 0 && opcode[1] == 0){
+            // SniffingFailed return empty dataframe
+            return new OsciDataFrame();
+        }
+        OsciDataFrame df = new OsciDataFrame();
+        df.opcode = opcode;
+        readDataIntoBuffer(df.data, port);
+        return df;
+    }
+
+    static private byte[] sniffPongOpcode(SerialPort port, int bytesLookup){
+        byte [] opcodeBuffer = new byte[2];
+        byte [] byteBuffer = new byte[2];
+
+        int numLookup = 0;
+        int numRead;
+
+        while(numLookup < bytesLookup){
+            numRead = port.readBytes(byteBuffer,1);
+            if(numRead != 1) { return opcodeBuffer; } // Error or timeout.
+            if(byteBuffer[0] == Opcodes.RESPONSE_LOWER && byteBuffer[1] == Opcodes.RESPONSE_HIGHER){
+                opcodeBuffer[0] = byteBuffer[0];
+                opcodeBuffer[1] = byteBuffer[1];
+                return opcodeBuffer;
+            }
+            byteBuffer[1] = byteBuffer[0];
+            numLookup++;
+        }
+
+        return opcodeBuffer;
+    }
+
+
 
     @Override
     public void run() {

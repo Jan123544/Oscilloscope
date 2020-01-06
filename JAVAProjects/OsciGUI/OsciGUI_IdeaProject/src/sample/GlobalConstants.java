@@ -42,12 +42,14 @@ class GlobalConstants {
      final static Integer TRIGGER_COMMAND_MEASURE_CONTINUOUS_X = 4;
      final static Integer TRIGGER_COMMAND_MEASURE_CONTINUOUS_Y = 8;
      final static Integer TRIGGER_COMMAND_STOP = 16;
+     final static Integer TRIGGER_COMMAND_PING = 32;
 
      final static byte CONTINOUS_UPDATE = 1;
-
      final static byte START_WORD_LOWER_BYTE = (byte)0xfe;
      final static byte X_START_WORD_UPPER_BYTE = (byte)0xfe;
      final static byte Y_START_WORD_UPPER_BYTE = (byte)0xfd;
+     final static byte RESPONSE_WORD_UPPER_BYTE = (byte)0xfc;
+
      final static Integer NUM_SAMPLES = 512;
      final static byte SAMPLE_SIZE_BYTES = 2;
      final static int NUM_DATA_BYTES = NUM_SAMPLES*SAMPLE_SIZE_BYTES;
@@ -74,4 +76,5 @@ class GlobalConstants {
      final static int PACK_NORMAL = 0;
      final static int PACK_ONLY_TRANSFORM = 1;
      final static int PACK_EXIT = 2;
+     final static int PACK_PING = 4;
 }

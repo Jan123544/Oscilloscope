@@ -22,11 +22,11 @@ public class SerialWriter implements  Runnable{
         th.start();
     }
 
-    public static void sendOnce(Controller c, SerialPort port, int packtype){
+    public static void sendOnce(Controller c, SerialPort port, PacketType packType){
         int numSent = 0;
         // Send update frame and update gui state.
         if (port.isOpen()) {
-            byte[] config = packageConfig(c, packtype);
+            byte[] config = packageConfig(c, packType);
             numSent = port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
             if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
                 System.err.println("Sent " + String.valueOf(numSent));
@@ -36,30 +36,34 @@ public class SerialWriter implements  Runnable{
         }
     }
 
-    static byte[] packageConfig(Controller c, int packtype) {
+    static byte[] packageConfig(Controller c, PacketType packType) {
+
+        ByteBuffer b = ByteBuffer.allocate(GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
+        b.order(ByteOrder.LITTLE_ENDIAN);
         ChannelSettings cset = ChannelControlCaretaker.readChannelControlsSettings(c);
         TriggerControlSettings tset = TriggerControlCaretaker.readTriggerControlSettings(c);
         TimeControlSettings tmset = TimeControlsCaretaker.readTimeSettings(c);
 
-        ByteBuffer b = ByteBuffer.allocate(GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
-        b.order(ByteOrder.LITTLE_ENDIAN);
         b.putInt(Float.floatToIntBits(cset.xOffset));
         b.putInt(Float.floatToIntBits(cset.xSensitivity));
-        b.putInt(Float.floatToIntBits(cset.yOffset) );
-        b.putInt(Float.floatToIntBits(cset.ySensitivity) );
+        b.putInt(Float.floatToIntBits(cset.yOffset));
+        b.putInt(Float.floatToIntBits(cset.ySensitivity));
         b.putInt(Float.floatToIntBits(tmset.xTimePerDivision));
         b.putInt(Float.floatToIntBits(tmset.yTimePerDivision));
         b.putInt(Float.floatToIntBits(tset.xTriggerLevel));
         b.putInt(Float.floatToIntBits(tset.yTriggerLevel));
-        switch (packtype){
-            case GlobalConstants.PACK_ONLY_TRANSFORM:
+        switch (packType) {
+            case TRANSFORM:
                 b.putInt(GlobalConstants.TRIGGER_COMMAND_TRANSFORM);
                 break;
-            case GlobalConstants.PACK_EXIT:
+            case EXIT:
                 b.putInt(GlobalConstants.TRIGGER_COMMAND_STOP);
                 break;
-            case GlobalConstants.PACK_NORMAL:
+            case NORMAL:
                 b.putInt(tset.triggerCommand);
+                break;
+            case PING:
+                b.putInt(GlobalConstants.TRIGGER_COMMAND_PING);
                 break;
             default:
                 System.err.println("invalid pack type");
@@ -100,7 +104,7 @@ public class SerialWriter implements  Runnable{
 
                 // Send update frame and update gui state.
                 if (c.port.isOpen()) {
-                    byte[] config = packageConfig(c, GlobalConstants.PACK_ONLY_TRANSFORM);
+                    byte[] config = packageConfig(c, PacketType.TRANSFORM);
                     numSent = c.port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
                     if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
                         System.err.println("Sent " + String.valueOf(numSent));

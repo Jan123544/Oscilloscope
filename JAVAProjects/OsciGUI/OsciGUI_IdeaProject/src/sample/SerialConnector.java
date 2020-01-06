@@ -2,6 +2,7 @@ package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
 
+import javax.sql.rowset.serial.SerialRef;
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,13 +27,23 @@ public class SerialConnector {
         c.serialConnectPB.setProgress(50);
         port.setFlowControl(curSettings.flowControl);
         c.serialConnectPB.setProgress(80);
-        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING | SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0);
-        c.serialConnectPB.setProgress(100);
+        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING | SerialPort.TIMEOUT_WRITE_BLOCKING, 500, 0);
 
         if(!port.openPort()){
             c.serialConnectPB.setId("red-pBar");
             throw new SerialPortConnectionFailedException();
         }
+
+        // Ping the MCU, if it doesn't respond, shutdown connection.
+        SerialWriter.sendOnce(c, port, PacketType.PING);
+        OsciDataFrame df = SerialBlockReader.catchPong(port, 10000);
+        if(df.opcode[0] == 0 && df.opcode[1] == 0){
+            c.serialConnectPB.setId("red-pBar");
+            throw new PongNotReceivedException();
+        }
+
+        c.serialConnectPB.setProgress(100);
+
         c.serialConnectPB.setId("green-pBar");
         return port;
     }

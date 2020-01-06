@@ -210,6 +210,10 @@ public class Controller {
            System.err.println("Malformed input");
            serialStatusL.setText("Malformed input");
            return;
+        } catch (PongNotReceivedException e){
+            System.err.println("Pong not received.");
+            serialStatusL.setText("Malformed input");
+            return;
         }
 
         // Start data reader thread.
@@ -241,7 +245,7 @@ public class Controller {
                 SerialWriter.launch(serialWriter);
                 isFirstMeasurement = false;
             }
-            SerialWriter.sendOnce(this, port, GlobalConstants.PACK_NORMAL);
+            SerialWriter.sendOnce(this, port, PacketType.NORMAL);
         }
     }
 }
