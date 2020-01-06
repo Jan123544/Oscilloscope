@@ -62,6 +62,8 @@ public class Controller {
     @FXML
     CheckBox enableYThresholdLineCB;
 
+    @FXML
+    CheckBox autoUpdateCB;
 
     // Serial settings
     @FXML
@@ -174,7 +176,7 @@ public class Controller {
         // Time controls / Settings
         TimeControlsCaretaker.initTimeControlSettings(this);
 
-        viewSettingsCaretaker = new ViewSettingsCaretaker(viewModeCH);
+        viewSettingsCaretaker = new ViewSettingsCaretaker(this, viewModeCH);
 
         // Canvas init and update
         canvasCaretaker = new CanvasCaretaker(this, xPolyline, yPolyline, xThresholdLine, yThresholdLine, xScanLine,

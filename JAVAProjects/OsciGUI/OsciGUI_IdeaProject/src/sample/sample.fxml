@@ -290,6 +290,7 @@
                                     <CheckBox fx:id="enableYThresholdLineCB" mnemonicParsing="false" text="Y" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
+                              <CheckBox fx:id="autoUpdateCB" mnemonicParsing="false" text="Autoupdate" GridPane.rowIndex="15" />
                            </children>
                         </GridPane>
                      </children></AnchorPane>

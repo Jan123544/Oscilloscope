@@ -37,6 +37,8 @@ class GlobalConstants {
      final static Integer TRIGGER_COMMAND_MEASURE_CONTINUOUS_Y = 8;
      final static Integer TRIGGER_COMMAND_STOP = 16;
 
+     final static byte CONTINOUS_UPDATE = 1;
+
      final static byte START_WORD_LOWER_BYTE = (byte)0xfe;
      final static byte X_START_WORD_UPPER_BYTE = (byte)0xfe;
      final static byte Y_START_WORD_UPPER_BYTE = (byte)0xfd;

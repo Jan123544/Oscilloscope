@@ -17,9 +17,9 @@ SignalAdjuster.cpp:60:6:void SignalAdjuster::previousSignal()	16	static
 SignalAdjuster.cpp:78:6:void SignalAdjuster::nextSignal()	16	static
 SignalAdjuster.cpp:97:6:void SignalAdjuster::sample()	40	static
 SignalAdjuster.cpp:120:6:void SignalAdjuster::configureTimer()	24	static
-SignalAdjuster.cpp:139:10:uint32_t SignalAdjuster::quantize(float)	24	static
-SignalAdjuster.cpp:143:6:void SignalAdjuster::execute(char)	16	static
-SignalAdjuster.cpp:172:6:void SignalAdjuster::increaseOffset()	24	static
-SignalAdjuster.cpp:177:6:void SignalAdjuster::decreaseOffset()	24	static
-SignalAdjuster.cpp:183:10:uint32_t SignalAdjuster::getNextSample()	24	static
-SignalAdjuster.cpp:190:6:void SignalAdjuster::start()	16	static
+SignalAdjuster.cpp:135:10:uint32_t SignalAdjuster::quantize(float)	24	static
+SignalAdjuster.cpp:139:6:void SignalAdjuster::execute(char)	16	static
+SignalAdjuster.cpp:168:6:void SignalAdjuster::increaseOffset()	24	static
+SignalAdjuster.cpp:173:6:void SignalAdjuster::decreaseOffset()	24	static
+SignalAdjuster.cpp:179:10:uint32_t SignalAdjuster::getNextSample()	24	static
+SignalAdjuster.cpp:186:6:void SignalAdjuster::start()	16	static

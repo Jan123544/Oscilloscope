@@ -47,10 +47,10 @@ void Timer_setup_512Atnhz(float n){
 void cppmain(){
 	usart_init();
 	dac_init();
-	Timer_setup_512Atnhz(1);
-	tim1_callback = timer_callback;
-	LL_TIM_EnableCounter(TIM1);
-	LL_TIM_EnableIT_UPDATE(TIM1);
+
+	SignalAdjuster adj;
+	adj_IT_reference = &adj;
+	adj.start();
 
 	while(1){
 

@@ -11,7 +11,9 @@ public class SerialBlockReader implements Runnable{
     // Serial data
     private SerialPort port;
     private byte[] xDataBuffer;
+    private byte[] xUpdateTypeBuffer;
     private byte[] yDataBuffer;
+    private byte[] yUpdateTypeBuffer;
     private byte[] byteBuffer;
 
     // Scheduling gui updates
@@ -22,7 +24,9 @@ public class SerialBlockReader implements Runnable{
         this.c = c;
         this.port = port;
         xDataBuffer = new byte [GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
+        xUpdateTypeBuffer = new byte[1];
         yDataBuffer = new byte [GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
+        yUpdateTypeBuffer = new byte[1];
         byteBuffer = new byte[2];
     }
 
@@ -41,14 +45,22 @@ public class SerialBlockReader implements Runnable{
         return ret;
     }
 
+    private void readFrameType(byte [] buffer){
+        if(port.isOpen()) {
+            port.readBytes(buffer, 1);
+        }
+    }
+
     private void readAndUpdateX() {
         readIntoBuffer(xDataBuffer);
-        c.canvasCaretaker.requestXChannelUpdate(convertBufferToArrayList(xDataBuffer, GlobalConstants.NUM_DATA_BYTES));
+        //readUpdateType(xUpdateTypeBuffer);
+        c.canvasCaretaker.requestXChannelUpdate(convertBufferToArrayList(xDataBuffer, GlobalConstants.NUM_DATA_BYTES), xUpdateTypeBuffer[0]);
     }
 
     private void readAndUpdateY() {
         readIntoBuffer(yDataBuffer);
-        c.canvasCaretaker.requestYChannelUpdate(convertBufferToArrayList(yDataBuffer, GlobalConstants.NUM_DATA_BYTES));
+        //readUpdateType(yUpdateTypeBuffer);
+        c.canvasCaretaker.requestYChannelUpdate(convertBufferToArrayList(yDataBuffer, GlobalConstants.NUM_DATA_BYTES), yUpdateTypeBuffer[0]);
     }
 
     private void tickUpdateTime(){

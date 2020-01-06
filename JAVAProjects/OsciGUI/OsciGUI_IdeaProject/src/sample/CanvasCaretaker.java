@@ -24,8 +24,11 @@ import static sample.GeneralOperations.*;
 class CanvasCaretaker {
     private double labelMargin;
 
-    byte [] xDataBuffer;
-    byte [] yDataBuffer;
+    //byte [] xDataBuffer;
+    //byte [] yDataBuffer;
+    ArrayList<Double> yNormalisedBuffer;
+    ArrayList<Double> xNormalisedBuffer;
+
     long lastCanvasUpdateTime;
     Semaphore drawingSem = new  Semaphore(1);
 
@@ -129,8 +132,10 @@ class CanvasCaretaker {
     }
 
     private void initBuffers(){
-        xDataBuffer = new byte[GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
-        yDataBuffer = new byte[GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
+        //xDataBuffer = new byte[GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
+        //yDataBuffer = new byte[GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
+        yNormalisedBuffer = new ArrayList<>();
+        xNormalisedBuffer = new ArrayList<>();
     }
 
     private void initPolyLines(Polyline newXPolyLine, Polyline newYPolyline){
@@ -421,21 +426,40 @@ class CanvasCaretaker {
             return set;
     }
 
-    void requestXChannelUpdate(ArrayList<Byte> buffer){
+    void requestXYRedrawFromBuffers(){
         Platform.runLater( () -> {
-            refreshLabels();
-            deleteXPath();
-            redrawXPath(canvasNormalise(convertUShort(buffer), readCanvasSettings(c)));
-            updateScanLineLabels();
+            xUpdateFromBuffer((byte)0);
+            yUpdateFromBuffer((byte)0);
         });
     }
 
-    void requestYChannelUpdate(ArrayList<Byte> buffer){
-        Platform.runLater( () -> {
+    private void xUpdateFromBuffer(Byte updateType){
+        if((updateType & GlobalConstants.CONTINOUS_UPDATE) == 0)
             refreshLabels();
-            deleteYPath();
-            redrawYPath(canvasNormalise(convertUShort(buffer), readCanvasSettings(c)));
-            updateScanLineLabels();
+        deleteXPath();
+        redrawXPath(this.xNormalisedBuffer);
+        updateScanLineLabels();
+    }
+
+    private void yUpdateFromBuffer(Byte updateType){
+        if((updateType & GlobalConstants.CONTINOUS_UPDATE) == 0)
+            refreshLabels();
+        deleteYPath();
+        redrawYPath(this.yNormalisedBuffer);
+        updateScanLineLabels();
+    }
+
+    void requestXChannelUpdate(ArrayList<Byte> buffer, Byte updateType){
+        Platform.runLater( () -> {
+            this.xNormalisedBuffer = canvasNormalise(convertUShort(buffer),  readCanvasSettings(c));
+            xUpdateFromBuffer(updateType);
+        });
+    }
+
+    void requestYChannelUpdate(ArrayList<Byte> buffer, Byte updateType){
+        Platform.runLater( () -> {
+            this.yNormalisedBuffer =canvasNormalise(convertUShort(buffer), readCanvasSettings(c));
+            yUpdateFromBuffer(updateType);
         });
     }
 
@@ -452,13 +476,33 @@ class CanvasCaretaker {
     }
 
     private void redrawXPath(ArrayList<Double> normalisedData){
-        xPolyline.getPoints().addAll(interleaveTime(normalisedData));
-        xPolyline.setVisible(true);
+        if(!c.viewSettingsCaretaker.isXYMode()) {
+            xPolyline.getPoints().addAll(interleaveTime(normalisedData));
+            if(c.viewSettingsCaretaker.isXShowing())
+                xPolyline.setVisible(true);
+        }else{
+            xPolyline.getPoints().addAll(XYMerge());
+        }
     }
 
     private void redrawYPath(ArrayList<Double> normalisedData){
-        yPolyline.getPoints().addAll(interleaveTime(normalisedData));
-        yPolyline.setVisible(true);
+        if(!c.viewSettingsCaretaker.isXYMode()) {
+            yPolyline.getPoints().addAll(interleaveTime(normalisedData));
+            if (c.viewSettingsCaretaker.isYShowing())
+                yPolyline.setVisible(true);
+        }else{
+            xPolyline.getPoints().addAll(XYMerge());
+        }
+    }
+
+    private ArrayList<Double> XYMerge(){
+       int len = Math.min(xNormalisedBuffer.size(), yNormalisedBuffer.size()) ;
+       ArrayList<Double> ret=  new ArrayList<>();
+       for (int i=0;i<len;i++){
+           ret.add(toCanvasWidthCoordinates(xNormalisedBuffer.get(i)));
+           ret.add(toCanvasHeightCoordinates(yNormalisedBuffer.get(i)));
+       }
+       return ret;
     }
 
     private ArrayList<Double> interleaveTime(ArrayList<Double> normalisedData){
@@ -474,6 +518,10 @@ class CanvasCaretaker {
 
     private double toCanvasHeightCoordinates(double normalisedHeight){
         return  canvas.getHeight() - (drawingYOffset() + getDrawableHeight()*normalisedHeight);
+    }
+
+    private double toCanvasWidthCoordinates(double normalisedWidth){
+        return  drawingYOffset() + getDrawableWidth()*normalisedWidth;
     }
 
 }

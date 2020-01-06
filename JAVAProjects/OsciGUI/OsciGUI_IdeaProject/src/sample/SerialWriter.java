@@ -68,25 +68,31 @@ public class SerialWriter implements  Runnable{
         int numSent = 0;
 
         while(c.port.isOpen()){
-            iSet = InternalSettingsCaretaker.readInternalSettings(c);
-            // Do not send update too often.
-            if (System.currentTimeMillis() - lastUpdateTime < (double) 1000 * iSet.settingsUpdateRate) {
-                // Retry after delay
-                try { Thread.sleep(GlobalConstants.INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS); } catch (InterruptedException e){};
-                continue;
-            }
-
-            // Send update frame and update gui state.
-            if (c.port.isOpen()) {
-                byte[] config = packageConfig(c, true);
-                numSent = c.port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
-                if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
-                    System.err.println("Sent " + String.valueOf(numSent));
+            if(c.autoUpdateCB.isSelected()) {
+                iSet = InternalSettingsCaretaker.readInternalSettings(c);
+                // Do not send update too often.
+                if (System.currentTimeMillis() - lastUpdateTime < (double) 1000 * iSet.settingsUpdateRate) {
+                    // Retry after delay
+                    try {
+                        Thread.sleep(GlobalConstants.INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS);
+                    } catch (InterruptedException e) {
+                    }
+                    ;
+                    continue;
                 }
-            }
 
-            // Retry only after delay
-            lastUpdateTime = System.currentTimeMillis();
+                // Send update frame and update gui state.
+                if (c.port.isOpen()) {
+                    byte[] config = packageConfig(c, true);
+                    numSent = c.port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
+                    if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
+                        System.err.println("Sent " + String.valueOf(numSent));
+                    }
+                }
+
+                // Retry only after delay
+                lastUpdateTime = System.currentTimeMillis();
+            }
         }
     }
 }

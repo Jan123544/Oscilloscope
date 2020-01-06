@@ -50,9 +50,9 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 		}
 		case LL_ADC_AWD2:
 		{
-			// AWD2 and AWD3 only 8 bit resolution that's why /16
+			// AWD2 and AWD3 only 8 bit resolution
 			csm->adc->AWD2CR |= 0x2; // Enable monitoring of channel 1 of adc
-			LL_ADC_SetAnalogWDThresholds(csm->adc, csm->awd, LL_ADC_AWD_THRESHOLD_HIGH, floor(csm->params.triggerLevel/16.0f));
+			LL_ADC_SetAnalogWDThresholds(csm->adc, csm->awd, LL_ADC_AWD_THRESHOLD_HIGH, csm->params.triggerLevel);
 			LL_ADC_ClearFlag_AWD2(csm->adc);
 			LL_ADC_EnableIT_AWD2(csm->adc);
 			break;

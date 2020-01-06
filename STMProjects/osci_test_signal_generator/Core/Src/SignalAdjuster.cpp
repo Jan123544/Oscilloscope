@@ -123,14 +123,10 @@ void SignalAdjuster::configureTimer() {
 	LL_TIM_SetCounter(TIM1, 0);
 
 	// Asumes TIM1 is used with 8MHZ clock speed
-
-	uint32_t arr = floor(TIM1_CLOCK_SPEED / frequency / (NUM_SAMPLES - 1));
-	if (arr > TIM1_MAX_ARR) {
-		TIM1->PSC = arr / TIM1_MAX_ARR;
-		TIM1->ARR = arr % TIM1_MAX_ARR;
-	}else{
-		TIM1->ARR = arr;
-	}
+	float cyclesPerSample = TIM1_CLOCK_SPEED / frequency / (NUM_SAMPLES - 1);
+	uint16_t overflows = floor(cyclesPerSample/65535);
+	TIM1->PSC = overflows;
+	TIM1->ARR = cyclesPerSample/(overflows + 1);
 
 	LL_TIM_EnableIT_UPDATE(TIM1);
 	LL_TIM_EnableCounter(TIM1);
