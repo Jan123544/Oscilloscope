@@ -188,6 +188,15 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				ts->events.received_settings = FALSE;
 
+				if (ts->receiveCompleteBuffer.triggerCommand & PING)
+				{
+					ts->channelUpdateMask = 0;
+
+					ts->sendingBuffer->opcode = SMSG_RESPONSE;
+					Send_data_blocking(ts);
+					return;
+				}
+
 				if (ts->receiveCompleteBuffer.triggerCommand & MEASURE_STOP)
 				{
 					ts->channelUpdateMask = 0;
