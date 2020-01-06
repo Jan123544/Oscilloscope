@@ -2,12 +2,14 @@ package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
 
+import java.io.InvalidObjectException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class SerialWriter implements  Runnable{
     private Controller c;
     private long lastUpdateTime;
+    private boolean shouldStop;
 
     public SerialWriter(Controller c){
         this.c = c;
@@ -20,11 +22,11 @@ public class SerialWriter implements  Runnable{
         th.start();
     }
 
-    public static void sendOnce(Controller c, SerialPort port){
+    public static void sendOnce(Controller c, SerialPort port, int packtype){
         int numSent = 0;
         // Send update frame and update gui state.
         if (port.isOpen()) {
-            byte[] config = packageConfig(c, false);
+            byte[] config = packageConfig(c, packtype);
             numSent = port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
             if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
                 System.err.println("Sent " + String.valueOf(numSent));
@@ -34,7 +36,7 @@ public class SerialWriter implements  Runnable{
         }
     }
 
-    static byte[] packageConfig(Controller c, boolean isOnlyTransform) {
+    static byte[] packageConfig(Controller c, int packtype) {
         ChannelSettings cset = ChannelControlCaretaker.readChannelControlsSettings(c);
         TriggerControlSettings tset = TriggerControlCaretaker.readTriggerControlSettings(c);
         TimeControlSettings tmset = TimeControlsCaretaker.readTimeSettings(c);
@@ -49,17 +51,31 @@ public class SerialWriter implements  Runnable{
         b.putInt(Float.floatToIntBits(tmset.yTimePerDivision));
         b.putInt(Float.floatToIntBits(tset.xTriggerLevel));
         b.putInt(Float.floatToIntBits(tset.yTriggerLevel));
-        if(isOnlyTransform) {
-            b.putInt(0);
-        } else{
-            b.putInt(tset.triggerCommand);
+        switch (packtype){
+            case GlobalConstants.PACK_ONLY_TRANSFORM:
+                b.putInt(GlobalConstants.TRIGGER_COMMAND_TRANSFORM);
+                break;
+            case GlobalConstants.PACK_EXIT:
+                b.putInt(GlobalConstants.TRIGGER_COMMAND_STOP);
+                break;
+            case GlobalConstants.PACK_NORMAL:
+                b.putInt(tset.triggerCommand);
+                break;
+            default:
+                System.err.println("invalid pack type");
         }
         b.put(cset.xVoltageRange);
         b.put(cset.yVoltageRange);
         b.put(cset.xGraticuleDivisions);
         b.put(cset.yGraticuleDivisions);
+        b.putInt(tmset.xTimerHoldOff);
+        b.putInt(tmset.yTimerHoldOff);
         byte [] res = (byte[]) b.flip().array();
         return res;
+    }
+
+    public void forceStop(){
+        shouldStop = true;
     }
 
     @Override
@@ -67,6 +83,7 @@ public class SerialWriter implements  Runnable{
         InternalSettings iSet;
         int numSent = 0;
 
+        shouldStop = false;
         while(c.port.isOpen()){
             if(c.autoUpdateCB.isSelected()) {
                 iSet = InternalSettingsCaretaker.readInternalSettings(c);
@@ -83,7 +100,7 @@ public class SerialWriter implements  Runnable{
 
                 // Send update frame and update gui state.
                 if (c.port.isOpen()) {
-                    byte[] config = packageConfig(c, true);
+                    byte[] config = packageConfig(c, GlobalConstants.PACK_ONLY_TRANSFORM);
                     numSent = c.port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
                     if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
                         System.err.println("Sent " + String.valueOf(numSent));
@@ -92,6 +109,9 @@ public class SerialWriter implements  Runnable{
 
                 // Retry only after delay
                 lastUpdateTime = System.currentTimeMillis();
+            }
+            if(shouldStop) {
+                return;
             }
         }
     }

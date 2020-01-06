@@ -94,8 +94,6 @@ typedef struct osci_settings
 	uint8_t yVoltageRange;
 	uint8_t xGraticuleDivisions;
 	uint8_t yGraticuleDivisions;
-	uint32_t xHoldOffTime;
-	uint32_t yHoldOffTime;
 } Osci_Settings;
 
 typedef struct osci_calculatedparameters

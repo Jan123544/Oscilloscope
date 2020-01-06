@@ -21,6 +21,12 @@ class GlobalConstants {
      final static Float TIME_PER_DIVISION_MAX_LOG10 = -1f;
      final static Float TIME_PER_DIVISION_MIN = 0.0001f;
      final static Float TIME_PER_DIVISION_MIN_LOG10 = -4f;
+     final static int X_TIMER_HOLD_OFF_MAX = 10000;
+     final static int Y_TIMER_HOLD_OFF_MAX = 10000;
+     final static int X_TIMER_HOLD_OFF_MIN = 0;
+     final static int Y_TIMER_HOLD_OFF_MIN = 0;
+     final static int X_TIMER_HOLD_OFF_DEFAULT = 1000;
+     final static int Y_TIMER_HOLD_OFF_DEFAULT = 1000;
 
      final static Float TRIGGER_LEVEL_RESOLUTION_X = 1/4096.0f;
      final static Float TRIGGER_LEVEL_RESOLUTION_Y = 1/256.0f;
@@ -58,8 +64,14 @@ class GlobalConstants {
      //Y RANGE 1B
      //X GRATICULE DIVISIONS 1B
      //Y GRATICULE DIVISIONS 1B
-     final static byte OSCI_SETTINGS_SIZE_BYTES = 40;
+     //x timer Hold-off 1B
+     //y timer Hold-off 1B
+     final static byte OSCI_SETTINGS_SIZE_BYTES = 48;
 
      final static int X_CHANNEL_ID  = 0;
      final static int Y_CHANNEL_ID  = 1;
+
+     final static int PACK_NORMAL = 0;
+     final static int PACK_ONLY_TRANSFORM = 1;
+     final static int PACK_EXIT = 2;
 }

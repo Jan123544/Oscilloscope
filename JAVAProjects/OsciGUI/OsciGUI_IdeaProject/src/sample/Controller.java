@@ -8,10 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
+import javafx.stage.Stage;
 
 import java.util.concurrent.Semaphore;
 
 public class Controller {
+    // Primary stage
+    Stage stage;
 
     // Cnavas
     @FXML
@@ -159,6 +162,12 @@ public class Controller {
 
     ViewSettingsCaretaker viewSettingsCaretaker;
 
+
+    @FXML
+    TextField xTimerHoldOffTF;
+    @FXML
+    TextField yTimerHoldOffTF;
+
     public void initialize(){
 
         // Internal settings init
@@ -186,6 +195,7 @@ public class Controller {
 
         serialWriter = new SerialWriter(this);
         isFirstMeasurement = true;
+
     }
 
    // Action handlers
@@ -222,12 +232,16 @@ public class Controller {
     }
 
     public void measureButtonHandler(){
+        if(port == null){
+            PopupWindowClass.display("Error", "You are not connected.", "OK");
+            return;
+        }
         if(port.isOpen()){
             if(isFirstMeasurement){
                 SerialWriter.launch(serialWriter);
                 isFirstMeasurement = false;
             }
-            SerialWriter.sendOnce(this, port);
+            SerialWriter.sendOnce(this, port, GlobalConstants.PACK_NORMAL);
         }
     }
 }
