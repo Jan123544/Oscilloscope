@@ -295,6 +295,24 @@ void ADC1_2_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM1 break and TIM15 interrupts.
+  */
+void TIM1_BRK_TIM15_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM1_BRK_TIM15_IRQn 0 */
+	if (LL_TIM_IsActiveFlag_UPDATE(TIM15))
+	{
+		osci_timer15_update_callback(app_IT_reference);
+		LL_TIM_ClearFlag_UPDATE(TIM15);
+	}
+  /* USER CODE END TIM1_BRK_TIM15_IRQn 0 */
+  
+  /* USER CODE BEGIN TIM1_BRK_TIM15_IRQn 1 */
+
+  /* USER CODE END TIM1_BRK_TIM15_IRQn 1 */
+}
+
+/**
   * @brief This function handles TIM3 global interrupt.
   */
 void TIM3_IRQHandler(void)

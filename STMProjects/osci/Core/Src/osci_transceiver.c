@@ -82,16 +82,15 @@ void Clear_events_ts(Osci_Transceiver* ts)
 	ts->events.send_requested[1] = FALSE;
 }
 
-void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeDef* dma, uint32_t dmaReceiverChannel, uint32_t dmaTransmissionChannel, Osci_ChannelStateMachine* x_channel_state_machine, Osci_ChannelStateMachine* y_channel_state_machine, TIM_TypeDef* timer)
+void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeDef* dma, uint32_t dmaReceiverChannel, uint32_t dmaTransmissionChannel, Osci_ChannelStateMachine* x_channel_state_machine, Osci_ChannelStateMachine* y_channel_state_machine)
 {
-	ts->timer = timer;
 	ts->usart = usart;
 	ts->dma = dma;
 	ts->dmaReceiverChannel = dmaReceiverChannel;
 	ts->dmaTransmissionChannel = dmaTransmissionChannel;
 	ts->x_channel_state_machine = x_channel_state_machine;
 	ts->y_channel_state_machine = y_channel_state_machine;
-	ts->continuousUpdateMask = 0;
+	ts->channelUpdateMask = 0;
 
 	// Configure USART channels, set buffer addresses etc.
 	Configure_usart(ts);
@@ -99,7 +98,6 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 	// This unfortunately has to be set manually.
 	osci_transceiver_received_callback = &Received_callback;
 	osci_transceiver_sent_callback = &Sent_callback;
-	OSCI_timer_set_update_callback(ts->timer, &OSCTI_update_timer_callback);
 
 	// Fill in default settings (offsets, sensitivity, ...).
 	OSCI_configurator_config_defaults_ts(ts);
@@ -153,25 +151,31 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 	OSCI_configurator_recalculate_parameters(ts, &settingsCopy);
 	OSCI_configurator_switch_relays(ts, &settingsCopy);
 	OSCI_configurator_distribute_settings(ts, &settingsCopy);
+
+	// Start periodic timers.
+	OSCI_timer_stop(ts->x_channel_state_machine->holdOffTimer);
+	OSCI_timer_stop(ts->y_channel_state_machine->holdOffTimer);
+
+	if (OSCI_is_channel_holdoff_timer_active(ts, CHANNEL_X))
+	{
+		OSCI_timer_setup(ts->x_channel_state_machine->holdOffTimer, ts->x_channel_state_machine->params.holdOffTimerSettings);
+		OSCI_timer_start(ts->x_channel_state_machine->holdOffTimer);
+	}
+
+	if (OSCI_is_channel_holdoff_timer_active(ts, CHANNEL_Y))
+	{
+		OSCI_timer_setup(ts->y_channel_state_machine->holdOffTimer, ts->y_channel_state_machine->params.holdOffTimerSettings);
+		OSCI_timer_start(ts->y_channel_state_machine->holdOffTimer);
+	}
 }
 
 void Start_monitoring(Osci_Transceiver* ts)
 {
 	if (OSCI_is_channel_active(ts, CHANNEL_X))
-	{
-		if (ts->x_channel_state_machine->params.triggerLevel)
-			ts->x_channel_state_machine->events.start_monitoring = TRUE;
-		else
-			ts->x_channel_state_machine->events.start_measuring = TRUE;
-	}
+		ts->x_channel_state_machine->events.start_measuring = TRUE;
 
 	if (OSCI_is_channel_active(ts, CHANNEL_Y))
-	{
-		if (ts->y_channel_state_machine->params.triggerLevel)
-			ts->y_channel_state_machine->events.start_monitoring = TRUE;
-		else
-			ts->y_channel_state_machine->events.start_measuring = TRUE;
-	}
+		ts->y_channel_state_machine->events.start_measuring = TRUE;
 }
 
 void OSCI_transceiver_update(Osci_Transceiver* ts)
@@ -182,32 +186,38 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		{
 			if (ts->events.received_settings)
 			{
-				if(ts->receiveCompleteBuffer.triggerCommand)
+				ts->events.received_settings = FALSE;
+
+				if (ts->receiveCompleteBuffer.triggerCommand & PING)
 				{
-					if (ts->receiveCompleteBuffer.triggerCommand & (MEASURE_STOP)
-							|| !(ts->receiveCompleteBuffer.triggerCommand & (MEASURE_CONTINUOUS_X | MEASURE_CONTINUOUS_Y)))
-					{
-						ts->continuousUpdateMask = 0;
+					ts->channelUpdateMask = 0;
 
-						OSCI_timer_stop(ts->timer);
-					}
-					else
-					{
-						// activate periodic timer
-						ts->continuousUpdateMask = ts->receiveCompleteBuffer.triggerCommand & (MEASURE_CONTINUOUS_X | MEASURE_CONTINUOUS_Y);
+					ts->sendingBuffer->opcode = SMSG_RESPONSE;
+					Send_data_blocking(ts);
+					return;
+				}
 
-						OSCI_timer_start(ts->timer);
-					}
+				if (ts->receiveCompleteBuffer.triggerCommand & MEASURE_STOP)
+				{
+					ts->channelUpdateMask = 0;
 
 					ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
+					return;
+				}
+
+				if (ts->receiveCompleteBuffer.triggerCommand)
+				{
+					ts->channelUpdateMask = ts->receiveCompleteBuffer.triggerCommand;
+
+					ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
+					return;
 				}
 				else
 				{
 					Reconfigure_channels(ts);
 					ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
+					return;
 				}
-
-				ts->events.received_settings = FALSE;
 			}
 
 			if (ts->events.send_requested[0] || ts->events.send_requested[1])
@@ -243,8 +253,10 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				Gather_data(ts, ts->x_channel_state_machine);
 				OSCI_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params);
+				ts->sendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
 				Send_data_blocking(ts);
 
+				ts->channelUpdateMask &= ~MEASURE_SINGLE_X;
 				ts->events.send_requested[0] = FALSE;
 			}
 
@@ -252,8 +264,10 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				Gather_data(ts, ts->y_channel_state_machine);
 				OSCI_transform_apply(&ts->sendingBuffer, ts->y_channel_state_machine->params);
+				ts->sendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_Y;
 				Send_data_blocking(ts);
 
+				ts->channelUpdateMask &= ~MEASURE_SINGLE_Y;
 				ts->events.send_requested[1] = FALSE;
 			}
 
@@ -263,28 +277,27 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 	}
 }
 
-void transition(uint32_t flag, uint32_t compare, void (*transition_call) (void*), void* data_ref)
-{
-	if(flag & compare)
-		transition_call(data_ref);
-}
-
-void OSCTI_update_timer_callback(Osci_Application* ts)
-{
-	if (ts->transceiver.state == OSCI_TRANSCEIVER_STATE_IDLE)
-		ts->transceiver.state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS;
-}
-
 uint8_t OSCI_is_channel_active(Osci_Transceiver* ts, uint8_t channel)
 {
 	switch (channel)
 	{
 		case CHANNEL_X:
-			return ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_X
-					|| ts->continuousUpdateMask & MEASURE_CONTINUOUS_X;
+			return ts->channelUpdateMask & (MEASURE_CONTINUOUS_X | MEASURE_SINGLE_X);
 		case CHANNEL_Y:
-			return ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_Y
-					|| ts->continuousUpdateMask & MEASURE_CONTINUOUS_Y;
+			return ts->channelUpdateMask & (MEASURE_CONTINUOUS_Y | MEASURE_SINGLE_Y);
+	}
+
+	return 0;
+}
+
+uint8_t OSCI_is_channel_holdoff_timer_active(Osci_Transceiver* ts, uint8_t channel)
+{
+	switch (channel)
+	{
+		case CHANNEL_X:
+			return ((ts->channelUpdateMask & MEASURE_CONTINUOUS_X) && ts->x_channel_state_machine->params.holdOffTimerSettings.arr);
+		case CHANNEL_Y:
+			return ((ts->channelUpdateMask & MEASURE_CONTINUOUS_Y) && ts->y_channel_state_machine->params.holdOffTimerSettings.arr);
 	}
 
 	return 0;

@@ -52,7 +52,8 @@ enum OsciSettingsTriggerCommand
 	MEASURE_SINGLE_Y		= 0x02,
 	MEASURE_CONTINUOUS_X	= 0x04,
 	MEASURE_CONTINUOUS_Y	= 0x08,
-	MEASURE_STOP			= 0x10, // is this realy required?
+	MEASURE_STOP			= 0x10,
+	PING					= 0x20,
 };
 
 // Communication protocol constants
@@ -67,8 +68,9 @@ enum Channels
 
 enum Opcodes
 {
-	SMSG_CHANNEL_X_DATA		= 0xFEFE,
+	SMSG_RESPONSE			= 0xFCFE,
 	SMSG_CHANNEL_Y_DATA		= 0xFDFE,
+	SMSG_CHANNEL_X_DATA		= 0xFEFE,
 };
 
 #define MIN(a,b) (a)<(b)?(a):(b)

@@ -8,6 +8,7 @@
 #include "osci_data_structures.h"
 #include "osci_configurator.h"
 #include "osci_error.h"
+#include "osci_transceiver.h"
 
 float Calculate_alpha(uint32_t beta5, uint32_t beta10, uint32_t beta20, uint32_t range, float calib5, float calib10, float calib20)
 {
@@ -78,10 +79,13 @@ void Fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_paramete
 
 	new_parameters->xTimerSettings.psc = xOverflows;
 	new_parameters->yTimerSettings.psc = yOverflows;
+	new_parameters->xHoldOffTimerSettings.psc = 32000;
+	new_parameters->yHoldOffTimerSettings.psc = 32000;
 
 	new_parameters->xTimerSettings.arr = xCyclesRequired/(xOverflows + 1);
 	new_parameters->yTimerSettings.arr = yCyclesRequired/(yOverflows + 1);
-
+	new_parameters->xHoldOffTimerSettings.arr = settings->xHoldOffTime;
+	new_parameters->yHoldOffTimerSettings.arr = settings->yHoldOffTime;
 }
 
 void Switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)
@@ -207,6 +211,7 @@ void OSCI_configurator_distribute_settings(Osci_Transceiver* ts, Osci_Settings* 
 	ts->x_channel_state_machine->params.offset = ts->allReceivedParameters.xOffset;
 	ts->x_channel_state_machine->params.sensitivity = ts->allReceivedParameters.xSensitivity;
 	ts->x_channel_state_machine->params.timerSettings = ts->allReceivedParameters.xTimerSettings;
+	ts->x_channel_state_machine->params.holdOffTimerSettings = ts->allReceivedParameters.xHoldOffTimerSettings;
 	ts->x_channel_state_machine->params.triggerLevel = ts->allReceivedParameters.xThresholdInLevels;
 	ts->x_channel_state_machine->params.alpha = ts->allReceivedParameters.xAlpha;
 	ts->x_channel_state_machine->params.voltageRange = ts->allReceivedParameters.xRange;
@@ -216,6 +221,7 @@ void OSCI_configurator_distribute_settings(Osci_Transceiver* ts, Osci_Settings* 
 	ts->y_channel_state_machine->params.offset = ts->allReceivedParameters.yOffset;
 	ts->y_channel_state_machine->params.sensitivity = ts->allReceivedParameters.ySensitivity;
 	ts->y_channel_state_machine->params.timerSettings = ts->allReceivedParameters.yTimerSettings;
+	ts->y_channel_state_machine->params.holdOffTimerSettings = ts->allReceivedParameters.yHoldOffTimerSettings;
 	ts->y_channel_state_machine->params.triggerLevel = ts->allReceivedParameters.yThresholdInLevels;
 	ts->y_channel_state_machine->params.alpha = ts->allReceivedParameters.yAlpha;
 	ts->y_channel_state_machine->params.voltageRange = ts->allReceivedParameters.yRange;

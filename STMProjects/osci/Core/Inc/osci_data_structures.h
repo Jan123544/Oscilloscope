@@ -22,7 +22,8 @@ typedef struct osci_timersettings
 
 typedef struct osci_channelmeasurement
 {
-	uint16_t values [NUM_SAMPLES];
+	uint16_t values[NUM_SAMPLES];
+	uint8_t continuous;
 } Osci_ChannelMeasurement;
 
 typedef struct osci_channelparameters
@@ -30,6 +31,7 @@ typedef struct osci_channelparameters
 	float offset;
 	float sensitivity;
 	Osci_TimerSettings timerSettings;
+	Osci_TimerSettings holdOffTimerSettings;
 	uint32_t triggerLevel;
 	uint8_t voltageRange;
 	uint8_t graticuleDivisions;
@@ -54,6 +56,7 @@ typedef struct osci_channelstatemachine
 	Osci_ChannelParameters params;
 
 	TIM_TypeDef* timer;
+	TIM_TypeDef* holdOffTimer;
 	DMA_TypeDef* dma;
 	uint32_t dmaID;
 	uint32_t dmaChannel;
@@ -94,8 +97,8 @@ typedef struct osci_settings
 	uint8_t yVoltageRange;
 	uint8_t xGraticuleDivisions;
 	uint8_t yGraticuleDivisions;
-	uint32_t xHoldOffTime;
-	uint32_t yHoldOffTime;
+	uint32_t xHoldOffTime; // in MS
+	uint32_t yHoldOffTime; // in MS
 } Osci_Settings;
 
 typedef struct osci_calculatedparameters
@@ -116,6 +119,8 @@ typedef struct osci_calculatedparameters
 	uint32_t yThresholdInLevels;
 	Osci_TimerSettings xTimerSettings;
 	Osci_TimerSettings yTimerSettings;
+	Osci_TimerSettings xHoldOffTimerSettings;
+	Osci_TimerSettings yHoldOffTimerSettings;
 } Osci_CalculatedParameters;
 
 typedef struct osci_transceiverevents
@@ -128,7 +133,6 @@ struct osci_transceiver
 {
 	USART_TypeDef* usart;
 	DMA_TypeDef* dma;
-	TIM_TypeDef* timer; // periodic update timer
 	uint32_t dmaReceiverChannel;
 	uint32_t dmaTransmissionChannel;
 
@@ -143,7 +147,7 @@ struct osci_transceiver
 
 	uint32_t state;
 
-	uint32_t continuousUpdateMask;
+	uint32_t channelUpdateMask;
 
 	Osci_TransceiverEvents events;
 };
