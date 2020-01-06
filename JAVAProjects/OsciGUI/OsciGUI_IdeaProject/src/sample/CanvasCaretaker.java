@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.print.PageLayout;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
@@ -177,6 +178,14 @@ class CanvasCaretaker {
         label.setTranslateY(newY - label.getHeight()/2);
         label.setText(String.format("%.2f", voltage));
         handle.setTranslateY(newY);
+    }
+
+    void updateThresholdLines(){
+        Platform.runLater( () -> {
+            setThresholdLineVoltage(xThresholdLine, xThresholdLineLabel,  xThresholdLineHandle, c.xTriggerLevelS.getValue(), c.xSensitivityS.getValue(), c.xOffsetS.getValue());
+            setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, c.yTriggerLevelS.getValue(), c.ySensitivityS.getValue(), c.yOffsetS.getValue());
+        });
+
     }
 
     void setXThresholdLineVoltage(double voltage){

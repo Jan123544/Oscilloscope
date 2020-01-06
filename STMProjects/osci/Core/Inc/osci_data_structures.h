@@ -138,7 +138,8 @@ struct osci_transceiver
 
 	Osci_Settings recveiveBuffer; // dma writes to this
 	Osci_Settings receiveCompleteBuffer; // after dma completes this gets updated
-	Osci_DataFrame sendingBuffer;
+	Osci_DataFrame xSendingBuffer;
+	Osci_DataFrame ySendingBuffer;
 
 	Osci_CalculatedParameters allReceivedParameters;
 

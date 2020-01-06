@@ -34,17 +34,24 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 	LL_ADC_DisableIT_EOS(csm->adc);
 	LL_ADC_DisableIT_EOC(csm->adc);
 	LL_ADC_DisableIT_EOSMP(csm->adc);
+	LL_ADC_DisableIT_OVR(csm->adc);
+
+	LL_ADC_ClearFlag_OVR(csm->adc);
+	LL_ADC_ClearFlag_EOC(csm->adc);
+	LL_ADC_ClearFlag_EOS(csm->adc);
 
 	LL_ADC_REG_SetContinuousMode(csm->adc, LL_ADC_REG_CONV_CONTINUOUS);
 	LL_ADC_REG_SetTriggerSource(csm->adc, LL_ADC_REG_TRIG_SOFTWARE);
+
+
 
 	switch(csm->awd)
 	{
 		case LL_ADC_AWD1:
 		{
 			LL_ADC_SetAnalogWDMonitChannels(csm->adc, csm->awd, LL_ADC_AWD_ALL_CHANNELS_REG);
-			LL_ADC_SetAnalogWDThresholds(csm->adc, csm->awd, LL_ADC_AWD_THRESHOLD_HIGH, csm->params.triggerLevel);
 			LL_ADC_ClearFlag_AWD1(csm->adc);
+			LL_ADC_SetAnalogWDThresholds(csm->adc, csm->awd, LL_ADC_AWD_THRESHOLD_HIGH, csm->params.triggerLevel);
 			LL_ADC_EnableIT_AWD1(csm->adc);
 			break;
 		}
@@ -52,8 +59,8 @@ void OSCI_adc_reconfigure_for_monitoring(Osci_ChannelStateMachine* csm)
 		{
 			// AWD2 and AWD3 only 8 bit resolution
 			csm->adc->AWD2CR |= 0x2; // Enable monitoring of channel 1 of adc
-			LL_ADC_SetAnalogWDThresholds(csm->adc, csm->awd, LL_ADC_AWD_THRESHOLD_HIGH, csm->params.triggerLevel);
 			LL_ADC_ClearFlag_AWD2(csm->adc);
+			LL_ADC_SetAnalogWDThresholds(csm->adc, csm->awd, LL_ADC_AWD_THRESHOLD_HIGH, csm->params.triggerLevel);
 			LL_ADC_EnableIT_AWD2(csm->adc);
 			break;
 		}

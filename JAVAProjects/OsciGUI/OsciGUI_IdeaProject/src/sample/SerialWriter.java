@@ -111,6 +111,9 @@ public class SerialWriter implements  Runnable{
                     }
                 }
 
+                c.canvasCaretaker.refreshLabels();
+                c.canvasCaretaker.updateThresholdLines();
+
                 // Retry only after delay
                 lastUpdateTime = System.currentTimeMillis();
             }

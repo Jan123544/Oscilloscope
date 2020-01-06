@@ -9,33 +9,52 @@
 #include "osci_channel_state_machine.h"
 #include "osci_timer.h"
 
-void Gather_data(Osci_Transceiver* ts, Osci_ChannelStateMachine* csm)
+void Gather_data(Osci_Transceiver* ts, Osci_ChannelStateMachine* csm, uint8_t channel)
 {
-	// Make sure dataframe has the start word
-	ts->sendingBuffer.opcode = csm->channelOpcode;
 
-	// Copy last complete measurement
-	ts->sendingBuffer.channelData = csm->measurement;
+	switch(channel){
+	case CHANNEL_X:
+		// Make sure dataframe has the start word
+		ts->xSendingBuffer.opcode = csm->channelOpcode;
+		// Copy last complete measurement
+		ts->xSendingBuffer.channelData = csm->measurement;
+		break;
+	case CHANNEL_Y:
+		// Make sure dataframe has the start word
+		ts->ySendingBuffer.opcode = csm->channelOpcode;
+		// Copy last complete measurement
+		ts->ySendingBuffer.channelData = csm->measurement;
+		break;
+	}
+
 }
 
-void Send_data(Osci_Transceiver* ts)
+int Send_data(Osci_Transceiver* ts, uint8_t channel)
 {
 	if (LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel)) // Do not do anything if data is still being sent
 	{
 		OSCI_error_notify("new data send skip");
-		return;
+		return 0;
 	};
 
 	LL_DMA_SetDataLength(ts->dma, ts->dmaTransmissionChannel, sizeof(Osci_DataFrame));
-	LL_DMA_SetMemoryAddress(ts->dma, ts->dmaTransmissionChannel, (uint32_t)&ts->sendingBuffer);
+	switch(channel){
+		case CHANNEL_X:
+			LL_DMA_SetMemoryAddress(ts->dma, ts->dmaTransmissionChannel, (uint32_t)&ts->xSendingBuffer);
+			break;
+		case CHANNEL_Y:
+			LL_DMA_SetMemoryAddress(ts->dma, ts->dmaTransmissionChannel, (uint32_t)&ts->ySendingBuffer);
+			break;
+	}
 	LL_DMA_EnableChannel(ts->dma, ts->dmaTransmissionChannel);
+	return 1;
 }
 
-void Send_data_blocking(Osci_Transceiver* ts)
+void Send_data_blocking(Osci_Transceiver* ts, uint8_t channel)
 {
-	Send_data(ts);
 	// Block until data is sent
 	while(LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel)){};
+	Send_data(ts, channel);
 }
 
 void Received_callback(Osci_Application* app)
@@ -192,8 +211,8 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 				{
 					ts->channelUpdateMask = 0;
 
-					ts->sendingBuffer.opcode = SMSG_RESPONSE;
-					Send_data_blocking(ts);
+					ts->xSendingBuffer.opcode = SMSG_RESPONSE;
+					Send_data_blocking(ts, CHANNEL_X);
 					return;
 				}
 
@@ -251,24 +270,25 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		{
 			if (ts->events.send_requested[0])
 			{
-				Gather_data(ts, ts->x_channel_state_machine);
-				OSCI_transform_apply(&ts->sendingBuffer, ts->x_channel_state_machine->params);
-				ts->sendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
-				Send_data_blocking(ts);
-
+				Gather_data(ts, ts->x_channel_state_machine, CHANNEL_X);
+				OSCI_transform_apply(&ts->xSendingBuffer, ts->x_channel_state_machine->params);
+				ts->xSendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
+				if(Send_data(ts, CHANNEL_X)){
+					ts->events.send_requested[0] = FALSE;
+				}
 				ts->channelUpdateMask &= ~MEASURE_SINGLE_X;
-				ts->events.send_requested[0] = FALSE;
 			}
 
 			if (ts->events.send_requested[1])
 			{
-				Gather_data(ts, ts->y_channel_state_machine);
-				OSCI_transform_apply(&ts->sendingBuffer, ts->y_channel_state_machine->params);
-				ts->sendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_Y;
-				Send_data_blocking(ts);
+				Gather_data(ts, ts->y_channel_state_machine, CHANNEL_Y);
+				OSCI_transform_apply(&ts->ySendingBuffer, ts->y_channel_state_machine->params);
+				ts->ySendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_Y;
+				if(Send_data(ts, CHANNEL_Y)){
+					ts->events.send_requested[1] = FALSE;
+				}
 
 				ts->channelUpdateMask &= ~MEASURE_SINGLE_Y;
-				ts->events.send_requested[1] = FALSE;
 			}
 
 			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
