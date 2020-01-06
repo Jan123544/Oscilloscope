@@ -91,6 +91,7 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 	ts->dmaTransmissionChannel = dmaTransmissionChannel;
 	ts->x_channel_state_machine = x_channel_state_machine;
 	ts->y_channel_state_machine = y_channel_state_machine;
+	ts->continuousUpdateMask = 0;
 
 	// Configure USART channels, set buffer addresses etc.
 	Configure_usart(ts);
@@ -113,10 +114,10 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 void Send_shutdown_event(Osci_Transceiver* ts)
 {
 	// Send shutdown event to CSM's based on the trigger command.
-	if(ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_X | MEASURE_CONTINUOUS_X))
+	if (OSCI_is_channel_active(ts, CHANNEL_X))
 		ts->x_channel_state_machine->events.shutdown = TRUE;
 
-	if(ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_Y | MEASURE_CONTINUOUS_Y))
+	if (OSCI_is_channel_active(ts, CHANNEL_Y))
 		ts->y_channel_state_machine->events.shutdown = TRUE;
 }
 
@@ -125,23 +126,21 @@ void Switch_to_reconfiguring_after_shutdown(Osci_Transceiver* ts)
 	// Wait for CSM's to shutdown and then switch to reconfiguring state.
 
 	// Only wait for X CSM to shutdown here.
-	if ((ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_X | MEASURE_CONTINUOUS_X))
-			&& !((ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_Y | MEASURE_CONTINUOUS_Y))))
+	if (OSCI_is_channel_active(ts, CHANNEL_X) && !OSCI_is_channel_active(ts, CHANNEL_Y))
 	{
 		if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 			ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 	}
 
 	// Only wait for Y CSM to shutdown here.
-	if ((ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_Y | MEASURE_CONTINUOUS_Y))
-			&& !((ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_X | MEASURE_CONTINUOUS_X))))
+	if (!OSCI_is_channel_active(ts, CHANNEL_X) && OSCI_is_channel_active(ts, CHANNEL_Y))
 	{
 		if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 			ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 	}
 
 	// Wait for both CSM's to shutdown.
-	if ((ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_X | MEASURE_CONTINUOUS_X | MEASURE_SINGLE_Y | MEASURE_CONTINUOUS_Y)))
+	if (OSCI_is_channel_active(ts, CHANNEL_X) && OSCI_is_channel_active(ts, CHANNEL_Y))
 	{
 		if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN && ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 			ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
@@ -158,7 +157,7 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 
 void Start_monitoring(Osci_Transceiver* ts)
 {
-	if(ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_X | MEASURE_CONTINUOUS_X))
+	if (OSCI_is_channel_active(ts, CHANNEL_X))
 	{
 		if (ts->x_channel_state_machine->params.triggerLevel)
 			ts->x_channel_state_machine->events.start_monitoring = TRUE;
@@ -166,7 +165,7 @@ void Start_monitoring(Osci_Transceiver* ts)
 			ts->x_channel_state_machine->events.start_measuring = TRUE;
 	}
 
-	if(ts->receiveCompleteBuffer.triggerCommand & (MEASURE_SINGLE_Y | MEASURE_CONTINUOUS_Y))
+	if (OSCI_is_channel_active(ts, CHANNEL_Y))
 	{
 		if (ts->y_channel_state_machine->params.triggerLevel)
 			ts->y_channel_state_machine->events.start_monitoring = TRUE;
@@ -185,14 +184,20 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				if(ts->receiveCompleteBuffer.triggerCommand)
 				{
-					// activate periodic timer
-					if (ts->receiveCompleteBuffer.triggerCommand & (MEASURE_CONTINUOUS_X | MEASURE_CONTINUOUS_Y))
-						OSCI_timer_start(ts->timer);
-					else
-						OSCI_timer_stop(ts->timer);
+					if (ts->receiveCompleteBuffer.triggerCommand & (MEASURE_STOP)
+							|| !(ts->receiveCompleteBuffer.triggerCommand & (MEASURE_CONTINUOUS_X | MEASURE_CONTINUOUS_Y)))
+					{
+						ts->continuousUpdateMask = 0;
 
-					if (ts->receiveCompleteBuffer.triggerCommand & (MEASURE_STOP))
 						OSCI_timer_stop(ts->timer);
+					}
+					else
+					{
+						// activate periodic timer
+						ts->continuousUpdateMask = ts->receiveCompleteBuffer.triggerCommand & (MEASURE_CONTINUOUS_X | MEASURE_CONTINUOUS_Y);
+
+						OSCI_timer_start(ts->timer);
+					}
 
 					ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
 				}
@@ -253,8 +258,6 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			}
 
 			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
-
-			ts->receiveCompleteBuffer.triggerCommand &= ~(MEASURE_SINGLE_X | MEASURE_SINGLE_Y);
 			break;
 		}
 	}
@@ -270,4 +273,19 @@ void OSCTI_update_timer_callback(Osci_Application* ts)
 {
 	if (ts->transceiver.state == OSCI_TRANSCEIVER_STATE_IDLE)
 		ts->transceiver.state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS;
+}
+
+uint8_t OSCI_is_channel_active(Osci_Transceiver* ts, uint8_t channel)
+{
+	switch (channel)
+	{
+		case CHANNEL_X:
+			return ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_X
+					|| ts->continuousUpdateMask & MEASURE_CONTINUOUS_X;
+		case CHANNEL_Y:
+			return ts->receiveCompleteBuffer.triggerCommand & MEASURE_SINGLE_Y
+					|| ts->continuousUpdateMask & MEASURE_CONTINUOUS_Y;
+	}
+
+	return 0;
 }

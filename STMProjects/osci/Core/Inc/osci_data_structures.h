@@ -141,6 +141,8 @@ struct osci_transceiver
 
 	uint32_t state;
 
+	uint32_t continuousUpdateMask;
+
 	Osci_TransceiverEvents events;
 };
 
