@@ -451,9 +451,18 @@ class CanvasCaretaker {
 
     void requestXChannelUpdate(ArrayList<Byte> buffer, Byte updateType){
         Platform.runLater( () -> {
+            debugPrint10(convertUShort(buffer));
             this.xNormalisedBuffer = canvasNormalise(convertUShort(buffer),  readCanvasSettings(c));
             xUpdateFromBuffer(updateType);
         });
+    }
+
+    private void debugPrint10(ArrayList<Double> vals){
+        for(int i=0;i<10;i++){
+            System.out.print(vals.get(i));
+            System.out.print(" ");
+        }
+        System.out.println("");
     }
 
     void requestYChannelUpdate(ArrayList<Byte> buffer, Byte updateType){

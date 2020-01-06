@@ -172,10 +172,10 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 void Start_monitoring(Osci_Transceiver* ts)
 {
 	if (OSCI_is_channel_active(ts, CHANNEL_X))
-		ts->x_channel_state_machine->events.start_monitoring = TRUE;
+		ts->x_channel_state_machine->events.start_measuring = TRUE;
 
 	if (OSCI_is_channel_active(ts, CHANNEL_Y))
-		ts->y_channel_state_machine->events.start_monitoring = TRUE;
+		ts->y_channel_state_machine->events.start_measuring = TRUE;
 }
 
 void OSCI_transceiver_update(Osci_Transceiver* ts)

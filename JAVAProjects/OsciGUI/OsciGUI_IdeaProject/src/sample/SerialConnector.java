@@ -27,7 +27,7 @@ public class SerialConnector {
         c.serialConnectPB.setProgress(50);
         port.setFlowControl(curSettings.flowControl);
         c.serialConnectPB.setProgress(80);
-        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING | SerialPort.TIMEOUT_WRITE_BLOCKING, 500, 0);
+        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING | SerialPort.TIMEOUT_WRITE_BLOCKING, 2000, 0);
 
         if(!port.openPort()){
             c.serialConnectPB.setId("red-pBar");
@@ -37,8 +37,12 @@ public class SerialConnector {
         // Ping the MCU, if it doesn't respond, shutdown connection.
         SerialWriter.sendOnce(c, port, PacketType.PING);
         OsciDataFrame df = SerialBlockReader.catchPong(port, 10000);
+
+        // Reset to blocking state.
+        port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING | SerialPort.TIMEOUT_WRITE_BLOCKING, 0, 0);
         if(df.opcode[0] == 0 && df.opcode[1] == 0){
             c.serialConnectPB.setId("red-pBar");
+            port.closePort();
             throw new PongNotReceivedException();
         }
 

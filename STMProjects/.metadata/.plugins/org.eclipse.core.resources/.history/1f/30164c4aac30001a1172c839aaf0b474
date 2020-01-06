@@ -105,7 +105,6 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			if (csm->events.shutdown)
 			{
 				OSCI_adc_stop(csm);
-				OSCI_timer_stop(csm->holdOffTimer);
 				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
 				csm->events.shutdown = FALSE;
 				return;
@@ -130,7 +129,6 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			if(csm->events.shutdown)
 			{
 				OSCI_adc_stop(csm);
-				OSCI_timer_stop(csm->holdOffTimer);
 				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
 				return;
 			}

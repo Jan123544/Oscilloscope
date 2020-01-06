@@ -84,7 +84,7 @@ public class SerialBlockReader implements Runnable{
         while(numLookup < bytesLookup){
             numRead = port.readBytes(byteBuffer,1);
             if(numRead != 1) { return opcodeBuffer; } // Error or timeout.
-            if(byteBuffer[0] == Opcodes.RESPONSE_LOWER && byteBuffer[1] == Opcodes.RESPONSE_HIGHER){
+            if(byteBuffer[0] == Opcodes.RESPONSE_HIGHER && byteBuffer[1] == Opcodes.RESPONSE_LOWER){
                 opcodeBuffer[0] = byteBuffer[0];
                 opcodeBuffer[1] = byteBuffer[1];
                 return opcodeBuffer;

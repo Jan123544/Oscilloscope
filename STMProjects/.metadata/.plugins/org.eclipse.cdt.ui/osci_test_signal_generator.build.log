@@ -1,10 +1,10 @@
-06:50:06 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
+19:21:14 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
 arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-  13684	     12	   1580	  15276	   3bac	osci_test_signal_generator.elf
+  13680	     12	   1580	  15272	   3ba8	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
 
-06:50:12 Build Finished. 0 errors, 0 warnings. (took 6s.56ms)
+19:21:20 Build Finished. 0 errors, 0 warnings. (took 6s.690ms)
 

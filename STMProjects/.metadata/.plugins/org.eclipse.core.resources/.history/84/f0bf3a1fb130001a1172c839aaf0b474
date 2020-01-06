@@ -44,7 +44,7 @@ private:
 	uint32_t quantize(float v);
 
 public:
-	SignalAdjuster(float amplitude=0.5, float frequency=10, float offset=1,
+	SignalAdjuster(float amplitude=0.5, float frequency=1, float offset=1,
 			uint32_t numberOfQuantizationLevels=4096, float amplitudePerLevel=1.0f/2048,
 			uint32_t startSampleIndex=0, uint32_t startSignal=0) :
 				 signal(startSignal), amplitude(amplitude), frequency(frequency), offset(offset), numberOfQuantizationLevels(
