@@ -6,9 +6,10 @@
  */
 #include "osci_channel_state_machine.h"
 
-void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_TypeDef* dma, uint32_t dmaChannel, ADC_TypeDef* adc, uint32_t awd, Measurement_complete_callback measurement_complete_callback, Awd_threshold_callback awd_threshold_callback, Osci_Transceiver* transceiver, uint16_t channelOpcode)
+void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, TIM_TypeDef* holdOffTimer, DMA_TypeDef* dma, uint32_t dmaChannel, ADC_TypeDef* adc, uint32_t awd, Measurement_complete_callback measurement_complete_callback, Awd_threshold_callback awd_threshold_callback, ADC_callback holdOffTimerCallback, Osci_Transceiver* transceiver, uint16_t channelOpcode)
 {
 	csm->timer = timer;
+	csm->holdOffTimer = holdOffTimer;
 	csm->adc = adc;
 	csm->awd = awd;
 	csm->dma = dma;
@@ -24,6 +25,7 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_Ty
 	// Initialize static callbacks.
 	OSCI_dma_set_TC_callback(csm, measurement_complete_callback);
 	OSCI_adc_set_awd_callback(csm, awd_threshold_callback);
+	OSCI_timer_set_update_callback(csm->holdOffTimer, holdOffTimerCallback);
 
 	// Initialize nested structures.
 	OSCI_dma_channel_init(csm);
@@ -32,6 +34,12 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, DMA_Ty
 
 void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 {
+	if (!csm->params.triggerLevel)
+	{
+		csm->events.start_measuring = TRUE;
+		return;
+	}
+
 	OSCI_adc_stop(csm);
 	OSCI_timer_stop(csm->timer);
 	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
@@ -49,8 +57,7 @@ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
 	OSCI_timer_stop(csm->timer);
 	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
 
-	csm->timer->PSC = csm->params.timerSettings.psc;
-	csm->timer->ARR = csm->params.timerSettings.arr;
+	OSCI_timer_setup(csm->timer, csm->params.timerSettings);
 
 	OSCI_adc_reconfigure_for_measuring(csm);
 	OSCI_dma_channel_reconfigure_for_measuring(csm);
@@ -95,7 +102,7 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			csm->events.start_monitoring = FALSE;
 
 			// Check for transitions
-			if(csm->events.shutdown)
+			if (csm->events.shutdown)
 			{
 				OSCI_adc_stop(csm);
 				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
@@ -103,7 +110,7 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 				return;
 			}
 
-			if(csm->events.start_measuring)
+			if (csm->events.start_measuring)
 			{
 				OSCI_channel_start_measuring(csm);
 				csm->state = OSCI_CHANNEL_STATE_MEASURING;
@@ -128,16 +135,27 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 
 			if(csm->events.measurement_complete)
 			{
+				csm->events.measurement_complete = FALSE;
+
 				OSCI_adc_stop(csm);
 				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
 
 				if (csm == csm->transceiver->x_channel_state_machine)
+				{
 					csm->transceiver->events.send_requested[0] = TRUE;
+
+					if ((csm->transceiver->channelUpdateMask & MEASURE_CONTINUOUS_X)
+							&& !(OSCI_is_channel_holdoff_timer_active(csm->transceiver, CHANNEL_X)))
+						csm->events.start_measuring = TRUE;
+				}
 				else
+				{
 					csm->transceiver->events.send_requested[1] = TRUE;
 
-				csm->events.measurement_complete = FALSE;
-				return;
+					if ((csm->transceiver->channelUpdateMask & MEASURE_CONTINUOUS_X)
+							&& !(OSCI_is_channel_holdoff_timer_active(csm->transceiver, CHANNEL_X)))
+						csm->events.start_measuring = TRUE;
+				}
 			}
 			break;
 		}
@@ -172,6 +190,9 @@ void OSCI_channel_awd_threshold_callback_x(Osci_Application* app)
 {
 	LL_ADC_DisableIT_AWD1(app->xChannelStateMachine.adc);
 
+	if (app->xChannelStateMachine.state != OSCI_CHANNEL_STATE_MONITORING)
+		return;
+
 	app->xChannelStateMachine.events.start_measuring = TRUE;
 }
 
@@ -179,5 +200,24 @@ void OSCI_channel_awd_threshold_callback_y(Osci_Application* app)
 {
 	LL_ADC_DisableIT_AWD2(app->yChannelStateMachine.adc);
 
+	if (app->yChannelStateMachine.state != OSCI_CHANNEL_STATE_MONITORING)
+		return;
+
 	app->yChannelStateMachine.events.start_measuring = TRUE;
+}
+
+void OSCI_channel_hold_off_callback_x(Osci_Application* app)
+{
+	if (app->xChannelStateMachine.state != OSCI_CHANNEL_STATE_SHUTDOWN)
+		return;
+
+	app->xChannelStateMachine.events.start_monitoring = TRUE;
+}
+
+void OSCI_channel_hold_off_callback_y(Osci_Application* app)
+{
+	if (app->yChannelStateMachine.state != OSCI_CHANNEL_STATE_SHUTDOWN)
+		return;
+
+	app->yChannelStateMachine.events.start_monitoring = TRUE;
 }

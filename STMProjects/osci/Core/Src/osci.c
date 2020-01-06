@@ -14,9 +14,9 @@
 Osci_Application* OSCI_init()
 {
 	Osci_Application* app = calloc(sizeof(app), 1);
-	OSCI_transceiver_init(&app->transceiver, USART2, DMA1, LL_DMA_CHANNEL_6, LL_DMA_CHANNEL_7, &app->xChannelStateMachine, &app->yChannelStateMachine, TIM3);
-	OSCI_channel_init(&app->xChannelStateMachine, TIM1, DMA1, LL_DMA_CHANNEL_1, ADC1, LL_ADC_AWD1, &OSCI_channel_measurement_complete_callback_x, &OSCI_channel_awd_threshold_callback_x, &app->transceiver, SMSG_CHANNEL_X_DATA);
-	OSCI_channel_init(&app->yChannelStateMachine, TIM2, DMA1, LL_DMA_CHANNEL_2, ADC2, LL_ADC_AWD2, &OSCI_channel_measurement_complete_callback_y, &OSCI_channel_awd_threshold_callback_y, &app->transceiver, SMSG_CHANNEL_Y_DATA);
+	OSCI_transceiver_init(&app->transceiver, USART2, DMA1, LL_DMA_CHANNEL_6, LL_DMA_CHANNEL_7, &app->xChannelStateMachine, &app->yChannelStateMachine);
+	OSCI_channel_init(&app->xChannelStateMachine, TIM1, TIM3, DMA1, LL_DMA_CHANNEL_1, ADC1, LL_ADC_AWD1, &OSCI_channel_measurement_complete_callback_x, &OSCI_channel_awd_threshold_callback_x, &OSCI_channel_hold_off_callback_x, &app->transceiver, SMSG_CHANNEL_X_DATA);
+	OSCI_channel_init(&app->yChannelStateMachine, TIM2, TIM15, DMA1, LL_DMA_CHANNEL_2, ADC2, LL_ADC_AWD2, &OSCI_channel_measurement_complete_callback_y, &OSCI_channel_awd_threshold_callback_y, &OSCI_channel_hold_off_callback_y, &app->transceiver, SMSG_CHANNEL_Y_DATA);
 
 	return app;
 }

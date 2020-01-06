@@ -11,9 +11,11 @@
 #include "osci_data_structures.h"
 
 ADC_callback osci_timer3_update_callback;
+ADC_callback osci_timer15_update_callback;
 
 void OSCI_timer_stop(TIM_TypeDef*);
 void OSCI_timer_start(TIM_TypeDef*);
+void OSCI_timer_setup(TIM_TypeDef*, Osci_TimerSettings);
 void OSCI_timer_set_update_callback(TIM_TypeDef*, ADC_callback);
 
 #endif /* INC_OSCI_TIMER_H_ */

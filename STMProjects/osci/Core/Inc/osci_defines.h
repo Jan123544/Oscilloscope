@@ -52,7 +52,7 @@ enum OsciSettingsTriggerCommand
 	MEASURE_SINGLE_Y		= 0x02,
 	MEASURE_CONTINUOUS_X	= 0x04,
 	MEASURE_CONTINUOUS_Y	= 0x08,
-	MEASURE_STOP			= 0x10, // is this realy required?
+	MEASURE_STOP			= 0x10,
 };
 
 // Communication protocol constants

@@ -24,7 +24,7 @@
 #define OSCI_CHANNEL_STATE_SHUTDING_DOWN 3
 
 // State machine functions and call-backs.
-void OSCI_channel_init(Osci_ChannelStateMachine*, TIM_TypeDef*, DMA_TypeDef*, uint32_t, ADC_TypeDef*, uint32_t, Measurement_complete_callback, Awd_threshold_callback, Osci_Transceiver*, uint16_t);
+void OSCI_channel_init(Osci_ChannelStateMachine*, TIM_TypeDef*, TIM_TypeDef*, DMA_TypeDef*, uint32_t, ADC_TypeDef*, uint32_t, Measurement_complete_callback, Awd_threshold_callback, ADC_callback holdOffTimerCallback, Osci_Transceiver*, uint16_t);
 void OSCI_channel_update(Osci_ChannelStateMachine* csm);
 void OSCI_channel_measuring_callback_x(Osci_Application*);
 void OSCI_channel_measuring_callback_y(Osci_Application*);
@@ -32,5 +32,7 @@ void OSCI_channel_measurement_complete_callback_x(Osci_Application*);
 void OSCI_channel_measurement_complete_callback_y(Osci_Application*);
 void OSCI_channel_awd_threshold_callback_x(Osci_Application*);
 void OSCI_channel_awd_threshold_callback_y(Osci_Application*);
+void OSCI_channel_hold_off_callback_x(Osci_Application*);
+void OSCI_channel_hold_off_callback_y(Osci_Application*);
 
 #endif /* INC_OSCI_CHANNEL_STATE_MACHINE_H_ */

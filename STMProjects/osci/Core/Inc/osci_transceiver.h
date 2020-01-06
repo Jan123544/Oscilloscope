@@ -20,10 +20,11 @@
 #define OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS 4
 #define OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING 5
 
-void OSCI_transceiver_init(Osci_Transceiver*, USART_TypeDef*, DMA_TypeDef*, uint32_t, uint32_t, Osci_ChannelStateMachine*, Osci_ChannelStateMachine*, TIM_TypeDef*);
+void OSCI_transceiver_init(Osci_Transceiver*, USART_TypeDef*, DMA_TypeDef*, uint32_t, uint32_t, Osci_ChannelStateMachine*, Osci_ChannelStateMachine*);
 void OSCI_transceiver_update(Osci_Transceiver*);
 void OSCTI_update_timer_callback(Osci_Application*);
 uint8_t OSCI_is_channel_active(Osci_Transceiver*, uint8_t);
+uint8_t OSCI_is_channel_holdoff_timer_active(Osci_Transceiver*, uint8_t);
 
 ADC_callback osci_transceiver_received_callback;
 ADC_callback osci_transceiver_sent_callback;
