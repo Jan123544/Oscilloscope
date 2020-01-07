@@ -204,6 +204,80 @@ void Start_monitoring(Osci_Transceiver* ts)
 		ts->y_channel_state_machine->events.start_monitoring = TRUE;
 }
 
+int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data){
+	if(!condition) return 0;
+	fcn(fcn_data);
+	return 1;
+}
+
+void Transition(Osci_TransitionSpec spec){
+	switch(spec.stateMachineType){
+		case CHANNEL_STATE_MACHINE:
+			((Osci_ChannelStateMachine*)spec.stateMachine)->state = spec.new_state;
+			break;
+		case TRANSCEIVER:
+			((Osci_Transceiver*)spec.stateMachine)->state = spec.new_state;
+			break;
+	}
+}
+
+void Send_pong(void* data){
+	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+
+	ts->channelUpdateMask = 0;
+	ts->xSendingBuffer.opcode = SMSG_RESPONSE;
+	Send_data_blocking(ts, CHANNEL_X);
+}
+
+void Measure_stop(void* data){
+	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+
+	ts->channelUpdateMask = 0;
+	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
+}
+
+void Trigger(void* data){
+	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+
+	ts->channelUpdateMask = ts->receiveCompleteBuffer.triggerCommand;
+	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
+}
+
+void Transform(void* data){
+	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+
+	Reconfigure_channels_only_transform(ts);
+	ts->events.send_requested[0] = TRUE;
+	ts->events.send_requested[1] = TRUE;
+	//ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
+	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
+}
+
+void TrySendXbuffer(void*data){
+	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+
+	Gather_data(ts, ts->x_channel_state_machine, CHANNEL_X);
+	OSCI_transform_apply(&ts->xSendingBuffer, ts->x_channel_state_machine->params);
+	ts->xSendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
+	if(Send_data(ts, CHANNEL_X)){
+		ts->events.send_requested[0] = FALSE;
+	}
+	ts->channelUpdateMask &= ~MEASURE_SINGLE_X;
+}
+
+void TrySendYbuffer(void*data){
+	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+
+	Gather_data(ts, ts->y_channel_state_machine, CHANNEL_Y);
+	OSCI_transform_apply(&ts->ySendingBuffer, ts->y_channel_state_machine->params);
+	ts->ySendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_Y;
+	if(Send_data(ts, CHANNEL_Y)){
+		ts->events.send_requested[1] = FALSE;
+	}
+
+	ts->channelUpdateMask &= ~MEASURE_SINGLE_Y;
+}
+
 void OSCI_transceiver_update(Osci_Transceiver* ts)
 {
 	switch(ts->state)
@@ -214,48 +288,31 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				ts->events.received_settings = FALSE;
 
-				if (ts->receiveCompleteBuffer.triggerCommand & PING)
-				{
-					ts->channelUpdateMask = 0;
-
-					ts->xSendingBuffer.opcode = SMSG_RESPONSE;
-					Send_data_blocking(ts, CHANNEL_X);
+				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand & PING, Send_pong, (void*)ts)){
 					return;
 				}
 
-				if (ts->receiveCompleteBuffer.triggerCommand & MEASURE_STOP)
-				{
-					ts->channelUpdateMask = 0;
-
-					ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
+				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand & MEASURE_STOP, Measure_stop, (void*)ts)){
 					return;
 				}
 
-				if (ts->receiveCompleteBuffer.triggerCommand)
-				{
-					ts->channelUpdateMask = ts->receiveCompleteBuffer.triggerCommand;
-
-					ts->state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS;
+				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand, Trigger, (void*)ts)){
 					return;
 				}
-				else
-				{
-					Reconfigure_channels_only_transform(ts);
-					ts->events.send_requested[0] = TRUE;
-					ts->events.send_requested[1] = TRUE;
-					ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
+
+				if(TryExecOnFlag(!ts->receiveCompleteBuffer.triggerCommand, Transform, (void*)ts)){
 					return;
 				}
 			}
 
 			if (ts->events.send_requested[0] || ts->events.send_requested[1])
-				ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
+				Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS:
 		{
 			Send_shutdown_event(ts);
-			ts->state = OSCI_TRANSCEIVER_STATE_WAITING_FOR_CHANNELS_TO_SHUTDOWN;
+			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_WAITING_FOR_CHANNELS_TO_SHUTDOWN, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_WAITING_FOR_CHANNELS_TO_SHUTDOWN:
@@ -266,41 +323,22 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		case OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS:
 		{
 			Reconfigure_channels(ts);
-			ts->state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS;
+			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS:
 		{
 			Start_monitoring(ts);
-			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
+			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_IDLE, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING:
 		{
-			if (ts->events.send_requested[0])
-			{
-				Gather_data(ts, ts->x_channel_state_machine, CHANNEL_X);
-				OSCI_transform_apply(&ts->xSendingBuffer, ts->x_channel_state_machine->params);
-				ts->xSendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
-				if(Send_data(ts, CHANNEL_X)){
-					ts->events.send_requested[0] = FALSE;
-				}
-				ts->channelUpdateMask &= ~MEASURE_SINGLE_X;
-			}
 
-			if (ts->events.send_requested[1])
-			{
-				Gather_data(ts, ts->y_channel_state_machine, CHANNEL_Y);
-				OSCI_transform_apply(&ts->ySendingBuffer, ts->y_channel_state_machine->params);
-				ts->ySendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_Y;
-				if(Send_data(ts, CHANNEL_Y)){
-					ts->events.send_requested[1] = FALSE;
-				}
+			TryExecOnFlag(ts->events.send_requested[0], TrySendXbuffer, (void*)ts);
+			TryExecOnFlag(ts->events.send_requested[1], TrySendYbuffer, (void*)ts);
 
-				ts->channelUpdateMask &= ~MEASURE_SINGLE_Y;
-			}
-
-			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
+			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_IDLE, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 	}

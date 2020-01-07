@@ -72,7 +72,11 @@ enum Opcodes
 	SMSG_CHANNEL_Y_DATA		= 0xFDFE,
 	SMSG_CHANNEL_X_DATA		= 0xFEFE,
 };
-
+enum StateMachineType
+{
+	CHANNEL_STATE_MACHINE,
+	TRANSCEIVER
+};
 #define MIN(a,b) (a)<(b)?(a):(b)
 #define MAX(a,b) (a)>(b)?(a):(b)
 #define TRUE 1

@@ -160,4 +160,10 @@ struct osci_application
 	Osci_ChannelStateMachine yChannelStateMachine;
 };
 
+typedef struct transition_spec{
+	uint32_t new_state;
+	void* stateMachine;
+	uint8_t stateMachineType;
+} Osci_TransitionSpec;
+
 #endif /* INC_OSCI_DATA_STRUCTURES_H_ */
