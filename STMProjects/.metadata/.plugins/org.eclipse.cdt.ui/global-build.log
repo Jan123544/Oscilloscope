@@ -1267,3 +1267,210 @@ Finished building: default.size.stdout
  
 Finished building: osci.list
  
+07:20:05 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22100	    112	   1616	  23828	   5d14	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+07:26:28 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_channel_state_machine.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_channel_state_machine.d" -MT"Core/Src/osci_channel_state_machine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_channel_state_machine.o"
+../Core/Src/osci_channel_state_machine.c: In function 'OSCI_channel_awd_threshold_callback_y':
+../Core/Src/osci_channel_state_machine.c:209:31: error: incompatible type for argument 1 of 'OSCI_channel_start_measuring'
+  OSCI_channel_start_measuring(app->yChannelStateMachine);
+                               ^~~
+../Core/Src/osci_channel_state_machine.c:54:6: note: expected 'Osci_ChannelStateMachine * {aka struct osci_channelstatemachine *}' but argument is of type 'Osci_ChannelStateMachine {aka struct osci_channelstatemachine}'
+ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:87: Core/Src/osci_channel_state_machine.o] Error 1
+"make -j4 all" terminated with exit code 2. Build might be incomplete.
+07:26:59 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_channel_state_machine.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_channel_state_machine.d" -MT"Core/Src/osci_channel_state_machine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_channel_state_machine.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22100	    112	   1616	  23828	   5d14	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+07:32:56 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_channel_state_machine.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_channel_state_machine.d" -MT"Core/Src/osci_channel_state_machine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_channel_state_machine.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22028	    112	   1616	  23756	   5ccc	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+09:39:10 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22028	    112	   1616	  23756	   5ccc	osci.elf
+Finished building: default.size.stdout
+ 
+09:51:21 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_channel_state_machine.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_channel_state_machine.d" -MT"Core/Src/osci_channel_state_machine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_channel_state_machine.o"
+../Core/Src/osci_channel_state_machine.c: In function 'OSCI_channel_start_monitoring':
+../Core/Src/osci_channel_state_machine.c:39:3: warning: implicit declaration of function 'OSCI_channel_start_measuring'; did you mean 'OSCI_channel_start_monitoring'? [-Wimplicit-function-declaration]
+   OSCI_channel_start_measuring(csm);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   OSCI_channel_start_monitoring
+../Core/Src/osci_channel_state_machine.c: At top level:
+../Core/Src/osci_channel_state_machine.c:55:6: warning: conflicting types for 'OSCI_channel_start_measuring'
+ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/osci_channel_state_machine.c:39:3: note: previous implicit declaration of 'OSCI_channel_start_measuring' was here
+   OSCI_channel_start_measuring(csm);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22020	    112	   1616	  23748	   5cc4	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+10:17:23 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22020	    112	   1616	  23748	   5cc4	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+10:29:53 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_configurator.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_configurator.d" -MT"Core/Src/osci_configurator.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_configurator.o"
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+../Core/Src/osci_configurator.c: In function 'OSCI_configurator_recalculate_parameters_only_transform':
+../Core/Src/osci_configurator.c:168:30: error: 'new_p' undeclared (first use in this function)
+  ts->allReceivedParameters = new_p;
+                              ^~~~~
+../Core/Src/osci_configurator.c:168:30: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/osci_transceiver.c: In function 'Reconfigure_channels_only_transform':
+../Core/Src/osci_transceiver.c:170:2: warning: implicit declaration of function 'OSCI_configurator_recalculate_parameters_only_transform'; did you mean 'OSCI_configurator_recalculate_parameters'? [-Wimplicit-function-declaration]
+  OSCI_configurator_recalculate_parameters_only_transform(ts, &settingsCopy);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  OSCI_configurator_recalculate_parameters
+make: *** [Core/Src/subdir.mk:89: Core/Src/osci_configurator.o] Error 1
+make: *** Waiting for unfinished jobs....
+"make -j4 all" terminated with exit code 2. Build might be incomplete.
+10:31:19 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/osci.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci.d" -MT"Core/Src/osci.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci.o"
+arm-none-eabi-gcc "../Core/Src/osci_adc.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_adc.d" -MT"Core/Src/osci_adc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_adc.o"
+arm-none-eabi-gcc "../Core/Src/osci_channel_state_machine.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_channel_state_machine.d" -MT"Core/Src/osci_channel_state_machine.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_channel_state_machine.o"
+../Core/Src/osci_channel_state_machine.c: In function 'OSCI_channel_start_monitoring':
+../Core/Src/osci_channel_state_machine.c:39:3: warning: implicit declaration of function 'OSCI_channel_start_measuring'; did you mean 'OSCI_channel_start_monitoring'? [-Wimplicit-function-declaration]
+   OSCI_channel_start_measuring(csm);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   OSCI_channel_start_monitoring
+../Core/Src/osci_channel_state_machine.c: At top level:
+../Core/Src/osci_channel_state_machine.c:55:6: warning: conflicting types for 'OSCI_channel_start_measuring'
+ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
+      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/osci_channel_state_machine.c:39:3: note: previous implicit declaration of 'OSCI_channel_start_measuring' was here
+   OSCI_channel_start_measuring(csm);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc "../Core/Src/osci_configurator.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_configurator.d" -MT"Core/Src/osci_configurator.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_configurator.o"
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+arm-none-eabi-gcc "../Core/Src/osci_transform.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transform.d" -MT"Core/Src/osci_transform.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transform.o"
+arm-none-eabi-gcc "../Core/Src/stm32f3xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/stm32f3xx_it.d" -MT"Core/Src/stm32f3xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f3xx_it.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22148	    112	   1616	  23876	   5d44	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+10:34:12 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22164	    112	   1616	  23892	   5d54	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+10:36:06 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_configurator.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_configurator.d" -MT"Core/Src/osci_configurator.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_configurator.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22204	    112	   1616	  23932	   5d7c	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+10:37:17 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_configurator.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_configurator.d" -MT"Core/Src/osci_configurator.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_configurator.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22204	    112	   1616	  23932	   5d7c	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+10:39:29 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_configurator.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_configurator.d" -MT"Core/Src/osci_configurator.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_configurator.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22132	    112	   1616	  23860	   5d34	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 

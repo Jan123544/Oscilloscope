@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.application.Platform;
+import sample.constants.GlobalConstants;
+import sample.settings.InternalSettings;
 
 public class InternalSettingsCaretaker {
     public static void init(Controller c){

@@ -9,8 +9,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
-
-import java.util.concurrent.Semaphore;
+import sample.constants.PacketType;
+import sample.exceptions.BadInputException;
+import sample.exceptions.PongNotReceivedException;
+import sample.exceptions.SerialPortConnectionFailedException;
+import sample.popup.PopupWindowClass;
 
 public class Controller {
     // Primary stage

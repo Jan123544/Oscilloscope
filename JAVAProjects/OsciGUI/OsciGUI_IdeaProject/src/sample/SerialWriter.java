@@ -1,8 +1,13 @@
 package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
+import sample.constants.GlobalConstants;
+import sample.constants.PacketType;
+import sample.settings.ChannelSettings;
+import sample.settings.InternalSettings;
+import sample.settings.TimeControlSettings;
+import sample.settings.TriggerControlSettings;
 
-import java.io.InvalidObjectException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -10,19 +15,20 @@ public class SerialWriter implements  Runnable{
     private Controller c;
     private long lastUpdateTime;
     private boolean shouldStop;
+    private boolean updateNeeded;
 
-    public SerialWriter(Controller c){
+    SerialWriter(Controller c){
         this.c = c;
         lastUpdateTime = 0;
     }
 
-    public static void launch(SerialWriter writer){
+    static void launch(SerialWriter writer){
         Thread th = new Thread(writer);
         th.setDaemon(true);
         th.start();
     }
 
-    public static void sendOnce(Controller c, SerialPort port, PacketType packType){
+    static void sendOnce(Controller c, SerialPort port, PacketType packType){
         int numSent = 0;
         // Send update frame and update gui state.
         if (port.isOpen()) {
@@ -78,9 +84,9 @@ public class SerialWriter implements  Runnable{
         return res;
     }
 
-    public void forceStop(){
-        shouldStop = true;
-    }
+    void setUpdateNeeded(boolean updateNeeded){
+        this.updateNeeded = updateNeeded;
+    };
 
     @Override
     public void run() {
@@ -89,7 +95,8 @@ public class SerialWriter implements  Runnable{
 
         shouldStop = false;
         while(c.port.isOpen()){
-            if(c.autoUpdateCB.isSelected()) {
+            if(c.autoUpdateCB.isSelected() && updateNeeded) {
+                updateNeeded = false;
                 iSet = InternalSettingsCaretaker.readInternalSettings(c);
                 // Do not send update too often.
                 if (System.currentTimeMillis() - lastUpdateTime < (double) 1000 * iSet.settingsUpdateRate) {
@@ -98,7 +105,6 @@ public class SerialWriter implements  Runnable{
                         Thread.sleep(GlobalConstants.INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS);
                     } catch (InterruptedException e) {
                     }
-                    ;
                     continue;
                 }
 

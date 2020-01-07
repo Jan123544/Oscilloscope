@@ -1,5 +1,7 @@
 package sample;
 
+import sample.constants.GlobalConstants;
+
 public class OsciDataFrame {
     byte [] opcode;
     byte [] data;

@@ -36,7 +36,8 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 {
 	if (!csm->params.triggerLevel)
 	{
-		csm->events.start_measuring = TRUE;
+		OSCI_channel_start_measuring(csm);
+		//csm->events.start_measuring = TRUE;
 		return;
 	}
 
@@ -82,17 +83,15 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			if (csm->events.start_monitoring)
 			{
 				OSCI_channel_start_monitoring(csm);
-				csm->state = OSCI_CHANNEL_STATE_MONITORING;
 				csm->events.start_monitoring = FALSE;
 			}
 
-			if(csm->events.start_measuring)
+			/*if(csm->events.start_measuring)
 			{
 				OSCI_channel_start_measuring(csm);
-				csm->state = OSCI_CHANNEL_STATE_MEASURING;
 				csm->events.start_measuring = FALSE;
 				return;
-			}
+			}*/
 			break;
 		}
 		case OSCI_CHANNEL_STATE_MONITORING:
@@ -111,13 +110,12 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 				return;
 			}
 
-			if (csm->events.start_measuring)
+			/*if (csm->events.start_measuring)
 			{
 				OSCI_channel_start_measuring(csm);
-				csm->state = OSCI_CHANNEL_STATE_MEASURING;
 				csm->events.start_measuring = FALSE;
 				return;
-			}
+			}*/
 			break;
 		}
 		case OSCI_CHANNEL_STATE_MEASURING:
@@ -195,7 +193,8 @@ void OSCI_channel_awd_threshold_callback_x(Osci_Application* app)
 	if (app->xChannelStateMachine.state != OSCI_CHANNEL_STATE_MONITORING)
 		return;
 
-	app->xChannelStateMachine.events.start_measuring = TRUE;
+	//app->xChannelStateMachine.events.start_measuring = TRUE;
+	OSCI_channel_start_measuring(&app->xChannelStateMachine);
 }
 
 void OSCI_channel_awd_threshold_callback_y(Osci_Application* app)
@@ -205,7 +204,8 @@ void OSCI_channel_awd_threshold_callback_y(Osci_Application* app)
 	if (app->yChannelStateMachine.state != OSCI_CHANNEL_STATE_MONITORING)
 		return;
 
-	app->yChannelStateMachine.events.start_measuring = TRUE;
+	//app->yChannelStateMachine.events.start_measuring = TRUE;
+	OSCI_channel_start_measuring(&app->yChannelStateMachine);
 }
 
 void OSCI_channel_hold_off_callback_x(Osci_Application* app)

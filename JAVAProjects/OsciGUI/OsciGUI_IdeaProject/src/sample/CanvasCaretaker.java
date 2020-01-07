@@ -1,65 +1,58 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.print.PageLayout;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import sample.constants.Channel;
+import sample.constants.GlobalConstants;
+import sample.constants.LineOrientation;
+import sample.exceptions.BadInputException;
+import sample.settings.CanvasSettings;
 
 import java.util.ArrayList;
-import java.util.concurrent.Semaphore;
 import java.util.stream.Collectors;
 
 import static sample.GeneralOperations.*;
 
 class CanvasCaretaker {
     private double labelMargin;
+    private ArrayList<Double> yNormalisedBuffer;
+    private ArrayList<Double> xNormalisedBuffer;
 
-    //byte [] xDataBuffer;
-    //byte [] yDataBuffer;
-    ArrayList<Double> yNormalisedBuffer;
-    ArrayList<Double> xNormalisedBuffer;
+    private Polyline xPolyline;
+    private Polyline yPolyline;
 
-    long lastCanvasUpdateTime;
-    Semaphore drawingSem = new  Semaphore(1);
+    private Line xThresholdLine;
+    private Line yThresholdLine;
+    private Line xScanLine;
+    private Line yScanLine;
+    private Label xScanLineLabel;
+    private Label yScanLineLabel;
+    private Label xThresholdLineLabel;
+    private Label yThresholdLineLabel;
+    private Polygon xThresholdLineHandle;
+    private Polygon yThresholdLineHandle;
+    private Polygon xScanLineHandle;
+    private Polygon yScanLineHandle;
 
-    Polyline xPolyline;
-    Polyline yPolyline;
+    //private CheckBox enableXScanLineCB;
+    //private CheckBox enableYScanLineCB;
+    //private CheckBox enableXThresholdLineCB;
+    //private CheckBox enableYThresholdLineCB;
 
-    Line xThresholdLine;
-    Line yThresholdLine;
-    Line xScanLine;
-    Line yScanLine;
-    Label xScanLineLabel;
-    Label yScanLineLabel;
-    Label xThresholdLineLabel;
-    Label yThresholdLineLabel;
-    Polygon xThresholdLineHandle;
-    Polygon yThresholdLineHandle;
-    Polygon xScanLineHandle;
-    Polygon yScanLineHandle;
+    //private Label lowerUnitLabel;
+    //private Label upperUnitLabel;
 
-    CheckBox enableXScanLineCB;
-    CheckBox enableYScanLineCB;
-    CheckBox enableXThresholdLineCB;
-    CheckBox enableYThresholdLineCB;
-
-    Label lowerUnitLabel;
-    Label upperUnitLabel;
-
-    Canvas canvas;
-    Controller c;
-    GraphicsContext gc;
+    private Canvas canvas;
+    private Controller c;
+    private GraphicsContext gc;
 
     CanvasCaretaker (Controller c, Polyline xPolyline, Polyline yPolyline, Line xScanLine, Line yScanLine,
                      Line xThresholdLine, Line yThresholdLine, Label xScanLineLabel, Label yScanLineLabel,
@@ -81,30 +74,26 @@ class CanvasCaretaker {
         initLineEnableCheckboxes(enableXScanLineCB, enableYScanLineCB,  enableXThresholdLineCB, enableYThresholdLineCB);
     }
 
+
+    private void initLineEnableCheckbox(CheckBox cb, Line l, Label lab, Polygon h){
+        cb.selectedProperty().bindBidirectional(l.visibleProperty());
+        cb.selectedProperty().bindBidirectional(lab.visibleProperty());
+        cb.selectedProperty().bindBidirectional(h.visibleProperty());
+        cb.setSelected(false);
+    }
+
     private void initLineEnableCheckboxes(CheckBox newEnableXScanLineCB, CheckBox newEnableYScanLineCB,CheckBox newEnableXThresholdLineCB, CheckBox newEnableYThresholdLineCB){
-        enableXScanLineCB = newEnableXScanLineCB;
-        enableXScanLineCB.selectedProperty().bindBidirectional(xScanLine.visibleProperty());
-        enableXScanLineCB.selectedProperty().bindBidirectional(xScanLineLabel.visibleProperty());
-        enableXScanLineCB.selectedProperty().bindBidirectional(xScanLineHandle.visibleProperty());
-        enableXScanLineCB.setSelected(false);
+        //this.enableXScanLineCB = newEnableXScanLineCB;
+        initLineEnableCheckbox(newEnableXScanLineCB, xScanLine, xScanLineLabel, xScanLineHandle);
 
-        enableYScanLineCB = newEnableYScanLineCB;
-        enableYScanLineCB.selectedProperty().bindBidirectional(yScanLine.visibleProperty());
-        enableYScanLineCB.selectedProperty().bindBidirectional(yScanLineLabel.visibleProperty());
-        enableYScanLineCB.selectedProperty().bindBidirectional(yScanLineHandle.visibleProperty());
-        enableYScanLineCB.setSelected(false);
+        //this.enableYScanLineCB = newEnableYScanLineCB;
+        initLineEnableCheckbox(newEnableYScanLineCB, yScanLine, yScanLineLabel, yScanLineHandle);
 
-        enableXThresholdLineCB = newEnableXThresholdLineCB;
-        enableXThresholdLineCB.selectedProperty().bindBidirectional(xThresholdLine.visibleProperty());
-        enableXThresholdLineCB.selectedProperty().bindBidirectional(xThresholdLineLabel.visibleProperty());
-        enableXThresholdLineCB.selectedProperty().bindBidirectional(xThresholdLineHandle.visibleProperty());
-        enableXThresholdLineCB.setSelected(false);
+        //this.enableXThresholdLineCB = newEnableXThresholdLineCB;
+        initLineEnableCheckbox(newEnableXThresholdLineCB, xThresholdLine, xThresholdLineLabel, xThresholdLineHandle);
 
-        enableYThresholdLineCB = newEnableYThresholdLineCB;
-        enableYThresholdLineCB.selectedProperty().bindBidirectional(yThresholdLine.visibleProperty());
-        enableYThresholdLineCB.selectedProperty().bindBidirectional(yThresholdLineLabel.visibleProperty());
-        enableYThresholdLineCB.selectedProperty().bindBidirectional(yThresholdLineHandle.visibleProperty());
-        enableYThresholdLineCB.setSelected(false);
+        //this.enableYThresholdLineCB = newEnableYThresholdLineCB;
+        initLineEnableCheckbox(newEnableYThresholdLineCB, yThresholdLine, yThresholdLineLabel, yThresholdLineHandle);
     }
 
     private void initUnitLabels(Label newLowerUnitLabel, Label newUpperUnitLabel){
@@ -113,19 +102,19 @@ class CanvasCaretaker {
         double lowerUnitLabelXOffset = 10;
         double lowerUnitLabelYOffset = 25;
 
-        upperUnitLabel = newLowerUnitLabel;
-        upperUnitLabel.setText("[V/V]");
-        upperUnitLabel.setFont(Font.font("", FontWeight.BOLD, 13));
-        upperUnitLabel.setTranslateX(canvas.getWidth() - upperUnitLabelXOffset);
-        upperUnitLabel.setTranslateY(upperUnitLabelYOffset);
-        upperUnitLabel.setTextFill(Color.RED);
+        newUpperUnitLabel = newLowerUnitLabel;
+        newUpperUnitLabel.setText("[V/V]");
+        newUpperUnitLabel.setFont(Font.font("", FontWeight.BOLD, 13));
+        newUpperUnitLabel.setTranslateX(canvas.getWidth() - upperUnitLabelXOffset);
+        newUpperUnitLabel.setTranslateY(upperUnitLabelYOffset);
+        newUpperUnitLabel.setTextFill(Color.RED);
 
-        lowerUnitLabel = newUpperUnitLabel;
-        lowerUnitLabel.setText("[V/s]");
-        lowerUnitLabel.setFont(Font.font("", FontWeight.BOLD, 13));
-        lowerUnitLabel.setTranslateX(lowerUnitLabelXOffset);
-        lowerUnitLabel.setTranslateY(canvas.getHeight() - lowerUnitLabelYOffset);
-        lowerUnitLabel.setTextFill(Color.RED);
+        newLowerUnitLabel = newUpperUnitLabel;
+        newLowerUnitLabel.setText("[V/s]");
+        newLowerUnitLabel.setFont(Font.font("", FontWeight.BOLD, 13));
+        newLowerUnitLabel.setTranslateX(lowerUnitLabelXOffset);
+        newLowerUnitLabel.setTranslateY(canvas.getHeight() - lowerUnitLabelYOffset);
+        newLowerUnitLabel.setTextFill(Color.RED);
     }
 
     private void initMargin(){
@@ -133,24 +122,29 @@ class CanvasCaretaker {
     }
 
     private void initBuffers(){
-        //xDataBuffer = new byte[GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
-        //yDataBuffer = new byte[GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES];
         yNormalisedBuffer = new ArrayList<>();
         xNormalisedBuffer = new ArrayList<>();
     }
 
+    private void initPolyLine(Polyline pl, Channel channel){
+        pl.setStrokeWidth(3);
+        pl.setStrokeType(StrokeType.CENTERED);
+        switch (channel){
+            case CHANNEL_X:
+                pl.setStroke(Color.RED);
+                break;
+            case CHANNEL_Y:
+                pl.setStroke(Color.YELLOW);
+        }
+        pl.setVisible(false);
+    }
+
     private void initPolyLines(Polyline newXPolyLine, Polyline newYPolyline){
         xPolyline = newXPolyLine;
-        xPolyline.setStrokeWidth(3);
-        xPolyline.setStrokeType(StrokeType.CENTERED);
-        xPolyline.setStroke(Color.RED);
-        xPolyline.setVisible(false);
+        initPolyLine(xPolyline, Channel.CHANNEL_X);
 
         yPolyline = newYPolyline;
-        yPolyline.setStrokeWidth(3);
-        yPolyline.setStrokeType(StrokeType.CENTERED);
-        yPolyline.setStroke(Color.YELLOW);
-        yPolyline.setVisible(false);
+        initPolyLine(yPolyline, Channel.CHANNEL_Y);
     }
 
     private void initThresholdLinesWithHandlesAndLabels(Line xThresholdLine, Polygon xThresholdLineHandle, Label xThresholdLineLabel, Line yThresholdLine, Polygon yThresholdLineHandle, Label yThresholdLineLabel){
@@ -160,16 +154,14 @@ class CanvasCaretaker {
         this.yThresholdLine = yThresholdLine;
         this.yThresholdLineHandle = yThresholdLineHandle;
         this.yThresholdLineLabel = yThresholdLineLabel;
-        double thresholdLineLabelOffsetDefault = 5;
-        initLineWithHandleAndLabel(this.xThresholdLineHandle, this.xThresholdLine, this.xThresholdLineLabel, true, canvas.getHeight()/2, Color.RED, 1, 0, GlobalConstants.X_CHANNEL_ID);
-        initLineWithHandleAndLabel(this.yThresholdLineHandle, this.yThresholdLine, this.yThresholdLineLabel, true, canvas.getHeight()/2.5, Color.YELLOW, 1, 3, GlobalConstants.Y_CHANNEL_ID);
+        initLineWithHandleAndLabel(this.xThresholdLineHandle, this.xThresholdLine, this.xThresholdLineLabel, LineOrientation.HORIZONTAL, canvas.getHeight()/2, Channel.CHANNEL_X);
+        initLineWithHandleAndLabel(this.yThresholdLineHandle, this.yThresholdLine, this.yThresholdLineLabel, LineOrientation.HORIZONTAL, canvas.getHeight()/2.5, Channel.CHANNEL_Y);
 
-        xThresholdLineLabel.setText("0");
-        yThresholdLineLabel.setText("0");
         setXThresholdLineVoltage(0);
         setYThresholdLineVoltage(0);
-        xThresholdLineLabel.setTranslateY(xThresholdLineLabel.getTranslateY() - thresholdLineLabelOffsetDefault);
-        yThresholdLineLabel.setTranslateY(yThresholdLineLabel.getTranslateY() - thresholdLineLabelOffsetDefault);
+        // This needs to be done, because label.getWidth() does not get initialized until stage is draw. So initial settings, must be corrected manually.
+        xThresholdLineLabel.setTranslateY(xThresholdLineLabel.getTranslateY() - 5);
+        yThresholdLineLabel.setTranslateY(yThresholdLineLabel.getTranslateY() - 5);
     }
 
     private void setThresholdLineVoltage(Line line, Label label, Polygon handle, double voltage, double sensitivity, double offset){
@@ -196,6 +188,16 @@ class CanvasCaretaker {
         setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, voltage, c.ySensitivityS.getValue(), c.yOffsetS.getValue());
     }
 
+    void setThresholdLineVoltage(double voltage, Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                setThresholdLineVoltage(xThresholdLine, xThresholdLineLabel,  xThresholdLineHandle, voltage, c.xSensitivityS.getValue(), c.xOffsetS.getValue());
+                break;
+            case CHANNEL_Y:
+                setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, voltage, c.ySensitivityS.getValue(), c.yOffsetS.getValue());
+        }
+    }
+
     double voltageToCanvasYCoordinate(double voltage, double sensitivity, double offset){
         return -((voltage + offset)/sensitivity/GlobalConstants.GRATICULE_Y_DIVISIONS*getDrawableHeight()+drawingYOffset()-canvas.getHeight());
     }
@@ -212,8 +214,8 @@ class CanvasCaretaker {
         this.yScanLineHandle = yScanLineHandle;
         this.yScanLineLabel = yScanLineLabel;
         float scanLineLabelDefaultOffset = 11;
-        initLineWithHandleAndLabel(this.xScanLineHandle, this.xScanLine, this.xScanLineLabel, false, canvas.getWidth()/2, Color.RED, 1, 0, GlobalConstants.X_CHANNEL_ID);
-        initLineWithHandleAndLabel(this.yScanLineHandle, this.yScanLine, this.yScanLineLabel, false, canvas.getWidth()/2.5, Color.YELLOW, 1, 3, GlobalConstants.Y_CHANNEL_ID);
+        initLineWithHandleAndLabel(this.xScanLineHandle, this.xScanLine, this.xScanLineLabel, LineOrientation.VERTICAL, canvas.getWidth()/2,  Channel.CHANNEL_X);
+        initLineWithHandleAndLabel(this.yScanLineHandle, this.yScanLine, this.yScanLineLabel, LineOrientation.VERTICAL, canvas.getWidth()/2.5, Channel.CHANNEL_Y);
 
         xScanLineLabel.setTranslateX(canvas.getWidth()/2 - scanLineLabelDefaultOffset);
         yScanLineLabel.setTranslateX(canvas.getWidth()/2.5 - scanLineLabelDefaultOffset);
@@ -242,57 +244,93 @@ class CanvasCaretaker {
         }
     }
 
-    private void initLineWithHandleAndLabel(Polygon handle, Line line, Label label, boolean isHorizontal, double startLocation, Paint color, double lineWidth, double lineDashOffset, int channelID){
-
-        handle.getPoints().clear();
-        label.setTextFill(color);
-        if(isHorizontal){
-            label.setTranslateX(canvas.getWidth() - drawingXOffset()/1.5 );
-
-            line.setStroke(color);
-            line.setStrokeWidth(lineWidth);
-            line.setStrokeDashOffset(lineDashOffset);
-            line.getStrokeDashArray().addAll(3.0,1.0,1.0,1.0,3.0);
-            line.setStartX(drawingXOffset());
-            line.setStartY(0);
-            line.setEndY(0);
-            line.setEndX(canvas.getWidth() - drawingXOffset());
-            line.setTranslateY(startLocation);
-
-            handle.getPoints().addAll(0.0, 0.0, 10.0, -8.0, 10.0, 8.0);
-            handle.setTranslateX(canvas.getWidth() - drawingXOffset());
-            handle.setTranslateY(startLocation);
-            handle.setFill(color);
-        }else{
-            label.setTranslateX(startLocation);
-
-            line.setStroke(color);
-            line.setStrokeWidth(lineWidth);
-            line.setStrokeDashOffset(lineDashOffset);
-            line.getStrokeDashArray().addAll(3.0,1.0,1.0,1.0,3.0);
-            line.setStartX(0);
-            line.setStartY(drawingYOffset());
-            line.setEndX(0);
-            line.setTranslateX(startLocation);
-            line.setEndY(canvas.getHeight() - drawingYOffset());
-
-            handle.getPoints().clear();
-            handle.getPoints().addAll(0.0, 0.0, 8.0, -10.0, -8.0, -10.0);
-            handle.setTranslateX(startLocation);
-            handle.setTranslateY(drawingYOffset());
-            handle.setFill(color);
-
-            handle.setOnMouseDragged(mouseEvent -> {
-                double newX = GeneralOperations.putInRange(
-                        handle.getTranslateX() + mouseEvent.getX(),
-                        drawingXOffset(),
-                        canvas.getWidth()-drawingXOffset());
-                line.setTranslateX(newX);
-                handle.setTranslateX(newX);
-                label.setTranslateX(newX - label.getWidth()/2);
-                updateScanLineLabels();
-            });
+    private void initTraceLine(Line l, double startLocation, Channel channel, LineOrientation type){
+        l.setStrokeWidth(1);
+        l.getStrokeDashArray().addAll(3.0,1.0,1.0,1.0,3.0);
+        switch (channel){
+            case CHANNEL_X:
+                l.setStroke(Color.RED);
+                l.setStrokeDashOffset(0);
+                break;
+            case CHANNEL_Y:
+                l.setStroke(Color.YELLOW);
+                l.setStrokeDashOffset(3);
+                break;
         }
+        switch (type){
+            case HORIZONTAL:
+                l.setStartY(0);
+                l.setEndY(0);
+                l.setStartX(drawingXOffset());
+                l.setEndX(canvas.getWidth() - drawingXOffset());
+                l.setTranslateY(startLocation);
+                break;
+            case VERTICAL:
+                l.setStartX(0);
+                l.setEndX(0);
+                l.setEndY(canvas.getHeight() - drawingYOffset());
+                l.setStartY(drawingYOffset());
+                l.setTranslateX(startLocation);
+        }
+
+    }
+
+    private void initTraceLabel(Label l, double height, Channel channel, LineOrientation orientation){
+        switch (channel){
+            case CHANNEL_X:
+                l.setTextFill(Color.RED);
+                break;
+            case CHANNEL_Y:
+                l.setTextFill(Color.YELLOW);
+        }
+        switch (orientation){
+            case HORIZONTAL:
+                l.setTranslateX(canvas.getWidth() - drawingXOffset()/1.5 );
+                break;
+            case VERTICAL:
+                l.setTranslateX(height);
+        }
+    }
+
+    private void initTraceHandle(Polygon h, Line l, Label lab, double startLocation, Channel channel, LineOrientation orientation){
+        h.getPoints().clear();
+        switch (channel){
+            case CHANNEL_X:
+                h.setFill(Color.RED);
+                break;
+            case CHANNEL_Y:
+                h.setFill(Color.YELLOW);
+        }
+        switch (orientation){
+            case HORIZONTAL:
+                h.getPoints().addAll(0.0, 0.0, 10.0, -8.0, 10.0, 8.0);
+                h.setTranslateX(canvas.getWidth() - drawingXOffset());
+                h.setTranslateY(startLocation);
+                break;
+            case VERTICAL:
+                h.getPoints().clear();
+                h.getPoints().addAll(0.0, 0.0, 8.0, -10.0, -8.0, -10.0);
+                h.setTranslateX(startLocation);
+                h.setTranslateY(drawingYOffset());
+                h.setOnMouseDragged(mouseEvent -> {
+                    double newX = GeneralOperations.putInRange(
+                            h.getTranslateX() + mouseEvent.getX(),
+                            drawingXOffset(),
+                            canvas.getWidth() - drawingXOffset());
+                    l.setTranslateX(newX);
+                    h.setTranslateX(newX);
+                    lab.setTranslateX(newX - lab.getWidth() / 2);
+                    updateScanLineLabels();
+                });
+        }
+
+    }
+
+    private void initLineWithHandleAndLabel(Polygon handle, Line line, Label label, LineOrientation orientation, double startLocation, Channel channel){
+        initTraceLine(line, startLocation, channel, orientation);
+        initTraceLabel(label, startLocation, channel, orientation);
+        initTraceHandle(handle, line, label, startLocation, channel, orientation);
+
         line.setVisible(true);
         handle.setVisible(true);
         label.setVisible(true);
@@ -380,51 +418,16 @@ class CanvasCaretaker {
         gc.setFill(Color.BLACK);
     }
 
-    private  void drawDatapoint(Controller c, double x, double y){
-        gc.fillOval(x,y,3,3);
-    }
-
-    private  void drawGraphs(Controller c, byte [] xData, byte [] yData, CanvasSettings set){
-        int numBytes = GlobalConstants.NUM_SAMPLES*GlobalConstants.SAMPLE_SIZE_BYTES;
-
-        if (set.xyMode){
-            gc.setFill(Color.RED);
-            for(int i =0;i<numBytes;i+=2){
-                drawDatapoint(c, drawingXOffset() + (double) extractUShort(xData[i], xData[i+1])*getDrawableWidth()/set.canvasVerticalNormalisation, drawingYOffset() + getDrawableHeight() - (double) extractUShort(yData[i], yData[i+1])*getDrawableHeight()/set.canvasVerticalNormalisation);
-            }
-            gc.setFill(Color.BLACK);
-            return;
-        }
-
-        if (set.xShowing){
-            gc.setFill(Color.RED);
-            for(int i =0;i<numBytes;i+=2){
-                drawDatapoint(c, drawingXOffset () + (double) i/4*unitTime(c), drawingYOffset() + getDrawableHeight() - (double) extractUShort(xData[i], xData[i+1])*getDrawableHeight()/set.canvasVerticalNormalisation);
-            }
-            gc.setFill(Color.BLACK);
-        }
-
-        if (set.yShowing){
-            gc.setFill(Color.YELLOW);
-            for(int i =0;i<numBytes;i+=2){
-                drawDatapoint(c, drawingXOffset () + (double) i/2*unitTime(c), drawingYOffset() +  getDrawableHeight() - (double) extractUShort(yData[i], yData[i+1])*getDrawableHeight()/set.canvasVerticalNormalisation);
-            }
-            gc.setFill(Color.BLACK);
-        }
-
-    }
-
     private void clearCanvas(){
         gc.setFill(Color.BLACK);
         gc.fillRect(0,0,c.canvas.getWidth(), c.canvas.getHeight());
     }
 
-
-    public  double unitTime(Controller c){
+    private double unitTime(Controller c){
         return getDrawableWidth()/GlobalConstants.NUM_SAMPLES;
     }
 
-    public  CanvasSettings readCanvasSettings(Controller c) throws BadInputException{
+    public  CanvasSettings readCanvasSettings(Controller c) throws BadInputException {
             CanvasSettings set = new CanvasSettings();
 
             set.yShowing = c.viewSettingsCaretaker.isYShowing();

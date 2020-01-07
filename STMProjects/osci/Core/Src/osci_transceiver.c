@@ -164,6 +164,13 @@ void Switch_to_reconfiguring_after_shutdown(Osci_Transceiver* ts)
 	}
 }
 
+
+void Reconfigure_channels_only_transform(Osci_Transceiver* ts){
+	Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
+	OSCI_configurator_recalculate_parameters_only_transform(ts, &settingsCopy);
+	OSCI_configurator_distribute_settings(ts, &settingsCopy);
+}
+
 void Reconfigure_channels(Osci_Transceiver* ts)
 {
 	Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
@@ -233,7 +240,9 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 				}
 				else
 				{
-					Reconfigure_channels(ts);
+					Reconfigure_channels_only_transform(ts);
+					ts->events.send_requested[0] = TRUE;
+					ts->events.send_requested[1] = TRUE;
 					ts->state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING;
 					return;
 				}

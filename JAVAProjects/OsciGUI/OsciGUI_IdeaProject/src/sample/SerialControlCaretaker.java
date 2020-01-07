@@ -2,6 +2,7 @@ package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
 import javafx.collections.FXCollections;
+import sample.settings.SerialSettings;
 
 public class SerialControlCaretaker {
     public static void initSerialControlSettings(Controller c){

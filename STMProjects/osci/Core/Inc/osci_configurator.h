@@ -15,5 +15,6 @@
 void OSCI_configurator_config_defaults_ts(Osci_Transceiver*);
 void OSCI_configurator_switch_relays(Osci_Transceiver* ts, Osci_Settings* s);
 void OSCI_configurator_recalculate_parameters(Osci_Transceiver* ts, Osci_Settings* s);
+void OSCI_configurator_recalculate_parameters_only_transform(Osci_Transceiver* ts, Osci_Settings* s);
 void OSCI_configurator_distribute_settings(Osci_Transceiver* ts, Osci_Settings* s);
 #endif /* INC_OSCI_CONFIGURATOR_H_ */

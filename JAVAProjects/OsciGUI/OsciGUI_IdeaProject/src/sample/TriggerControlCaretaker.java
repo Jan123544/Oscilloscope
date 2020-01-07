@@ -1,13 +1,62 @@
 package sample;
 
 import javafx.collections.FXCollections;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import sample.constants.Channel;
+import sample.constants.GlobalConstants;
+import sample.exceptions.BadInputException;
+import sample.exceptions.InvalidTriggerModeException;
+import sample.settings.TriggerControlSettings;
 
 import java.util.Locale;
 
 
 class TriggerControlCaretaker {
 
+
+    static private void triggerControlCallbackInsideTF(Controller c, TextField tf, Slider s, Channel channel){
+        // Get the minimum trigger level for the active range.
+        float activeMinimumTriggerLevel = getMinimumTriggerLevel(c, channel);
+        float activeMaximumTriggerLevel = getMaximumTriggerLevel(c, channel);
+        // Put read value into range, update slider and also update TF with value in range.
+        GeneralOperations.setTFSControlsAndCropInRange(tf, s, Float.parseFloat(tf.getText()), activeMinimumTriggerLevel, activeMaximumTriggerLevel);
+        c.canvasCaretaker.setThresholdLineVoltage(s.getValue(), channel);
+        c.serialWriter.setUpdateNeeded(true);
+    }
+
+    static private void setupTriggerControlCallbackTF(Controller c, TextField tf, Slider s, Channel channel){
+        tf.setOnKeyReleased( (key) -> {
+            if (key.getCode() == KeyCode.ENTER){
+                triggerControlCallbackInsideTF(c,tf,s,channel);
+            }
+        });
+        tf.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if(!t1){
+                triggerControlCallbackInsideTF(c,tf,s,channel);
+            }
+        });
+    }
+
+    static private void initThresholdTFDefaults(Controller c, TextField tf, Slider s, Channel channel){
+        float defaultTriggerLevel = getDefaultTriggerLevel(c, channel);
+        tf.setText(String.valueOf(defaultTriggerLevel));
+        setupTriggerControlCallbackTF(c,tf,s,channel);
+    }
+
+    static private void initThresholdSDefaults(Controller c, TextField tf, Slider s, Channel channel){
+        float defaultTriggerLevel = getDefaultTriggerLevel(c, channel);
+        s.setMin(defaultTriggerLevel);
+        s.setMax(GlobalConstants.TRIGGER_LEVEL_DEFAULT_MAX);
+        s.setValue(defaultTriggerLevel);
+        s.valueProperty().addListener((observableValue, number, t1) -> {
+            tf.setText(String.format(Locale.US, "%.2g", t1.doubleValue()));
+            c.canvasCaretaker.setThresholdLineVoltage(t1.doubleValue(), channel);
+            c.serialWriter.setUpdateNeeded(true);
+        });
+
+    }
 
     static void initTriggerControlSettings(Controller c){
         c.xTriggerModeCH.setItems(FXCollections.observableArrayList("Single", "Continuous"));
@@ -16,116 +65,45 @@ class TriggerControlCaretaker {
         c.yTriggerModeCH.setItems(FXCollections.observableArrayList("Single", "Continuous"));
         c.yTriggerModeCH.getSelectionModel().select(0);
 
-        float defaultMinimumTriggerLevelX = getMinimumTriggerLevelXDefault();
-        c.xTriggerLevelTF.setText(String.valueOf(defaultMinimumTriggerLevelX));
-        c.xTriggerLevelTF.setOnKeyReleased( (key) -> {
-            if (key.getCode() == KeyCode.ENTER){
-                // Get the minimum trigger level for the active range.
-                float activeMinimumTriggerLevelX = getMinimumTriggerLevelX(c);
-                float activeMaximumTriggerLevelX = getMaximumTriggerLevelX(c);
-                // Put read value into range, update slider and also update TF with value in range.
-                GeneralOperations.setTFSControlsAndCropInRange(c.xTriggerLevelTF, c.xTriggerLevelS, Float.parseFloat(c.xTriggerLevelTF.getText()), activeMinimumTriggerLevelX, activeMaximumTriggerLevelX);
-                c.canvasCaretaker.setXThresholdLineVoltage(c.xTriggerLevelS.getValue());
-            }
-        });
-        c.xTriggerLevelTF.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if(!t1){
-                float activeMinimumTriggerLevelX = getMinimumTriggerLevelX(c);
-                float activeMaximumTriggerLevelX = getMaximumTriggerLevelX(c);
-                // Put read value into range, update slider and also update TF with value in range.
-                GeneralOperations.setTFSControlsAndCropInRange(c.xTriggerLevelTF, c.xTriggerLevelS, Float.parseFloat(c.xTriggerLevelTF.getText()), activeMinimumTriggerLevelX, activeMaximumTriggerLevelX);
-                c.canvasCaretaker.setXThresholdLineVoltage(c.xTriggerLevelS.getValue());
-            }
-        });
 
-
-        float defaultMinimumTriggerLevelY = getMinimumTriggerLevelYDefault();
-        c.yTriggerLevelTF.setText(String.valueOf(defaultMinimumTriggerLevelY));
-        c.yTriggerLevelTF.setOnKeyReleased( (key) -> {
-            if (key.getCode() == KeyCode.ENTER){
-                // Get the minimum trigger level for the active range.
-                float activeMinimumTriggerLevelY = getMinimumTriggerLevelY(c);
-                float activeMaximumTriggerLevelY = getMaximumTriggerLevelY(c);
-                // Put read value into range, update slider and also update TF with value in range.
-                GeneralOperations.setTFSControlsAndCropInRange(c.yTriggerLevelTF, c.yTriggerLevelS, Float.parseFloat(c.yTriggerLevelTF.getText()), activeMinimumTriggerLevelY, activeMaximumTriggerLevelY);
-                c.canvasCaretaker.setYThresholdLineVoltage(c.yTriggerLevelS.getValue());
-            }
-        });
-        c.yTriggerLevelTF.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if(!t1){
-                // Get the minimum trigger level for the active range.
-                float activeMinimumTriggerLevelY = getMinimumTriggerLevelY(c);
-                float activeMaximumTriggerLevelY = getMaximumTriggerLevelY(c);
-                // Put read value into range, update slider and also update TF with value in range.
-                GeneralOperations.setTFSControlsAndCropInRange(c.yTriggerLevelTF, c.yTriggerLevelS, Float.parseFloat(c.yTriggerLevelTF.getText()), activeMinimumTriggerLevelY, activeMaximumTriggerLevelY);
-                c.canvasCaretaker.setYThresholdLineVoltage(c.yTriggerLevelS.getValue());
-            }
-        });
-
-        c.xTriggerLevelS.setMin(defaultMinimumTriggerLevelX);
-        c.xTriggerLevelS.setMax(GlobalConstants.TRIGGER_LEVEL_DEFAULT_MAX);
-        c.xTriggerLevelS.setValue(defaultMinimumTriggerLevelX);
-        c.xTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> {
-            c.xTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
-            c.canvasCaretaker.setXThresholdLineVoltage(t1.doubleValue());
-        });
-
-        c.yTriggerLevelS.setMin(defaultMinimumTriggerLevelY);
-        c.yTriggerLevelS.setMax(GlobalConstants.TRIGGER_LEVEL_DEFAULT_MAX);
-        c.yTriggerLevelS.setValue(defaultMinimumTriggerLevelY);
-        c.yTriggerLevelS.valueProperty().addListener((observableValue, number, t1) -> {
-            c.yTriggerLevelTF.setText(String.format(Locale.US, "%g", t1.doubleValue()));
-            c.canvasCaretaker.setYThresholdLineVoltage(t1.doubleValue());
-        });
+        initThresholdTFDefaults(c, c.xTriggerLevelTF, c.xTriggerLevelS, Channel.CHANNEL_X);
+        initThresholdTFDefaults(c, c.yTriggerLevelTF, c.yTriggerLevelS, Channel.CHANNEL_Y);
+        initThresholdSDefaults(c, c.xTriggerLevelTF, c.xTriggerLevelS, Channel.CHANNEL_X);
+        initThresholdSDefaults(c, c.yTriggerLevelTF, c.yTriggerLevelS, Channel.CHANNEL_Y);
     }
 
-    static double getThresholdX(Controller c){
-        return c.xTriggerLevelS.getValue();
-    }
-
-    static double getThresholdY(Controller c){
-        return c.yTriggerLevelS.getValue();
-    }
-
-    private static float getMinimumTriggerLevelXDefault(){
-        // return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_X);
+    private static float getDefaultTriggerLevel(Controller c, Channel channel){
         return 0;
     }
 
-    private static float getMinimumTriggerLevelYDefault(){
-        //return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_Y*ChannelControlCaretaker.idxToRange(GlobalConstants.CHANNEL_RANGE_DEFAULT_INDEX_Y);
+    private static float getMinimumTriggerLevel(Controller c, Channel channel){
         return 0;
     }
 
-    private static float getMinimumTriggerLevelX(Controller c){
-        //return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_X*ChannelControlCaretaker.idxToRange(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
-        return 0;
+    private static float getMaximumTriggerLevel(Controller c, Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                return ChannelControlCaretaker.getXRange(c);
+            case CHANNEL_Y:
+                return ChannelControlCaretaker.getYRange(c);
+            default:
+                System.err.println("Invalid channel getMaximumTriggerLevel");
+                return 0;
+        }
     }
 
-    private static float getMinimumTriggerLevelY(Controller c){
-        //return GlobalConstants.TRIGGER_LEVEL_RESOLUTION_Y*ChannelControlCaretaker.idxToRange(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
-        return 0;
+    static void updateSliderRange(Controller c, Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                c.xTriggerLevelS.setMin(getMinimumTriggerLevel(c, Channel.CHANNEL_X));
+                c.xTriggerLevelS.setMax(getMaximumTriggerLevel(c, Channel.CHANNEL_X));
+            case CHANNEL_Y:
+                c.yTriggerLevelS.setMin(getMinimumTriggerLevel(c, Channel.CHANNEL_Y));
+                c.yTriggerLevelS.setMax(getMaximumTriggerLevel(c, Channel.CHANNEL_Y));
+        }
     }
 
-    private static float getMaximumTriggerLevelY(Controller c){
-        return ChannelControlCaretaker.idxToRange(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
-    }
-
-    private static float getMaximumTriggerLevelX(Controller c){
-        return ChannelControlCaretaker.idxToRange(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex());
-    }
-
-    static void updateSliderRangeX(Controller c){
-        c.xTriggerLevelS.setMin(getMinimumTriggerLevelX(c));
-        c.xTriggerLevelS.setMax(getMaximumTriggerLevelX(c));
-    }
-
-    static void updateSliderRangeY(Controller c){
-        c.yTriggerLevelS.setMin(getMinimumTriggerLevelY(c));
-        c.yTriggerLevelS.setMax(getMaximumTriggerLevelY(c));
-    }
-
-    static TriggerControlSettings readTriggerControlSettings(Controller c) throws BadInputException{
+    static TriggerControlSettings readTriggerControlSettings(Controller c) throws BadInputException {
         TriggerControlSettings set = new TriggerControlSettings();
 
         set.triggerCommand = GlobalConstants.TRIGGER_COMMAND_TRANSFORM; // Default is not triggering, just adjust transform parameters.

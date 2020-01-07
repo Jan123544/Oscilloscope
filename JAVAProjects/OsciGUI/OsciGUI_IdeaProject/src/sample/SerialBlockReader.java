@@ -1,10 +1,10 @@
 package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
+import sample.constants.GlobalConstants;
+import sample.constants.Opcodes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 public class SerialBlockReader implements Runnable{
 
@@ -45,15 +45,20 @@ public class SerialBlockReader implements Runnable{
         return ret;
     }
 
+    private void readUpdateType(byte[] buf){
+        port.readBytes(buf, 1); // Padding
+        port.readBytes(buf, 1);
+    }
+
     private void readAndUpdateX() {
         readDataIntoBuffer(xDataBuffer, port);
-        //readUpdateType(xUpdateTypeBuffer);
+        readUpdateType(xUpdateTypeBuffer);
         c.canvasCaretaker.requestXChannelUpdate(convertBufferToArrayList(xDataBuffer, GlobalConstants.NUM_DATA_BYTES), xUpdateTypeBuffer[0]);
     }
 
     private void readAndUpdateY() {
         readDataIntoBuffer(yDataBuffer, port);
-        //readUpdateType(yUpdateTypeBuffer);
+        readUpdateType(yUpdateTypeBuffer);
         c.canvasCaretaker.requestYChannelUpdate(convertBufferToArrayList(yDataBuffer, GlobalConstants.NUM_DATA_BYTES), yUpdateTypeBuffer[0]);
     }
 
@@ -95,8 +100,6 @@ public class SerialBlockReader implements Runnable{
 
         return opcodeBuffer;
     }
-
-
 
     @Override
     public void run() {

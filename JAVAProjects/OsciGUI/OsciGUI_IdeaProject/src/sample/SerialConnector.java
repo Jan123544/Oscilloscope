@@ -1,11 +1,10 @@
 package sample;
 
 import com.fazecast.jSerialComm.SerialPort;
-
-import javax.sql.rowset.serial.SerialRef;
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import sample.constants.PacketType;
+import sample.exceptions.PongNotReceivedException;
+import sample.exceptions.SerialPortConnectionFailedException;
+import sample.settings.SerialSettings;
 
 public class SerialConnector {
 
