@@ -26,6 +26,9 @@
 %\usepackage{microtype}
 \usepackage{circuitikz}
 
+\usepackage{subcaption}
+\usepackage{subfiles}
+
 \usetikzlibrary{positioning}
 
 \crefname{equation}{rovn.}{rovn.}
@@ -46,3 +49,13 @@
 \newenvironment{Figure}
 {\par\medskip\noindent\minipage{\linewidth}}
 {\endminipage\par\medskip}
+
+\makeatletter
+\newenvironment{tablehere}
+{\def\@captype{table}}
+{}
+
+\newenvironment{figurehere}
+{\def\@captype{figure}}
+{}
+\makeatother

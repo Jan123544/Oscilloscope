@@ -20,7 +20,8 @@
 			\ctikzset{voltage/distance from node=.2}% defines arrow's distance from nodes
 			\ctikzset{voltage/distance from line=.02}% defines arrow's distance from wires
 			\ctikzset{voltage/bump b/.initial=.1}% defines arrow's curvature
-			\draw (\zero, \zero) to[short,o-] ++(2,0) to[R,l=$10k\Omega$] ++(0,-4) to[R,l=$5.03k\Omega$] ++(0, -3) to[R,l=$1.8k\Omega$] ++(0, -3) to[R,l=$3.3k\Omega$] ++(0, -3) node [ground] {};
+			%\draw (\zero, \zero) to[short,o-] ++(2,0) to[R,l=$10k\Omega$] ++(0,-4) to[R,l=$5.03k\Omega$] ++(0, -3) to[R,l=$1.8k\Omega$] ++(0, -3) to[R,l=$3.3k\Omega$] ++(0, -3) node [ground] {};
+			\draw (\zero, \zero) to[short,o-] ++(2,0) to[R,l=$R_1$] ++(0,-4) to[R,l=$R_2$] ++(0, -3) to[R,l=$R_3$] ++(0, -3) to[R,l=$R_4$] ++(0, -3) node [ground] {};
 			\draw (\zero + 2, \zero -10) to[short,*-o] ++(2, 0) node [anchor=west] (uadc) {\Large $u_{adc}$};
 			\node at (\zero, \zero) [anchor=east] {\Large $u_{in}$};
 			

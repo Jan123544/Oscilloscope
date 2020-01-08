@@ -1,0 +1,88 @@
+\documentclass[main.tex]{subfiles}
+
+\newcommand{\zero}{0}
+
+\newcommand{\relayOneBeginX}{\zero + 4}
+\newcommand{\relayOneBeginY}{\zero}
+
+\newcommand{\relayTwoBeginX}{\zero + 7}
+\newcommand{\relayTwoBeginY}{\zero - 3}
+\newcommand{\relaycolor}{black}
+
+\begin{document}
+
+	\begin{figure}
+		\centering
+		\begin{circuitikz}[european voltages]
+			\ctikzset{voltage/distance from node=.2}% defines arrow's distance from nodes
+			\ctikzset{voltage/distance from line=.02}% defines arrow's distance from wires
+			\ctikzset{voltage/bump b/.initial=.1}% defines arrow's curvature
+			%\draw (\zero, \zero) to[short,o-] ++(2,0) to[R,l=$10k\Omega$] ++(0,-4) to[R,l=$5.03k\Omega$] ++(0, -3) to[R,l=$1.8k\Omega$] ++(0, -3) to[R,l=$3.3k\Omega$] ++(0, -3) node [ground] {};
+			\draw (\zero, \zero) to[short,o-] ++(2,0) to[R,v_>=\Large$u_1$,l=$R_1$, voltage shift=15.0] ++(0,-4) to[R,l=$R_2$,v_=\Large$u_2$, voltage shift=15.0] ++(0, -3) to[R,l=$R_3$,v_=\Large$u_3$, voltage shift=15.0] ++(0, -3) to[R,l=$R_4$,v_=\Large$u_4$, voltage shift=15.0] ++(0, -3) node [ground] {};
+			\draw (\zero + 2, \zero -10) to[short,*-o] ++(2, 0) node [anchor=west] (uadc) {\Large $u_{adc}$};
+			\node at (\zero, \zero) [anchor=east] {\Large $u_{in}$};
+			
+			\draw (\relayOneBeginX, \relayOneBeginY) to [short] ++(0, -1) to [nos] ++(0,-1.5) to[R,l=$60\Omega$,mirror] ++(0, -1.5) to [short,-*] ++(-2, 0);
+			\draw[color=\relaycolor] (\relayOneBeginX + 4, \relayOneBeginY-1)  node [anchor=west] (l1top) {\Large $u_{relay1}$} to[short,o-,color=\relaycolor] ++(-3, 0) to [L, mirror,color=\relaycolor] ++(0, -1.5) to[short,color=\relaycolor] ++(1,0) node [ground] (l1bot) {};
+			\draw [dotted] (\relayOneBeginX -0.5, \relayOneBeginY -0.5) rectangle ++(2, -4);
+			\draw (\relayOneBeginX-2, \relayOneBeginY) to [short,*-] ++(2, 0);
+			
+			\draw (\relayTwoBeginX, \relayTwoBeginY) to [short] ++(0, -1) to [nos] ++(0,-1.5) to[R,l=$60\Omega$,mirror] ++(0, -1.5) to [short,-*] ++(-5, 0);
+			\draw[color=\relaycolor] (\relayTwoBeginX + 2, \relayTwoBeginY-1) node [anchor=west] (l2top) {\Large $u_{relay2}$} to[short,o-,color=\relaycolor] ++(-1, 0)  to [L, mirror,color=\relaycolor] ++(0, -1.5) to[short,color=\relaycolor] ++(1,0) node [ground] (l2bot) {};
+			\draw [dotted] (\relayTwoBeginX -0.5, \relayTwoBeginY -0.5) rectangle ++(2, -4);
+			\draw (\relayTwoBeginX, \relayTwoBeginY) to [short, -] ++ (0,3) to [short, -*] ++(-3, 0);
+			
+	
+		\end{circuitikz}
+	\caption{Schéma zapojenia prepínateľných deličov napätia s vypočítanými a zarovnanými hodnotami napätí}
+	\label{fig:schemaDelica1}
+	\end{figure}
+
+
+	\begin{figure*}[t!]
+		\centering
+		\begin{subfigure}[t]{0.25\textwidth}
+			\centering
+			\begin{circuitikz}[european voltages]
+				\ctikzset{voltage/distance from node=.2}% defines arrow's distance from nodes
+				\ctikzset{voltage/distance from line=.02}% defines arrow's distance from wires
+				\ctikzset{voltage/bump b/.initial=.1}% defines arrow's curvature
+				\draw (\zero, \zero) to[short,o-] ++(0,0) to[R,v_>=\Large$u_1$,l=$R_1$, voltage shift=15.0] ++(0,-4) to[R,l=$R_2$,v_=\Large$u_2$, voltage shift=15.0] ++(0, -3) to[R,l=$R_3$,v_=\Large$u_3$, voltage shift=15.0] ++(0, -3) to[R,l=$R_4$] ++(0, -3) node [ground] {};
+				\draw (\zero , \zero -10) to[short,*-o] ++(1, 0) node [anchor=south] (uadc) {\Large $u_{adc1}$};
+				\node at (\zero, \zero) [anchor=south] {\Large $u_{in1}$};
+			\end{circuitikz}
+			\caption{Slučka 2.KZ pre rozsah 20V}
+		\end{subfigure}%
+		~ 
+		\begin{subfigure}[t]{0.25\textwidth}
+			\centering
+			\begin{circuitikz}[european voltages]
+				\ctikzset{voltage/distance from node=.2}% defines arrow's distance from nodes
+				\ctikzset{voltage/distance from line=.02}% defines arrow's distance from wires
+				\ctikzset{voltage/bump b/.initial=.1}% defines arrow's curvature
+				\draw (\zero, \zero) to[short,o-] ++(0,0) to[R,l=$R_2$,v_=\Large$u_2$, voltage shift=15.0] ++(0, -3) to[R,l=$R_3$,v_=\Large$u_3$, voltage shift=15.0] ++(0, -3) to[R,l=$R_4$] ++(0, -3) node [ground] {};
+				\draw (\zero , \zero -6) to[short,*-o] ++(1, 0) node [anchor=south] (uadc) {\Large $u_{adc2}$};
+				\node at (\zero, \zero) [anchor=south] {\Large $u_{in2}$};
+			\end{circuitikz}
+			\caption{Slučka 2.KZ pre rozsah 10V}
+		\end{subfigure}%
+		~
+		\begin{subfigure}[t]{0.25\textwidth}
+			\centering
+			\begin{circuitikz}[european voltages]
+				\ctikzset{voltage/distance from node=.2}% defines arrow's distance from nodes
+				\ctikzset{voltage/distance from line=.02}% defines arrow's distance from wires
+				\ctikzset{voltage/bump b/.initial=.1}% defines arrow's curvature
+				\draw (\zero, \zero) to[short,o-] ++(0,0) to[R,l=$R_3$,v_=\Large$u_3$, voltage shift=15.0] ++(0, -3) to[R,l=$R_4$] ++(0, -3) node [ground] {};
+				\draw (\zero , \zero -3) to[short,*-o] ++(1, 0) node [anchor=south] (uadc) {\Large $u_{adc3}$};
+				\node at (\zero, \zero) [anchor=south] {\Large $u_{in3}$};
+			\end{circuitikz}
+			\caption{Slučka 2.KZ pre rozsah 5V}
+		\end{subfigure}
+		\caption{Aplikácia 2. Kirchhofovoého zákona na jednotlivé konfigurácie deliča}
+		\label{fig:schemaDelic2KZ}
+	\end{figure*}
+
+
+
+\end{document}
