@@ -2,91 +2,10 @@
 \graphicspath{obr/}
 
 \begin{document}
-	\section{Delič napätia}
-	 \begin{multicols*}{2}
-		Na vstupe A/D prevodníka je delič napätia, ktorého parametre sú prepínateľné dvoma relátkami. Schéma zapojenia je zobrazená na obr. \ref{fig:schemaDelica1}. Uvažujeme, že maxímálne napätia na vstupe A/D prevodníka, by nemalo presiahnúť hodnotu $3,3V$. Pre vstupný rozsah $20V$ máme v obvode zapojené všetky odpory. Pre rozsah $10V$ je, pomocou relé, skratovaný odpor  $R_1$ a pre rozsah $5V$ sú  skratované odpory $R_1$ a $R_2$. Odpory relé zanedbáme. Pomocou 2. Kirchhoffového zákona a uvažovaním slučiek ako na \cref{fig:schemaDelic2KZ} dostaneme rovnice \cref{eqn:delicRovnice1}.
-		\begin{equation}
-		\begin{aligned}
-			u_{adc1} &= u_{in1} \frac{R_4}{R_3 + R_4} \\
-			u_{adc2} &= u_{in2} \frac{R_4}{R_2 + R_3 + R_4} \\
-			u_{adc3} &= u_{in3} \frac{R_4}{R_1 + R_2 + R_3 + R_4} \\
-		\end{aligned}
-		\label{eqn:delicRovnice1}.
-		\end{equation}
-		Navyše chcem obmedziť prúd odpormi. Z dejto podmienky potom vznikne rovnica \cref{eqn:delicPrud1}. Tu považujeme napätia $u_{adci}, i=1,2,3$ za rovnké, čo neskôr pridáme aj do predchádzajúcich rovníc.
-		\begin{equation}
-			i_{max} = \frac{u_{adc1,2,3}}{R_4} \label{eqn:delicPrud1}
-		\end{equation}
-		V maticovom zápise \cref{eqn:delicMatica1}. 
-		\begin{equation}
-			\underline{V}\overline{R} = \overline{b} \label{eqn:delicMatica1}
-		\end{equation}
-		potom máme \cref{eqn:delicMatica2}.
-		\begin{equation}
-			\begin{split}
-				\begin{pmatrix}
-					0 & 0 & u_{adc1} & (u_{adc1} - u_{in1}) \\
-					0 & u_{adc2} & u_{adc2} & (u_{adc2} - u_{in2}) \\
-					u_{adc3} & u_{adc3} & u_{adc3} & (u_{adc3} - u_{in3}) \\
-					0 & 0 &0 & 1 \\
-					\end{pmatrix} \\  
-					\begin{pmatrix}
-					R_1 \\
-					R_2 \\
-					R_3 \\
-					R_4  \\
-					\end{pmatrix} =
-					\begin{pmatrix}
-					0 \\
-					0 \\
-					0 \\
-					\frac{u_{adc_1}}{i_{max}}  \\
-				\end{pmatrix}
-			\end{split}
-			\label{eqn:delicMatica2}
-		\end{equation}
-		Pre maximálnu presnosť prevodu uvažujme \cref{eqn:delicPresnost1}, pri maximálnon napätí v danom rozsahu, teda ak \cref{eqn:delicMaxNapatie1}. A taktiež nech platí \cref{eqn:delicMaxPrud1}. 
-	\begin{equation}
-		u_{adc1} = u_{adc2} = u_{adc3} = 3,3V \label{eqn:delicPresnost1}
-	\end{equation}
-	\begin{equation}
-	\begin{split}
-		u_{adc1} = 5 V\\
-		u_{adc2} = 10 V \\
-		u_{adc2} = 20 V\\ \label{eqn:delicMaxNapatie1}
-	\end{split}
-	\end{equation}
-	\begin{equation}
-	i_{max} = 1\times 10 ^{-3} \label{eqn:delicMaxPrud1}
-	\end{equation}
- Potom riešením rovníc je \cref{eqn:delicRiesenie1}.
-		 \begin{equation}
-		 \overline{R} = \underline{V}^{-1}\overline{b} \label{eqn:delicRiesenie1}
-		 \end{equation}
-		 Hodnoty odporov sú v \cref{tab:delicOdpory1}.
-		 \vskip 0.05cm
-		 \begin{tablehere}
-		 	\centering
-		 	\begin{tabular}{cccc}
-		 		$R_1$ & $R_2$ & $R_3$ & $R_4$ \\
-		 		\hline
-		 		$3.3k\Omega$ & $1.7k\Omega$ & $5k\Omega$ & $10k\Omega$ \\
-		 	\end{tabular}
-	 		\caption{Vypočítané hodnoty R} \label{tab:delicOdpory1}
-	 		\vskip 0.1cm
-		 \end{tablehere}
-	     \noindent Po zaokrúhlení na štandardné hodnoty odporov, dostaneme hodnoty v \cref{tab:delicOdpory2}, pričom hodnota $R_3$ je tvorená dvoma odpormi $4.7k\Omega$ a $0.33k\Omega$.
-	      \vskip 0.1cm
-		 \begin{tablehere}
-		 	\centering
-		 	\begin{tabular}{cccc}
-		 		$R_1$ & $R_2$ & $R_3$ & $R_4$ \\
-		 		\hline
-		 		$3.3k\Omega$ & $1.8k\Omega$ & $5.03k\Omega$ & $10k\Omega$ \\
-		 	\end{tabular}
-		 	\caption{Zaokrúhlené hodnoty R} \label{tab:delicOdpory2}
-		 \end{tablehere}
-	\end{multicols*}
-
+	
+	\subfile{kapitola_delicNapatia}
 	\subfile{schemadelica}
+	
+	
+	
 \end{document}
