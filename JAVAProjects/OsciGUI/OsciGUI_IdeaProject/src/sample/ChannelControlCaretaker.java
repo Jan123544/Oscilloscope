@@ -90,6 +90,11 @@ class ChannelControlCaretaker {
         s.setValue(def);
         s.valueProperty().addListener((observableValue, number, t1) -> {
             tf.setText(String.format(Locale.US, "%.2g", t1.doubleValue()));
+            System.err.println(String.format("Slider changed: %.2g", t1.doubleValue()));
+            c.serialWriter.setUpdateNeeded(true);
+        });
+        s.setOnDragExited(dragEvent -> {
+            tf.setText(String.format(Locale.US, "%.2g", s.getValue()));
             c.serialWriter.setUpdateNeeded(true);
         });
     }
@@ -106,5 +111,29 @@ class ChannelControlCaretaker {
         // Make sure sliders are cropped if voltage range is changed
         c.xChannelVoltageRangeChoice.setOnAction( (event) -> TriggerControlCaretaker.updateSliderRange(c, Channel.CHANNEL_X));
         c.yChannelVoltageRangeChoice.setOnAction( (event) -> TriggerControlCaretaker.updateSliderRange(c, Channel.CHANNEL_Y));
+    }
+
+    static double getSensitivity(Controller c, Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                return c.xSensitivityS.getValue();
+            case CHANNEL_Y:
+                return c.ySensitivityS.getValue();
+            default:
+                System.err.println("Invalid channel argument in getSensitivity in ChannelControlCaretaker, returning default sensitivity.");
+                return GlobalConstants.CHANNEL_SENSITIVITY_DEFAULT;
+        }
+    }
+
+    static double getOffset(Controller c, Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                return c.xOffsetS.getValue();
+            case CHANNEL_Y:
+                return c.yOffsetS.getValue();
+            default:
+                System.err.println("Invalid channel argument in getOffset in ChannelControlCaretaker, returning default offset.");
+                return GlobalConstants.CHANNEL_OFFSET_DEFAULT;
+        }
     }
 }

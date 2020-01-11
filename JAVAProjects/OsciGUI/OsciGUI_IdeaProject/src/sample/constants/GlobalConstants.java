@@ -1,5 +1,8 @@
 package sample.constants;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+
 public class GlobalConstants {
      public final static byte GRATICULE_X_DIVISIONS = 10;
      public final static byte GRATICULE_Y_DIVISIONS = 10;
@@ -28,7 +31,7 @@ public class GlobalConstants {
      public final static Float TRIGGER_LEVEL_DEFAULT_MAX = 5.0f;
 
      public final static Integer INTERNAL_CANVAS_VERTICAL_NORMALISATION = 4096;
-     public final static Float INTERNAL_SETTINGS_UPDATE_RATE = 1.0f;
+     public final static Float INTERNAL_SETTINGS_UPDATE_RATE = 0.1f;
      public final static Integer INTERNAL_SETTINGS_UPDATE_RATE_RESOLUTION_MILLIS = 10;
 
      public final static Integer TRIGGER_COMMAND_TRANSFORM = 0;
@@ -63,4 +66,9 @@ public class GlobalConstants {
       //x timer Hold-off 1B
       //y timer Hold-off 1B
      public final static byte OSCI_SETTINGS_SIZE_BYTES = 48;
+
+     public final static Paint X_OUT_OF_RANGE_COLOR = Color.MAGENTA;
+     public final static Paint Y_OUT_OF_RANGE_COLOR = Color.CYAN;
+     public final static Paint X_NORMAL_COLOR = Color.RED;
+     public final static Paint Y_NORMAL_COLOR = Color.YELLOW;
 }

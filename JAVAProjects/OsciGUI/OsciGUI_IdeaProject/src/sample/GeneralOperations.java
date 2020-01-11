@@ -66,4 +66,12 @@ public class GeneralOperations {
         }
         return sum/bufflen;
     }
+
+    static boolean isInRangeEx(double x, double low, double high){
+        return (x > low) && (x < high);
+    }
+
+    static boolean isInRangeInc(double x, double low, double high){
+        return (x >= low) && (x <= high);
+    }
 }

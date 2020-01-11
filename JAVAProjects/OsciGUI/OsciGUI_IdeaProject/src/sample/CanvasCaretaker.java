@@ -228,9 +228,14 @@ class CanvasCaretaker {
             xScanLineLabel.setText("N/A");
         }else {
             double scanCoordinate = xPolyline.getPoints().get(GeneralOperations.putInRange(2 * timeIndex + 1, 0, xPolyline.getPoints().size()));
-            xScanLineLabel.setText(String.format("%.2f",
-                    canvasYCoordinateToVoltage(scanCoordinate, c.xSensitivityS.getValue(),
-                            c.xOffsetS.getValue())));
+            double scanVoltage = canvasYCoordinateToVoltage(scanCoordinate, c.xSensitivityS.getValue(), c.xOffsetS.getValue());
+            if (GeneralOperations.isInRangeInc(scanVoltage, getMinVisibleValue(Channel.CHANNEL_X), getMaxVisibleValue(Channel.CHANNEL_X))){
+                xScanLineLabel.setText(String.format("%.2f", scanVoltage));
+            }else{
+                // Out of visible range.
+                xScanLineLabel.setText("O/R");
+            }
+
         }
 
         timeIndex = (int)((yScanLine.getTranslateX()-drawingXOffset())/unitTime(c));
@@ -238,9 +243,13 @@ class CanvasCaretaker {
             yScanLineLabel.setText("N/A");
         }else {
             double scanCoordinate = yPolyline.getPoints().get(GeneralOperations.putInRange(2 * timeIndex + 1, 0, yPolyline.getPoints().size()));
-            yScanLineLabel.setText(String.format("%.2f",
-                    canvasYCoordinateToVoltage(scanCoordinate, c.ySensitivityS.getValue(),
-                            c.yOffsetS.getValue())));
+            double scanVoltage = canvasYCoordinateToVoltage(scanCoordinate, c.ySensitivityS.getValue(), c.yOffsetS.getValue());
+            if (GeneralOperations.isInRangeInc(scanVoltage, getMinVisibleValue(Channel.CHANNEL_Y), getMaxVisibleValue(Channel.CHANNEL_Y))) {
+                yScanLineLabel.setText(String.format("%.2f", scanVoltage));
+            }else{
+                // Out of visible range.
+                yScanLineLabel.setText("O/R");
+            }
         }
     }
 
@@ -394,6 +403,30 @@ class CanvasCaretaker {
         return getDrawableHeight()/GlobalConstants.GRATICULE_Y_DIVISIONS;
     }
 
+    private double getMaxVisibleValue(Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                return GlobalConstants.GRATICULE_X_DIVISIONS*c.xSensitivityS.getValue() - c.xOffsetS.getValue();
+            case CHANNEL_Y:
+                return GlobalConstants.GRATICULE_Y_DIVISIONS*c.ySensitivityS.getValue() - c.yOffsetS.getValue();
+            default:
+                System.err.println("Invalid channel argument for getMaxVisibleValue in CanvasCaretaker.");
+                return 1.0;
+        }
+    }
+
+    private double getMinVisibleValue(Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                return -c.xOffsetS.getValue();
+            case CHANNEL_Y:
+                return -c.yOffsetS.getValue();
+            default:
+                System.err.println("Invalid channel argument for getMaxVisibleValue in CanvasCaretaker.");
+                return 1.0;
+        }
+    }
+
     private void drawLabels(){
         double horizontalGraticuleStep = getHorizontalGraticuleStep();
         double verticalGraticuleStep = getVerticalGraticuleStep();
@@ -445,19 +478,71 @@ class CanvasCaretaker {
         });
     }
 
+    private void hideChannelLine(Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                xPolyline.setVisible(false);
+                break;
+            case CHANNEL_Y:
+                yPolyline.setVisible(false);
+        }
+    }
+
+    private void deleteChannelLineData(Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                xPolyline.getPoints().clear();
+                break;
+            case CHANNEL_Y:
+                yPolyline.getPoints().clear();
+        }
+    }
+
+    private void showChannelLine(Channel channel){
+        switch (channel){
+            case CHANNEL_X:
+                xPolyline.setVisible(true);
+                break;
+            case CHANNEL_Y:
+                yPolyline.setVisible(true);
+        }
+    }
+
+    private void redrawChannelLine(Channel channel){
+        if(c.viewSettingsCaretaker.isXYMode()){
+            xPolyline.getPoints().addAll(XYMerge());
+            showChannelLine(Channel.CHANNEL_X);
+        }else {
+            switch (channel) {
+                case CHANNEL_X:
+                    xPolyline.getPoints().addAll(interleaveTime(xNormalisedBuffer));
+                    if (c.viewSettingsCaretaker.isXShowing())
+                        xPolyline.setVisible(true);
+                    break;
+                case CHANNEL_Y:
+                    yPolyline.getPoints().addAll(interleaveTime(yNormalisedBuffer));
+                    if (c.viewSettingsCaretaker.isYShowing())
+                        yPolyline.setVisible(true);
+                    break;
+            }
+        }
+    }
+
     private void xUpdateFromBuffer(Byte updateType){
         if((updateType & GlobalConstants.CONTINOUS_UPDATE) == 0)
             refreshLabels();
-        deleteXPath();
-        redrawXPath(this.xNormalisedBuffer);
+        hideChannelLine(Channel.CHANNEL_X);
+        deleteChannelLineData(Channel.CHANNEL_X);
+        redrawChannelLine(Channel.CHANNEL_X);
         updateScanLineLabels();
     }
 
     private void yUpdateFromBuffer(Byte updateType){
         if((updateType & GlobalConstants.CONTINOUS_UPDATE) == 0)
             refreshLabels();
-        deleteYPath();
-        redrawYPath(this.yNormalisedBuffer);
+        hideChannelLine(Channel.CHANNEL_Y);
+        deleteChannelLineData(Channel.CHANNEL_Y);
+        redrawChannelLine(Channel.CHANNEL_Y);
         updateScanLineLabels();
     }
 
@@ -486,34 +571,6 @@ class CanvasCaretaker {
 
     private ArrayList<Double> canvasNormalise(ArrayList<Double> inBuffer, CanvasSettings set){
         return inBuffer.stream().map( val -> val/set.canvasVerticalNormalisation).collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private void deleteXPath(){
-        xPolyline.getPoints().clear();
-    }
-
-    private void deleteYPath(){
-        yPolyline.getPoints().clear();
-    }
-
-    private void redrawXPath(ArrayList<Double> normalisedData){
-        if(!c.viewSettingsCaretaker.isXYMode()) {
-            xPolyline.getPoints().addAll(interleaveTime(normalisedData));
-            if(c.viewSettingsCaretaker.isXShowing())
-                xPolyline.setVisible(true);
-        }else{
-            xPolyline.getPoints().addAll(XYMerge());
-        }
-    }
-
-    private void redrawYPath(ArrayList<Double> normalisedData){
-        if(!c.viewSettingsCaretaker.isXYMode()) {
-            yPolyline.getPoints().addAll(interleaveTime(normalisedData));
-            if (c.viewSettingsCaretaker.isYShowing())
-                yPolyline.setVisible(true);
-        }else{
-            xPolyline.getPoints().addAll(XYMerge());
-        }
     }
 
     private ArrayList<Double> XYMerge(){

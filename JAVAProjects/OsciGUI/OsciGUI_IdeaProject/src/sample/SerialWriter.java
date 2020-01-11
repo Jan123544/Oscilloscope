@@ -96,7 +96,6 @@ public class SerialWriter implements  Runnable{
         shouldStop = false;
         while(c.port.isOpen()){
             if(c.autoUpdateCB.isSelected() && updateNeeded) {
-                updateNeeded = false;
                 iSet = InternalSettingsCaretaker.readInternalSettings(c);
                 // Do not send update too often.
                 if (System.currentTimeMillis() - lastUpdateTime < (double) 1000 * iSet.settingsUpdateRate) {
@@ -114,6 +113,7 @@ public class SerialWriter implements  Runnable{
                     numSent = c.port.writeBytes(config, GlobalConstants.OSCI_SETTINGS_SIZE_BYTES);
                     if (numSent == GlobalConstants.OSCI_SETTINGS_SIZE_BYTES) {
                         System.err.println("Sent " + String.valueOf(numSent));
+                        updateNeeded = false;
                     }
                 }
 
