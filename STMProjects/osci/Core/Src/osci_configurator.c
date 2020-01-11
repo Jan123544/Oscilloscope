@@ -180,6 +180,15 @@ void OSCI_configurator_recalculate_parameters(Osci_Transceiver* ts, Osci_Setting
 	ts->allReceivedParameters = new_p;
 }
 
+void OSCI_configurator_init_parameters(Osci_Transceiver* ts, Osci_Settings* s){
+	OSCI_configurator_recalculate_parameters(ts, s);
+
+	// These are initialized separately as channels will not have their parameters initialized by this time yet.
+	ts->allReceivedParameters.xRangeWhenMeasured = OSCI_SETTINGS_DEFAULT_XVOLTAGERANGE;
+	ts->allReceivedParameters.yRangeWhenMeasured = OSCI_SETTINGS_DEFAULT_YVOLTAGERANGE;
+	Fill_sensitivity_and_offset(s, &ts->allReceivedParameters);
+}
+
 void OSCI_configurator_switch_relays(Osci_Transceiver* ts, Osci_Settings* s)
 {
 	Switch_relays(s, &ts->allReceivedParameters);
@@ -201,12 +210,14 @@ void Fill_default_settings(Osci_Settings* osci_settings)
 	osci_settings->yVoltageRange = OSCI_SETTINGS_DEFAULT_YVOLTAGERANGE;
 	osci_settings->xGraticuleDivisions = OSCI_SETTINGS_DEFAULT_XGRATICULEDIVISIONS;
 	osci_settings->yGraticuleDivisions = OSCI_SETTINGS_DEFAULT_YGRATICULEDIVISIONS;
+	osci_settings->xHoldOffTime = OSCI_SETTINGS_DEFAULT_XHOLDOFFTIME;
+	osci_settings->yHoldOffTime = OSCI_SETTINGS_DEFAULT_YHOLDOFFTIME;
 }
 
 void OSCI_configurator_config_defaults_ts(Osci_Transceiver* ts)
 {
 	Fill_default_settings(&ts->receiveCompleteBuffer);
-	OSCI_configurator_recalculate_parameters(ts, &ts->receiveCompleteBuffer);
+	OSCI_configurator_init_parameters(ts, &ts->receiveCompleteBuffer);
 }
 
 void OSCI_configurator_distribute_settings(Osci_Transceiver* ts, Osci_Settings* s)

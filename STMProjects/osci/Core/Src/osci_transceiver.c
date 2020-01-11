@@ -253,8 +253,7 @@ void Transform(void* data){
 	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 }
 
-void TrySendXbuffer(void*data){
-	Osci_Transceiver* ts = (Osci_Transceiver*)data;
+void TrySendXbuffer(Osci_Transceiver* ts){
 
 	Gather_data(ts, ts->x_channel_state_machine, CHANNEL_X);
 	OSCI_transform_apply(&ts->xSendingBuffer, ts->x_channel_state_machine->params);
@@ -335,8 +334,17 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		case OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING:
 		{
 
-			TryExecOnFlag(ts->events.send_requested[0], TrySendXbuffer, (void*)ts);
-			TryExecOnFlag(ts->events.send_requested[1], TrySendYbuffer, (void*)ts);
+			//TryExecOnFlag(ts->events.send_requested[0], TrySendXbuffer, (void*)ts);
+			//TryExecOnFlag(ts->events.send_requested[1], TrySendYbuffer, (void*)ts);
+
+			if(ts->events.send_requested[0]){
+				TrySendXbuffer(ts);
+			}
+
+			if(ts->events.send_requested[1]){
+				TrySendYbuffer(ts);
+			}
+
 
 			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_IDLE, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;

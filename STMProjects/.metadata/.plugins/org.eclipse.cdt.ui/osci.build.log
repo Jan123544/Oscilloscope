@@ -1,17 +1,10 @@
-12:34:51 **** Incremental Build of configuration Debug for project osci ****
+18:43:46 **** Incremental Build of configuration Debug for project osci ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
-arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci.elf
- 
-arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
 arm-none-eabi-size   osci.elf 
    text	   data	    bss	    dec	    hex	filename
-  22596	    112	   1616	  24324	   5f04	osci.elf
+  22668	    112	   1616	  24396	   5f4c	osci.elf
 Finished building: default.size.stdout
  
-Finished building: osci.list
- 
 
-12:34:57 Build Finished. 0 errors, 0 warnings. (took 6s.338ms)
+18:43:50 Build Finished. 0 errors, 0 warnings. (took 4s.416ms)
 

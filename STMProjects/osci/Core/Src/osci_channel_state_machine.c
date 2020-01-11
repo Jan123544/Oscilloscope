@@ -30,6 +30,24 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, TIM_Ty
 	// Initialize nested structures.
 	OSCI_dma_channel_init(csm);
 	OSCI_adc_init(csm);
+
+}
+
+void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
+{
+	OSCI_adc_stop(csm);
+	OSCI_timer_stop(csm->timer);
+	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
+
+	OSCI_timer_setup(csm->timer, csm->params.timerSettings);
+
+	OSCI_adc_reconfigure_for_measuring(csm);
+	OSCI_dma_channel_reconfigure_for_measuring(csm);
+
+	csm->state = OSCI_CHANNEL_STATE_MEASURING;
+
+	OSCI_timer_start(csm->timer);
+	LL_ADC_REG_StartConversion(csm->adc);
 }
 
 void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
@@ -52,22 +70,7 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 	LL_ADC_REG_StartConversion(csm->adc);
 }
 
-void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
-{
-	OSCI_adc_stop(csm);
-	OSCI_timer_stop(csm->timer);
-	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
 
-	OSCI_timer_setup(csm->timer, csm->params.timerSettings);
-
-	OSCI_adc_reconfigure_for_measuring(csm);
-	OSCI_dma_channel_reconfigure_for_measuring(csm);
-
-	csm->state = OSCI_CHANNEL_STATE_MEASURING;
-
-	OSCI_timer_start(csm->timer);
-	LL_ADC_REG_StartConversion(csm->adc);
-}
 
 void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 {
