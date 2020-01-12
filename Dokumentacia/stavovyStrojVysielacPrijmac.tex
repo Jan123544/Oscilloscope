@@ -2,9 +2,46 @@
 \begin{document}
 	\begin{figurehere}
 		\centering
-		\begin{tikzpicture}
-			\node [fill=black, circle] at (0, 0) {w};
+		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+		semithick]
+		\tikzstyle{every state}=[fill=red,draw=none,text=white]
+		
+		\node[initial above,state] (A)              		{$IDL$};
+		\node[state] (B) [below left of=A]					{$GTS$};
+		\node[state] (C) [below right of=A]					{$SSH$};
+		\node[state] (D) [below of=C, node distance=2cm]	{$WSH$};
+		\node[state] (E) [below of=D, node distance=2cm]	{$RCF$};
+		\node[state] (F) [right of=A]		    			{$SPG$};
+		
+		\path (A) edge [bend left] node {ROT} (B);
+		\path (A) edge [anchor=east] node {RME} (C);
+		\path (B) edge [bend left] node {NPS} (A);
+		\path (C) edge node {$\epsilon$} (D);
+		\path (D) edge node {CSH} (E);
+		\path (E) edge [bend left] node {$\epsilon$} (B);
+		\path (F) edge [bend left] node {$\epsilon$} (A);
+		\path (A) edge [bend left] node {RPG} (F);
 		\end{tikzpicture}
 		\caption{Stavový stroj vysielač/príjmač} \label{fig:stavovyStrojVysielacPrijmac}
 	\end{figurehere}
+
+	\begin{tablehere}
+		\centering
+		\begin{tabular}{c|p{5cm}}
+			IDL & idle \\
+			SPG & sending pong \\
+			GTS & gathering, transforming and sending data\\
+			SSH & starting channel shutdown \\
+			WSH & waiting for channels to shutdown \\
+			RCF & reconfiguring channels \\
+			\hline 
+			RPG & requested pong \\
+			RME & requested measurement \\
+			ROT & requested only transform \\
+			NPS & no pending send \\
+			CSG & channel shutdown \\
+			$\epsilon$ & unconditionaly \\
+		\end{tabular}
+	\caption{Vysvetlenie skratiek stavového stroja príjmač/vysielač}
+	\end{tablehere}
 \end{document}

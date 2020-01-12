@@ -2,9 +2,38 @@
 \begin{document}
 	\begin{figurehere}
 		\centering
-		\begin{tikzpicture}
-			\node [fill=black, circle] at (0, 0) {w};
+		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
+		semithick]
+		\tikzstyle{every state}=[fill=red,draw=none,text=white]
+		
+		\node[initial above,state] (A)              {$SHD$};
+		\node[state] (C) [below right of=A,node distance=5cm]			{$MES$};
+		\node[state] (B) [left of=C,node distance=4.5cm]			{$MON$};
+		
+		\path (A) edge node {EMO} (B);
+		\path (A) edge [bend left] node {NTH} (C);
+		\path (B) edge node {EME} (C);
+		\path (B) edge [bend left] node {ESH} (A);
+		\path (C) edge [bend left] node [anchor=west] {ESH,ESC} (A);
+		\path (C) edge [bend left] node  {ECC} (B);
 		\end{tikzpicture}
 		\caption{Stavový stroj meracieho kanálu} \label{fig:stavovyStrojMeraciehoKanalu}
 	\end{figurehere}
+
+	\begin{tablehere}
+		\centering
+		\begin{tabular}{c|p{5cm}}
+			SHD & shutdown \\
+			MES & measuring \\
+			MON & monitoring\\
+			\hline 
+			ESH & event shutdown\\
+			EMO & event monitoring\\
+			EME & event measuring\\
+			ESC & event single type measurement complete\\
+			ECC & event continuous type measurement complete\\
+			NTH & no voltage threshold set\\
+		\end{tabular}
+		\caption{Vysvetlenie skratiek stavového stroja meracieho kanálu}
+	\end{tablehere}
 \end{document}

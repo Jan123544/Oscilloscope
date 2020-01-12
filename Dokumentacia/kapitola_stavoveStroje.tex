@@ -2,23 +2,24 @@
 \begin{document}
 	\section{Program}
 		\begin{multicols*}{2}
-			\noindent Program v mikrokontroléry je tovrený 3 stavovými strojmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový stroj má vlajky udalostí, kotré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových strojov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $Transceiver$ (príjmač a vysielač) alebo $ChannelStateMachine$ (stavový stroj riadiaci činnosť meracieho kanála). V krátkosti opíšeme činnosť týchto stavových strojov, pre detaily je vhodné konzultovať zdrojový kód.
+			\noindent Program v mikrokontroléry je tovrený 3 stavovými strojmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový stroj má vlajky udalostí, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových strojov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $Transceiver$ (príjmač a vysielač) alebo $ChannelStateMachine$ (stavový stroj riadiaci činnosť meracieho kanála). V krátkosti opíšeme činnosť týchto stavových strojov, pre detaily je vhodné konzultovať zdrojový kód.
 			
 			\subsection{Stavový stroj vysielač/príjmač}
-			Úlohou tohto stavového stroja, je reakcia na príchod nových dát, distribúcia nových nastavení a posielanie nových meraní do uživateľksého prostredia. Jednoduché zobrazenie možeme vidieť na \cref{fig:stavovyStrojVysielacPrijmac}.
+			Úlohou tohto stavového stroja, je reakcia na príchod nových dát, distribúcia nových nastavení a posielanie nových meraní do uživateľského prostredia. Jednoduché zobrazenie môžeme vidieť na \cref{fig:stavovyStrojVysielacPrijmac}.
+			
+			Po príchode dát cez $UART$ linku, sa na základe obsahu prijatej správy, vysielač rozhodne, či má poslať $pong$ správu, zmeniť transformáciu dát, alebo prekonfigurovať stavový stroj kanálu na iný typ merania. Prekonfigurovanie prebieha vypnutím meraní, prepísaním parametrov a prevodom stavových strojov kanálov do stavu $MONITORING$, v ktorom $watchdog$ obvody sledujú hodnoty prevedné AD prevodníkom. Ak tieto hodnoty prekročia definované limity spustí sa meranie. Po vykonaní merania nastane udalosť, na ktorú stavový stroj vysielač/príjmač reaguje zaslaním nových dát do uživateľského prostredia.
 			
 			\subfile{stavovyStrojVysielacPrijmac}
 			\vskip 0.25cm
 			
-			\noindent Po príchode dát cez $UART$ linku, sa na základe obsahu prijatej správy, vysielač rozhodne, či má poslať $pong$ správu, zmeniť transformáciu dát, alebo prekonfigurovať stavový stroj kanálu na iný typ merania. Prekonfigurovanie prebieha vypnutím meraní, prepísaním parametrov a prevodom stavových strojov kanálov do stavu $MONITORING$, v ktorom $watchdog$ obvody sledujú hodnoty prevedné AD prevodníkom. Ak tieto hodnoty prekorčia definované limity spustí sa meranie. Po vykonaní merania nastane udalosť, na ktorú stavový stroj vysielač/príjmač reaguje zaslaním nových dát do uživateľského prostredia.
-			
 			\subsection{Stavový stroj meracieho kanála}
-			Úlohou tochto stavového stroja je zastavovanie a spúšťanie merania. Štruktúra je zobrazená na \cref{fig:stavovyStrojMeraciehoKanalu}.
+			Úlohou tohto stavového stroja je zastavovanie a spúšťanie merania. Štruktúra je zobrazená na \cref{fig:stavovyStrojMeraciehoKanalu}.
+
+			Bufre nastavení nastavuje vysielač/príjmač. Po príchode požiadavky na meranie nastane udalosť, ktorá prevedie stavové stroje meracieho kanála do stavu $SHUTDOWN$, zastavením časovačov a prevodov AD prevodníkov. Vysielač/príjmač reaguje na $SHUTDOWN$ stav kanálov vo svojej stavovej slučke, a prevedie ich do stavu $MONITORING$. V stave $MONITORING$ kanále vzorkujú svoj vstup a $watchody$ porovnávajú prevedené hodnoty s nastavenými limitmi. V prípade, že sú limity určené pre žačatie merania prekročené, začne sa meranie a kanál prejde do stavu $MEASURING$. V prerušení od $DMA$ modulu, sa kanály prevedú znova $SHUTDOWN$ módu a nastane udalosť, na ktorú vysielač bude reagovať zaslaním nových dát do uživateľského prostredia.
 			
 			\subfile{stavovyStrojMeraciehoKanalu}
 			\vskip 0.25cm
 			
-			\noindent Bufre nastavení nastavuje vysielač/príjmač. Po príchode požiadavky na meranie nastane udalosť, ktorá prevedie stavové stroje meracieho kanála do stavu $SHUTDOWN$, zastavením časovačov a prevodov AD prevodníkov. Vysielač/príjmač reaguje na $SHUTDOWN$ stav kanálov vo svojej stavovej slučke, a prevedie ich do stavu $MONITORING$. V stave $MONITORING$ kanále vzorkujú svoj vstup a $watchody$ porovnávajú prevedené hodnoty s nastavenými limitmi. V prípade, že sú limiti určené pre žačatie merania prekročené, začne sa meranie a kanál prejde do stavu $MEASURING$. V prerušení od $DMA$ modulu, sa kanály prevedú znova $SHUTDOWN$ módu a nastane udalosť, na ktorú vysielač bude reagovať zaslaním nových dát do uživateľského prostredia.
 			
 			
 		\end{multicols*}

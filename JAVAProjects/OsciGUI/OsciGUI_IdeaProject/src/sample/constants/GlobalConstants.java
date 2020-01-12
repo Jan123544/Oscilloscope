@@ -7,13 +7,13 @@ public class GlobalConstants {
      public final static byte GRATICULE_X_DIVISIONS = 10;
      public final static byte GRATICULE_Y_DIVISIONS = 10;
 
-     public final static Float CHANNEL_SENSITIVITY_MIN = 0.0f;
-     public final static Float CHANNEL_SENSITIVITY_MAX = 1.0f;
+     public final static Float CHANNEL_SENSITIVITY_MIN = 0.01f;
+     public final static Float CHANNEL_SENSITIVITY_MAX = 2.0f;
      public final static Float CHANNEL_SENSITIVITY_DEFAULT = 0.5f;
 
      public final static Float CHANNEL_OFFSET_DEFAULT = 0.0f;
-     public final static Float CHANNEL_OFFSET_MIN = -10.0f;
-     public final static Float CHANNEL_OFFSET_MAX = 10.0f;
+     public final static Float CHANNEL_OFFSET_MIN = -20.0f;
+     public final static Float CHANNEL_OFFSET_MAX = 20.0f;
 
      public final static float CHANNEL_THRESHOLD_DEFAULT = 0;
 
@@ -21,8 +21,8 @@ public class GlobalConstants {
      public final static Float TIME_PER_DIVISION_DEFAULT_LOG10 = -2f;
      public final static Float TIME_PER_DIVISION_MAX = 0.1f;
      public final static Float TIME_PER_DIVISION_MAX_LOG10 = -1f;
-     public final static Float TIME_PER_DIVISION_MIN = 0.001f;
-     public final static Float TIME_PER_DIVISION_MIN_LOG10 = -3f;
+     public final static Float TIME_PER_DIVISION_MIN = 0.0001f;
+     public final static Float TIME_PER_DIVISION_MIN_LOG10 = -4f;
 
      public final static int TIMER_HOLD_OFF_DEFAULT = 1000;
      public final static int TIMER_HOLD_OFF_MIN = 0;

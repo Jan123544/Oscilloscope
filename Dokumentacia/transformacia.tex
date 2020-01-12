@@ -1,0 +1,40 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+	Uživateľské prostredie očakáva dáta v normalizovanom formáte. Tento fromát je prednastavený na $4095$ úrovní. Kde $0$ znamená zakreslenie na najnižšiu úroveň v grafickom prostredí a $4095$ na najvyššiu. Pri posielaní dát to uživateľského rozhrania musí mikropočítač brať do úvahy nastavenia, ktoré si uživateľ zvolil a podľa toho transformovať body merania. Táto transformácia prebieha na základe \cref{eqn:transformacia}. 
+	
+	\begin{equation}
+		v_n = \ceil{\floor{\frac{1}{s}v_\alpha + o}^{4095}}_{0}
+		\label{eqn:transformacia}
+	\end{equation}
+	kde $v_n$ je hodnota posielaná do uživateľského prostredia, $s$ je prepočítaná citlivosť daná rovnicou \cref{eqn:transformaciaCitlivost}, $o$ je prepočítaný posun daný rovnicou \cref{eqn:transformaciaPosun} a $\floor{}^{4095}, \ceil{}_{0}$ sú funkcie definované podľa \cref{eqn:transformaciaCeilFloor}. Hodnota $v_alpha$ je daná \cref{eqn:transformaciaAlpha}, kde $\alpha$ slúži na kalibráciu hodnoty $v_{adc}$ preveden AD prevodníkom.
+	
+	\begin{equation}
+		s = \frac{s_gd_g}{r_m}
+		 \label{eqn:transformaciaCitlivost}
+	\end{equation}
+	\begin{equation}
+		o = o_g\frac{1}{s_gd_g}4095
+		\label{eqn:transformaciaPosun}
+	\end{equation}
+	\begin{equation}
+		\begin{split}
+			\floor{x}^{4095} &= \begin{cases}
+				x & \text{ ak } x < 4095 \\
+				4095 & \text{ inak } \\
+			\end{cases} \\
+			\ceil{x}_{0} &= \begin{cases}
+			x & \text{ ak } x > 0 \\
+			0 & \text{ inak } \\
+			\end{cases} \\
+		\end{split}
+	\label{eqn:transformaciaCeilFloor}
+	\end{equation}
+	\begin{equation}
+ 	v_{\alpha} = v_{adc} \alpha
+	\label{eqn:transformaciaAlpha}
+	\end{equation}
+	kde hodnoty $s_g$, $d_g$ sú hodnoty citlivosti a posunu poslané z uživateľského prostredia v jednotkách $[\frac{V}{dielik}]$ a $[V]$. Parameter $r_m$ je rozsah na ktorom boli dáta merané teda $r_m \in \{5,10,20\}$.
+	
+	
+	
+\end{document}

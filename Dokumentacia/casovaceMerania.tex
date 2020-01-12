@@ -1,0 +1,24 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+	Okrem tejto transformácie je potrebné ešte prepočítať prahové napätie z voltov na úrovne príslušných watchdogov. Tento prepočet realizujeme vzorcom \cref{eqn:transformaciaThreshold}.
+	\begin{equation}
+	 	t = \floor{\frac{t_g}{r_m} \frac{t_{max}}{\alpha}}
+	\label{eqn:transformaciaThreshold}
+	\end{equation}
+	kde $t$ je hodnota, ktorá sa zapisuje do threshold registrov watchdogov, $t_g$ je prahová hodnota napätia zaslaná z uživateľského prostredia, daná vo $[V]$, $t_{max}$ ja maximálna hodnota threshold registra pre daný watchdog ($2^{12}-1$ pre AWD1 a $2^{8}-1$ pre AWD2).
+	
+	Tiež musíme vypočítať parametre časovačov pomocou \cref{eqn:transformaciaCasovace}.
+	\begin{equation}
+		\begin{split}
+				psc &= \floor{\frac{c}{c_max}} \\
+				arr &= \floor{\frac{c}{psc + 1}} \\
+		\end{split}
+		\label{eqn:transformaciaCasovace}
+	\end{equation}
+	kde $c$ je celkový počet taktov časovača obsiahnutých v nastavovanom časovom intervaly v $[sec]$. Hodnotu $c$ vypočítame pre časovače s taktom $f$HZ na základe \cref{eqn:transformaciaPocetCyklov}.
+	\begin{equation}
+		c = \frac{f t_{pd} d }{n}
+		\label{eqn:transformaciaPocetCyklov}
+	\end{equation}
+	kde $t_{pd}$ je časová základňa v jednotkách $\frac{sec}{dielik}$, $d$ je počet dielikov, $n$ je počet pretečení, ktoré majú za čas $t_{pd}d$ nastať.
+\end{document}
