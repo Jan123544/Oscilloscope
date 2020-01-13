@@ -70,8 +70,6 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 	LL_ADC_REG_StartConversion(csm->adc);
 }
 
-
-
 void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 {
 	switch(csm->state)
@@ -88,13 +86,6 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 				OSCI_channel_start_monitoring(csm);
 				csm->events.start_monitoring = FALSE;
 			}
-
-			/*if(csm->events.start_measuring)
-			{
-				OSCI_channel_start_measuring(csm);
-				csm->events.start_measuring = FALSE;
-				return;
-			}*/
 			break;
 		}
 		case OSCI_CHANNEL_STATE_MONITORING:
@@ -112,13 +103,6 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 				csm->events.shutdown = FALSE;
 				return;
 			}
-
-			/*if (csm->events.start_measuring)
-			{
-				OSCI_channel_start_measuring(csm);
-				csm->events.start_measuring = FALSE;
-				return;
-			}*/
 			break;
 		}
 		case OSCI_CHANNEL_STATE_MEASURING:
