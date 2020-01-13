@@ -112,6 +112,10 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 	ts->y_channel_state_machine = y_channel_state_machine;
 	ts->channelUpdateMask = 0;
 
+	// clear sending buffers
+	memset(&ts->xSendingBuffer, 0, sizeof(Osci_DataFrame));
+	memset(&ts->ySendingBuffer, 0, sizeof(Osci_DataFrame));
+
 	// Configure USART channels, set buffer addresses etc.
 	Configure_usart(ts);
 
