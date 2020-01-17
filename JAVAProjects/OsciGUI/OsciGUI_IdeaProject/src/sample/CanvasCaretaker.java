@@ -157,44 +157,79 @@ class CanvasCaretaker {
         initLineWithHandleAndLabel(this.xThresholdLineHandle, this.xThresholdLine, this.xThresholdLineLabel, LineOrientation.HORIZONTAL, canvas.getHeight()/2, Channel.CHANNEL_X);
         initLineWithHandleAndLabel(this.yThresholdLineHandle, this.yThresholdLine, this.yThresholdLineLabel, LineOrientation.HORIZONTAL, canvas.getHeight()/2.5, Channel.CHANNEL_Y);
 
-        setXThresholdLineVoltage(0);
-        setYThresholdLineVoltage(0);
+        setThresholdLineVoltage(0, Channel.CHANNEL_Y);
+        setThresholdLineVoltage(0, Channel.CHANNEL_X);
         // This needs to be done, because label.getWidth() does not get initialized until stage is draw. So initial settings, must be corrected manually.
         xThresholdLineLabel.setTranslateY(xThresholdLineLabel.getTranslateY() - 5);
         yThresholdLineLabel.setTranslateY(yThresholdLineLabel.getTranslateY() - 5);
     }
 
-    private void setThresholdLineVoltage(Line line, Label label, Polygon handle, double voltage, double sensitivity, double offset){
-        double newY = voltageToCanvasYCoordinate(voltage, sensitivity, offset);
+    private void transformHandleToLeftArrow(Polygon handle){
+        handle.getPoints().clear();
+        handle.getPoints().addAll(0.0, 0.0, 10.0, -8.0, 10.0, 8.0);
+    }
+
+    private void transformHandleToDownArrow(Polygon handle){
+        handle.getPoints().clear();
+        handle.getPoints().addAll(0.0, 0.0, 16.0, 0.0, 8.0, 10.0);
+    }
+
+    private void transformHandleToUpArrow(Polygon handle){
+        handle.getPoints().clear();
+        handle.getPoints().addAll(0.0, 0.0, 16.0, 0.0, 8.0, -10.0);
+    }
+
+    private void transformThresholdLineHandle(Polygon handle, double trimmedVoltage, double voltage){
+        transformHandleToLeftArrow(handle);
+        if(trimmedVoltage > voltage){
+            transformHandleToDownArrow(handle);
+        }
+
+        if(trimmedVoltage < voltage){
+            transformHandleToUpArrow(handle);
+        }
+    }
+
+    private void setThresholdLineVoltage(Line line, Label label, Polygon handle, double trimmedVoltage, double voltage, double sensitivity, double offset){
+        transformThresholdLineHandle(handle, trimmedVoltage, voltage);
+
+        double newY = voltageToCanvasYCoordinate(trimmedVoltage, sensitivity, offset);
         line.setTranslateY(newY);
         label.setTranslateY(newY - label.getHeight()/2);
         label.setText(String.format("%.2f", voltage));
         handle.setTranslateY(newY);
     }
 
+    private double trimToVisibleRange(double y, Channel channel){
+        double maxVisible = getMaxVisibleValue(channel);
+        double minVisible = getMinVisibleValue(channel);
+        if(maxVisible < y){
+            y = maxVisible;
+        }
+
+        if(minVisible > y){
+            y = minVisible;
+        }
+
+        return y;
+    }
+
     void updateThresholdLines(){
         Platform.runLater( () -> {
-            setThresholdLineVoltage(xThresholdLine, xThresholdLineLabel,  xThresholdLineHandle, c.xTriggerLevelS.getValue(), c.xSensitivityS.getValue(), c.xOffsetS.getValue());
-            setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, c.yTriggerLevelS.getValue(), c.ySensitivityS.getValue(), c.yOffsetS.getValue());
+            setThresholdLineVoltage(c.xTriggerLevelS.getValue(), Channel.CHANNEL_X);
+            setThresholdLineVoltage(c.yTriggerLevelS.getValue(), Channel.CHANNEL_Y);
         });
-
-    }
-
-    void setXThresholdLineVoltage(double voltage){
-        setThresholdLineVoltage(xThresholdLine, xThresholdLineLabel,  xThresholdLineHandle, voltage, c.xSensitivityS.getValue(), c.xOffsetS.getValue());
-    }
-
-    void setYThresholdLineVoltage(double voltage){
-        setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, voltage, c.ySensitivityS.getValue(), c.yOffsetS.getValue());
     }
 
     void setThresholdLineVoltage(double voltage, Channel channel){
+        double trimmedVoltage = trimToVisibleRange(voltage, channel);
+
         switch (channel){
             case CHANNEL_X:
-                setThresholdLineVoltage(xThresholdLine, xThresholdLineLabel,  xThresholdLineHandle, voltage, c.xSensitivityS.getValue(), c.xOffsetS.getValue());
+                setThresholdLineVoltage(xThresholdLine, xThresholdLineLabel,  xThresholdLineHandle, trimmedVoltage, voltage, c.xSensitivityS.getValue(), c.xOffsetS.getValue());
                 break;
             case CHANNEL_Y:
-                setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, voltage, c.ySensitivityS.getValue(), c.yOffsetS.getValue());
+                setThresholdLineVoltage(yThresholdLine, yThresholdLineLabel,  yThresholdLineHandle, trimmedVoltage, voltage, c.ySensitivityS.getValue(), c.yOffsetS.getValue());
         }
     }
 
@@ -430,20 +465,20 @@ class CanvasCaretaker {
     private void drawLabels(){
         double horizontalGraticuleStep = getHorizontalGraticuleStep();
         double verticalGraticuleStep = getVerticalGraticuleStep();
-        double labelXOffset = 15;
+        double labelXOffset = 5;
 
         gc.setFont(Font.font("", FontWeight.NORMAL, 13));
 
         gc.setFill(Color.RED);
         for(int i=0;i<=GlobalConstants.GRATICULE_Y_DIVISIONS;i++){
-            gc.fillText(String.format("%.2f",  i*c.xSensitivityS.getValue() - c.xOffsetS.getValue()),labelXOffset, c.canvas.getHeight() - (drawingYOffset() + 0.20*drawingYOffset()+  i*verticalGraticuleStep));
+            gc.fillText(String.format("%.2f",  i*c.xSensitivityS.getValue() - c.xOffsetS.getValue()), labelXOffset, c.canvas.getHeight() - (drawingYOffset() + 0.20*drawingYOffset()+  i*verticalGraticuleStep));
         }
         //for(int i=0;i<=GlobalConstants.GRATICULE_X_DIVISIONS;i++){
         //    gc.fillText(String.format("%2.1e",  i*Math.pow(10, c.xTimePerDivisionS.getValue())),drawingXOffset() +  i*horizontalGraticuleStep, c.canvas.getHeight() - (5 + 0.20*drawingYOffset()));
         //}
         gc.setFill(Color.YELLOW);
         for(int i=0;i<=GlobalConstants.GRATICULE_Y_DIVISIONS;i++){
-            gc.fillText(String.format("%.2f",  i*c.ySensitivityS.getValue() - c.yOffsetS.getValue()),labelXOffset, c.canvas.getHeight() - (drawingYOffset() - 0.20*drawingYOffset()+  i*verticalGraticuleStep));
+            gc.fillText(String.format("%.2f",  i*c.ySensitivityS.getValue() - c.yOffsetS.getValue()), labelXOffset, c.canvas.getHeight() - (drawingYOffset() - 0.20*drawingYOffset()+  i*verticalGraticuleStep));
         }
         //for(int i=0;i<=GlobalConstants.GRATICULE_X_DIVISIONS;i++){
         //    gc.fillText(String.format("%2.1e",  i*Math.pow(10, c.yTimePerDivisionS.getValue())),drawingXOffset() + i*horizontalGraticuleStep, c.canvas.getHeight() - (5 - 0.20*drawingYOffset()));

@@ -12,6 +12,7 @@ import sample.constants.GlobalConstants;
 import sample.exceptions.InvalidVoltageRangeException;
 import sample.settings.ChannelSettings;
 
+import java.awt.*;
 import java.util.Locale;
 
 class ChannelControlCaretaker {
@@ -33,10 +34,10 @@ class ChannelControlCaretaker {
 
     static ChannelSettings readChannelControlsSettings(Controller c){
         ChannelSettings set = new ChannelSettings();
-        set.ySensitivity = Float.parseFloat(c.ySensitivityTF.getText());
-        set.yOffset = Float.parseFloat(c.yOffsetTF.getText());
-        set.xSensitivity = Float.parseFloat(c.xSensitivityTF.getText());
-        set.xOffset = Float.parseFloat(c.xOffsetTF.getText());
+        set.ySensitivity = (float)c.ySensitivityS.getValue();
+        set.yOffset =(float) c.yOffsetS.getValue();
+        set.xSensitivity =(float) c.xSensitivityS.getValue();
+        set.xOffset = (float)c.xOffsetS.getValue();
         set.xVoltageRange = Byte.parseByte(xVoltageRanges.get(c.xChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex()));
         set.yVoltageRange = Byte.parseByte(yVoltageRanges.get(c.yChannelVoltageRangeChoice.getSelectionModel().getSelectedIndex()));
         set.xGraticuleDivisions = GlobalConstants.GRATICULE_X_DIVISIONS;
@@ -72,6 +73,7 @@ class ChannelControlCaretaker {
             if (key.getCode() == KeyCode.ENTER){
                 // Put read value into range, update slider and also update TF with value in range.
                 GeneralOperations.setTFSControlsAndCropInRange(tf, s, Float.parseFloat(tf.getText()), min, max);
+                c.canvasCaretaker.updateThresholdLines();
                 c.serialWriter.setUpdateNeeded(true);
             }
         });
@@ -79,6 +81,7 @@ class ChannelControlCaretaker {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
                 GeneralOperations.setTFSControlsAndCropInRange(tf, s, Float.parseFloat(tf.getText()), min, max);
+                c.canvasCaretaker.updateThresholdLines();
                 c.serialWriter.setUpdateNeeded(true);
             }
         });
@@ -89,12 +92,14 @@ class ChannelControlCaretaker {
         s.setMax(max);
         s.setValue(def);
         s.valueProperty().addListener((observableValue, number, t1) -> {
-            tf.setText(String.format(Locale.US, "%.2g", t1.doubleValue()));
-            System.err.println(String.format("Slider changed: %.2g", t1.doubleValue()));
+            tf.setText(String.format(Locale.US, "%.3f", t1.doubleValue()));
+            System.err.println(String.format("Slider changed: %.3f", t1.doubleValue()));
+            c.canvasCaretaker.updateThresholdLines();
             c.serialWriter.setUpdateNeeded(true);
         });
         s.setOnDragExited(dragEvent -> {
-            tf.setText(String.format(Locale.US, "%.2g", s.getValue()));
+            tf.setText(String.format(Locale.US, "%.3f", s.getValue()));
+            c.canvasCaretaker.updateThresholdLines();
             c.serialWriter.setUpdateNeeded(true);
         });
     }

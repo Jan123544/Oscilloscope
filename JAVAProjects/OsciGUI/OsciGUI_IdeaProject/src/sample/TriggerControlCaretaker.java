@@ -51,7 +51,7 @@ class TriggerControlCaretaker {
         s.setMax(GlobalConstants.TRIGGER_LEVEL_DEFAULT_MAX);
         s.setValue(defaultTriggerLevel);
         s.valueProperty().addListener((observableValue, number, t1) -> {
-            tf.setText(String.format(Locale.US, "%.2g", t1.doubleValue()));
+            tf.setText(String.format(Locale.US, "%.3f", t1.doubleValue()));
             c.canvasCaretaker.setThresholdLineVoltage(t1.doubleValue(), channel);
             c.serialWriter.setUpdateNeeded(true);
         });
