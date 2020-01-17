@@ -7,7 +7,7 @@
 #include "osci_error.h"
 void OSCI_error_loop(char* str)
 {
-	while(1){};
+	while(1);
 }
 
 void OSCI_error_notify(char *str)

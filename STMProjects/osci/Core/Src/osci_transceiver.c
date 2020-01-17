@@ -11,22 +11,21 @@
 
 void Gather_data(Osci_Transceiver* ts, Osci_ChannelStateMachine* csm, uint8_t channel)
 {
-
-	switch(channel){
-	case CHANNEL_X:
-		// Make sure dataframe has the start word
-		ts->xSendingBuffer.opcode = csm->channelOpcode;
-		// Copy last complete measurement
-		ts->xSendingBuffer.channelData = csm->measurement;
-		break;
-	case CHANNEL_Y:
-		// Make sure dataframe has the start word
-		ts->ySendingBuffer.opcode = csm->channelOpcode;
-		// Copy last complete measurement
-		ts->ySendingBuffer.channelData = csm->measurement;
-		break;
+	switch(channel)
+	{
+		case CHANNEL_X:
+			// Make sure dataframe has the start word
+			ts->xSendingBuffer.opcode = csm->channelOpcode;
+			// Copy last complete measurement
+			ts->xSendingBuffer.channelData = csm->measurement;
+			break;
+		case CHANNEL_Y:
+			// Make sure dataframe has the start word
+			ts->ySendingBuffer.opcode = csm->channelOpcode;
+			// Copy last complete measurement
+			ts->ySendingBuffer.channelData = csm->measurement;
+			break;
 	}
-
 }
 
 int Send_data(Osci_Transceiver* ts, uint8_t channel)
@@ -38,7 +37,9 @@ int Send_data(Osci_Transceiver* ts, uint8_t channel)
 	};
 
 	LL_DMA_SetDataLength(ts->dma, ts->dmaTransmissionChannel, sizeof(Osci_DataFrame));
-	switch(channel){
+
+	switch(channel)
+	{
 		case CHANNEL_X:
 			LL_DMA_SetMemoryAddress(ts->dma, ts->dmaTransmissionChannel, (uint32_t)&ts->xSendingBuffer);
 			break;
@@ -46,6 +47,7 @@ int Send_data(Osci_Transceiver* ts, uint8_t channel)
 			LL_DMA_SetMemoryAddress(ts->dma, ts->dmaTransmissionChannel, (uint32_t)&ts->ySendingBuffer);
 			break;
 	}
+
 	LL_DMA_EnableChannel(ts->dma, ts->dmaTransmissionChannel);
 	return 1;
 }
@@ -53,7 +55,8 @@ int Send_data(Osci_Transceiver* ts, uint8_t channel)
 void Send_data_blocking(Osci_Transceiver* ts, uint8_t channel)
 {
 	// Block until data is sent
-	while(LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel)){};
+	while(LL_DMA_IsEnabledChannel(ts->dma, ts->dmaTransmissionChannel));
+
 	Send_data(ts, channel);
 }
 
@@ -84,8 +87,6 @@ void Configure_usart(Osci_Transceiver* ts)
 
 	// Channel 7 (data writing)
 	LL_DMA_SetPeriphAddress(ts->dma, ts->dmaTransmissionChannel, LL_USART_DMA_GetRegAddr(ts->usart, LL_USART_DMA_REG_DATA_TRANSMIT));
-	//LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_7, (uint32_t)&osci_dataframe_current);
-	//LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_7, sizeof(Osci_DataFrame));
 
 	LL_DMA_EnableIT_TE(ts->dma, ts->dmaTransmissionChannel);
 	LL_DMA_EnableIT_TC(ts->dma, ts->dmaTransmissionChannel);
@@ -110,6 +111,10 @@ void OSCI_transceiver_init(Osci_Transceiver* ts, USART_TypeDef* usart, DMA_TypeD
 	ts->x_channel_state_machine = x_channel_state_machine;
 	ts->y_channel_state_machine = y_channel_state_machine;
 	ts->channelUpdateMask = 0;
+
+	// clear sending buffers
+	memset(&ts->xSendingBuffer, 0, sizeof(Osci_DataFrame));
+	memset(&ts->ySendingBuffer, 0, sizeof(Osci_DataFrame));
 
 	// Configure USART channels, set buffer addresses etc.
 	Configure_usart(ts);
@@ -165,7 +170,8 @@ void Switch_to_reconfiguring_after_shutdown(Osci_Transceiver* ts)
 }
 
 
-void Reconfigure_channels_only_transform(Osci_Transceiver* ts){
+void Reconfigure_channels_only_transform(Osci_Transceiver* ts)
+{
 	Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
 	OSCI_configurator_recalculate_parameters_only_transform(ts, &settingsCopy);
 	OSCI_configurator_distribute_settings(ts, &settingsCopy);
@@ -204,14 +210,17 @@ void Start_monitoring(Osci_Transceiver* ts)
 		ts->y_channel_state_machine->events.start_monitoring = TRUE;
 }
 
-int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data){
+int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data)
+{
 	if(!condition) return 0;
 	fcn(fcn_data);
 	return 1;
 }
 
-void Transition(Osci_TransitionSpec spec){
-	switch(spec.stateMachineType){
+void Transition(Osci_TransitionSpec spec)
+{
+	switch(spec.stateMachineType)
+	{
 		case CHANNEL_STATE_MACHINE:
 			((Osci_ChannelStateMachine*)spec.stateMachine)->state = spec.new_state;
 			break;
@@ -221,7 +230,8 @@ void Transition(Osci_TransitionSpec spec){
 	}
 }
 
-void Send_pong(void* data){
+void Send_pong(void* data)
+{
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	ts->channelUpdateMask = 0;
@@ -229,21 +239,24 @@ void Send_pong(void* data){
 	Send_data_blocking(ts, CHANNEL_X);
 }
 
-void Measure_stop(void* data){
+void Measure_stop(void* data)
+{
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	ts->channelUpdateMask = 0;
 	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 }
 
-void Trigger(void* data){
+void Trigger(void* data)
+{
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	ts->channelUpdateMask = ts->receiveCompleteBuffer.triggerCommand;
 	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 }
 
-void Transform(void* data){
+void Transform(void* data)
+{
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	Reconfigure_channels_only_transform(ts);
@@ -253,26 +266,28 @@ void Transform(void* data){
 	Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 }
 
-void TrySendXbuffer(Osci_Transceiver* ts){
-
+void TrySendXbuffer(Osci_Transceiver* ts)
+{
 	Gather_data(ts, ts->x_channel_state_machine, CHANNEL_X);
 	OSCI_transform_apply(&ts->xSendingBuffer, ts->x_channel_state_machine->params);
 	ts->xSendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
-	if(Send_data(ts, CHANNEL_X)){
+
+	if(Send_data(ts, CHANNEL_X))
 		ts->events.send_requested[0] = FALSE;
-	}
+
 	ts->channelUpdateMask &= ~MEASURE_SINGLE_X;
 }
 
-void TrySendYbuffer(void*data){
+void TrySendYbuffer(void*data)
+{
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	Gather_data(ts, ts->y_channel_state_machine, CHANNEL_Y);
 	OSCI_transform_apply(&ts->ySendingBuffer, ts->y_channel_state_machine->params);
 	ts->ySendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_Y;
-	if(Send_data(ts, CHANNEL_Y)){
+
+	if(Send_data(ts, CHANNEL_Y))
 		ts->events.send_requested[1] = FALSE;
-	}
 
 	ts->channelUpdateMask &= ~MEASURE_SINGLE_Y;
 }
@@ -287,21 +302,17 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 			{
 				ts->events.received_settings = FALSE;
 
-				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand & PING, Send_pong, (void*)ts)){
+				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand & PING, Send_pong, (void*)ts))
 					return;
-				}
 
-				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand & MEASURE_STOP, Measure_stop, (void*)ts)){
+				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand & MEASURE_STOP, Measure_stop, (void*)ts))
 					return;
-				}
 
-				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand, Trigger, (void*)ts)){
+				if(TryExecOnFlag(ts->receiveCompleteBuffer.triggerCommand, Trigger, (void*)ts))
 					return;
-				}
 
-				if(TryExecOnFlag(!ts->receiveCompleteBuffer.triggerCommand, Transform, (void*)ts)){
+				if(TryExecOnFlag(!ts->receiveCompleteBuffer.triggerCommand, Transform, (void*)ts))
 					return;
-				}
 			}
 
 			if (ts->events.send_requested[0] || ts->events.send_requested[1])
@@ -333,18 +344,11 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		}
 		case OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING:
 		{
-
-			//TryExecOnFlag(ts->events.send_requested[0], TrySendXbuffer, (void*)ts);
-			//TryExecOnFlag(ts->events.send_requested[1], TrySendYbuffer, (void*)ts);
-
-			if(ts->events.send_requested[0]){
+			if(ts->events.send_requested[0])
 				TrySendXbuffer(ts);
-			}
 
-			if(ts->events.send_requested[1]){
+			if(ts->events.send_requested[1])
 				TrySendYbuffer(ts);
-			}
-
 
 			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_IDLE, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;

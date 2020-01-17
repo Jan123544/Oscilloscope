@@ -79,13 +79,13 @@ void Fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_paramete
 
 	new_parameters->xTimerSettings.psc = xOverflows;
 	new_parameters->yTimerSettings.psc = yOverflows;
-	new_parameters->xHoldOffTimerSettings.psc = 32000;
-	new_parameters->yHoldOffTimerSettings.psc = 32000;
+	new_parameters->xHoldOffTimerSettings.psc = 31999;
+	new_parameters->yHoldOffTimerSettings.psc = 31999;
 
 	new_parameters->xTimerSettings.arr = xCyclesRequired/(xOverflows + 1);
 	new_parameters->yTimerSettings.arr = yCyclesRequired/(yOverflows + 1);
-	new_parameters->xHoldOffTimerSettings.arr = settings->xHoldOffTime;
-	new_parameters->yHoldOffTimerSettings.arr = settings->yHoldOffTime;
+	new_parameters->xHoldOffTimerSettings.arr = settings->xHoldOffTime - 1;
+	new_parameters->yHoldOffTimerSettings.arr = settings->yHoldOffTime - 1;
 }
 
 void Switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)
@@ -163,7 +163,8 @@ void Fill_rangesWhenMeasured(Osci_Transceiver* ts, Osci_Settings* s, Osci_Calcul
 	}
 }
 
-void OSCI_configurator_recalculate_parameters_only_transform(Osci_Transceiver* ts, Osci_Settings* s){
+void OSCI_configurator_recalculate_parameters_only_transform(Osci_Transceiver* ts, Osci_Settings* s)
+{
 	Fill_sensitivity_and_offset(s, &ts->allReceivedParameters);
 }
 
@@ -180,7 +181,8 @@ void OSCI_configurator_recalculate_parameters(Osci_Transceiver* ts, Osci_Setting
 	ts->allReceivedParameters = new_p;
 }
 
-void OSCI_configurator_init_parameters(Osci_Transceiver* ts, Osci_Settings* s){
+void OSCI_configurator_init_parameters(Osci_Transceiver* ts, Osci_Settings* s)
+{
 	OSCI_configurator_recalculate_parameters(ts, s);
 
 	// These are initialized separately as channels will not have their parameters initialized by this time yet.
