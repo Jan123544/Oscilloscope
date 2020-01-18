@@ -99,20 +99,19 @@ class CanvasCaretaker {
     private void initUnitLabels(Label newLowerUnitLabel, Label newUpperUnitLabel){
         double upperUnitLabelXOffset = 40;
         double upperUnitLabelYOffset = 15;
-        double lowerUnitLabelXOffset = 10;
+        double lowerUnitLabelXOffset = 5;
         double lowerUnitLabelYOffset = 25;
 
-        newUpperUnitLabel = newLowerUnitLabel;
-        newUpperUnitLabel.setText("[V/V]");
+        newUpperUnitLabel.setText("[V|V]");
         newUpperUnitLabel.setFont(Font.font("", FontWeight.BOLD, 13));
         newUpperUnitLabel.setTranslateX(canvas.getWidth() - upperUnitLabelXOffset);
         newUpperUnitLabel.setTranslateY(upperUnitLabelYOffset);
         newUpperUnitLabel.setTextFill(Color.RED);
 
-        newLowerUnitLabel = newUpperUnitLabel;
-        newLowerUnitLabel.setText("[V/s]");
+        newLowerUnitLabel.setText("[V|s]");
         newLowerUnitLabel.setFont(Font.font("", FontWeight.BOLD, 13));
         newLowerUnitLabel.setTranslateX(lowerUnitLabelXOffset);
+        //newLowerUnitLabel.setTranslateY(upperUnitLabelYOffset - lowerUnitLabelYOffset);
         newLowerUnitLabel.setTranslateY(canvas.getHeight() - lowerUnitLabelYOffset);
         newLowerUnitLabel.setTextFill(Color.RED);
     }

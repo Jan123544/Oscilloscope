@@ -3544,3 +3544,135 @@ Please verify the serial number in the debug configuration.
 !MESSAGE Error in initializing ST-LINK device.
 Reason: (17) Could not find an ST-LINK with serial number 0670FF535351717867201837.
 Please verify the serial number in the debug configuration.
+!SESSION 2020-01-18 07:21:31.947 -----------------------------------------------
+eclipse.buildId=Version 1.1.0
+java.version=1.8.0_202
+java.vendor=AdoptOpenJdk
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2020-01-18 07:22:14.650
+!MESSAGE Log4j initialized with config file C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 07:22:17.658
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 07:22:17.669
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 07:22:17.906
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 07:22:17.916
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 07:22:17.925
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 07:22:17.934
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 07:22:17.944
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 07:22:17.953
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2020-01-18 07:22:27.408
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2020-01-18 07:22:28.173
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.stlink 4 4 2020-01-18 07:42:36.611
+!MESSAGE ST-LINK GDB server failed to start (exit code = 17)
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2020-01-18 07:42:36.668
+!MESSAGE Error in final launch sequence:
+
+Error in initializing ST-LINK device.
+Reason: (17) Could not find an ST-LINK with serial number 066EFF495649657867074658.
+Please verify the serial number in the debug configuration.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in initializing ST-LINK device.
+Reason: (17) Could not find an ST-LINK with serial number 066EFF495649657867074658.
+Please verify the serial number in the debug configuration.
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:242)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:106)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:94)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:860)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:719)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1017)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$2.run(DebugUIPlugin.java:1220)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 com.st.stm32cube.ide.mcu.debug.launch 4 0 2020-01-18 07:42:36.671
+!MESSAGE Error in initializing ST-LINK device.
+Reason: (17) Could not find an ST-LINK with serial number 066EFF495649657867074658.
+Please verify the serial number in the debug configuration.
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.stlink 4 4 2020-01-18 07:44:10.690
+!MESSAGE ST-LINK GDB server failed to start (exit code = 17)
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 5012 2020-01-18 07:44:10.730
+!MESSAGE Error in final launch sequence:
+
+Error in initializing ST-LINK device.
+Reason: (17) Could not find an ST-LINK with serial number 066EFF495649657867074658.
+Please verify the serial number in the debug configuration.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in initializing ST-LINK device.
+Reason: (17) Could not find an ST-LINK with serial number 066EFF495649657867074658.
+Please verify the serial number in the debug configuration.
+	at org.eclipse.cdt.dsf.concurrent.Query.get(Query.java:112)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugSession(GdbLaunchDelegate.java:242)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launchDebugger(GdbLaunchDelegate.java:106)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.launch(GdbLaunchDelegate.java:94)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:860)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:719)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1017)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$2.run(DebugUIPlugin.java:1220)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 com.st.stm32cube.ide.mcu.debug.launch 4 0 2020-01-18 07:44:10.731
+!MESSAGE Error in initializing ST-LINK device.
+Reason: (17) Could not find an ST-LINK with serial number 066EFF495649657867074658.
+Please verify the serial number in the debug configuration.
+!SESSION 2020-01-18 08:03:13.490 -----------------------------------------------
+eclipse.buildId=Version 1.1.0
+java.version=1.8.0_202
+java.vendor=AdoptOpenJdk
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2020-01-18 08:03:35.670
+!MESSAGE Log4j initialized with config file C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 08:03:37.981
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 08:03:37.998
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 08:03:38.065
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 08:03:38.082
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 08:03:38.098
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 08:03:38.108
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 4 4 2020-01-18 08:03:38.122
+!MESSAGE Type or version is empty: ; 
+
+!ENTRY com.st.stm32cube.ide.mcu.toolchain 2 2 2020-01-18 08:03:38.132
+!MESSAGE Falling back to default toolchain
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2020-01-18 08:03:44.965
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2020-01-18 08:03:45.339
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
