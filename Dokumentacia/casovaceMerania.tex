@@ -10,12 +10,12 @@
 	Tiež musíme vypočítať parametre časovačov pomocou \cref{eqn:transformaciaCasovace}.
 	\begin{equation}
 		\begin{split}
-				psc &= \floor{\frac{c}{c_max}} \\
+				psc &= \floor{\frac{c}{c_{max}}} \\
 				arr &= \floor{\frac{c}{psc + 1}} \\
 		\end{split}
 		\label{eqn:transformaciaCasovace}
 	\end{equation}
-	kde $c$ je celkový počet taktov časovača obsiahnutých v nastavovanom časovom intervaly v $[sec]$. Hodnotu $c$ vypočítame pre časovače s taktom $f$HZ na základe \cref{eqn:transformaciaPocetCyklov}.
+	kde $c$ je celkový počet taktov časovača obsiahnutých v nastavovanom časovom intervale v $[sec]$. Hodnotu $c$ vypočítame pre časovače s taktom $f$HZ na základe \cref{eqn:transformaciaPocetCyklov}.
 	\begin{equation}
 		c = \frac{f t_{pd} d }{n}
 		\label{eqn:transformaciaPocetCyklov}

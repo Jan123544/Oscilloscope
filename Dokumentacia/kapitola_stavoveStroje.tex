@@ -2,7 +2,7 @@
 \begin{document}
 	\section{Program}
 		\begin{multicols*}{2}
-			\noindent Program v mikrokontroléry je tovrený 3 stavovými strojmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový stroj má vlajky udalostí, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových strojov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $Transceiver$ (príjmač a vysielač) alebo $ChannelStateMachine$ (stavový stroj riadiaci činnosť meracieho kanála). V krátkosti opíšeme činnosť týchto stavových strojov, pre detaily je vhodné konzultovať zdrojový kód.
+			\noindent Program je tovrený 3 stavovými strojmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový stroj má vlajky udalostí, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových strojov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $Transceiver$ (príjmač a vysielač) alebo $ChannelStateMachine$ (stavový stroj riadiaci činnosť meracieho kanála). V krátkosti opíšeme činnosť týchto stavových strojov, pre detaily je vhodné konzultovať zdrojový kód. Schematické znázornenie programu je na konci tejto kapitoly na \cref{fig:programClekovaSchema}.
 			
 			\subsection{Stavový stroj vysielač/príjmač}
 			Úlohou tohto stavového stroja, je reakcia na príchod nových dát, distribúcia nových nastavení a posielanie nových meraní do uživateľského prostredia. Jednoduché zobrazenie môžeme vidieť na \cref{fig:stavovyStrojVysielacPrijmac}.
@@ -19,8 +19,6 @@
 			
 			\subfile{stavovyStrojMeraciehoKanalu}
 			\vskip 0.25cm
-			
-			
-			
 		\end{multicols*}
+		\subfile{programCelkovaSchema}
 \end{document}

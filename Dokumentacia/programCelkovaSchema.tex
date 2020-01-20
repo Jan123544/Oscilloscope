@@ -1,0 +1,38 @@
+\documentclass[main.tex]{subfiles}
+\begin{document}
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+		semithick]
+		\tikzstyle{every node}=[fill=red,draw=none,text=white]
+		\node at (0, 0) (GUI) {GUI} ;
+		\node (UART) [right of=GUI] {UART};
+		\node (TS) [right of=UART] {TS};
+		\node (CSMX) [above of=TS] {CSMX};
+		\node (CSMY) [below of=TS] {CSMY};
+		\node (HOTX) [above of=CSMX] {HOTX};
+		\node (HOTY) [below of=CSMY] {HOTY};
+		\node (ADCX) [right of=CSMX] {ADCX};
+		\node (ADCY) [right of=CSMY] {ADCY};
+		\node (MTX) [above of=ADCX] {MTX};
+		\node (MTY) [below of=ADCY] {MTY};
+		\node (AWDX) [above of=MTX] {AWDX};
+		\node (AWDY) [below of=MTY] {AWDY};
+		\node (INX) [right of=ADCX] {INX};
+		\node (INY) [right of=ADCY] {INY};
+		\node (RS)  at ($(INX)!0.5!(INY)$) {RS};
+		\node (DMAX) [above of=INX] {DMAX};
+		\node (DMAY) [below of=INY] {DMAY};
+		\node (BUFFX) [right of=DMAX] {BUFFX};
+		\node (BUFFY) [right of=DMAY] {BUFFY};
+		\node (TSB) [right of=RS,color=blue,text = white] {TS};
+		\node (TF) [below of=UART] {TF};
+		
+		\draw [->]  (TS) edge (CSMX) (TS) edge (CSMY) (HOTX) edge (CSMX) (HOTY) edge (CSMY) (CSMX) edge (ADCX) (CSMY) edge (ADCY) (AWDX) edge (MTX) (AWDY) edge (MTY) (MTX) edge (ADCX) (MTY) edge (ADCY) (INX) edge (ADCX) (INY) edge (ADCY) (RS) edge (INX) (RS) edge (INY) (ADCX) edge (DMAX) (ADCY) edge (DMAY) (DMAX) edge (BUFFX) (DMAY) edge (BUFFY) (TS) edge (RS) (BUFFX) edge (TSB) (BUFFY) edge (TSB) (UART) edge (TS) (TS) edge (TF) (TF) edge (UART);
+		
+		\draw [<->] (GUI) edge (UART);
+		\end{tikzpicture}
+		\caption{Schematické znázornenie celkovej štruktúry programu}
+	\end{figure}
+	
+\end{document}
