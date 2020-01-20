@@ -1,0 +1,21 @@
+13:59:13 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:115:12: warning: unused variable 'vrefint_cal_val' [-Wunused-variable]
+   uint16_t vrefint_cal_val = *vrefint_cal_addr;
+            ^~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci_test_vrefint_measurement.elf
+ 
+arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
+arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+   text	   data	    bss	    dec	    hex	filename
+   3876	     12	   1572	   5460	   1554	osci_test_vrefint_measurement.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci_test_vrefint_measurement.list
+ 
+
+13:59:20 Build Finished. 0 errors, 1 warnings. (took 6s.892ms)
+

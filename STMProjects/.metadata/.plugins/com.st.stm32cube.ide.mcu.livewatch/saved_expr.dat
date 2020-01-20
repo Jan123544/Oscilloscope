@@ -1,3 +1,6 @@
 adj_IT_reference
 (SignalBuilder*)adj_IT_reference
 adj
+adc1_converted
+adc2_converted
+vrefint_cal_val
