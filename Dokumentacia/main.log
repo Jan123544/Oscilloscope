@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.9.29)  23 JAN 2020 18:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.9.29)  23 JAN 2020 18:41
 entering extended mode
 **./main.tex
 (main.tex
@@ -1534,32 +1534,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 41--42
  []
 
 [4]
-Underfull \hbox (badness 6078) in paragraph at lines 70--71
+Underfull \hbox (badness 6078) in paragraph at lines 74--75
 []\T1/lmr/m/n/12 Po stla-£ený tla-£idla \T1/lmr/m/it/12 ME-A-SURE
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--71
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 \T1/lmr/m/it/12 TING_FOR_SHUTDOWN\T1/lmr/m/n/12 , sta-vový
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--71
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 \T1/lmr/m/it/12 STAR-TING_CHANNELS \T1/lmr/m/n/12 v tomto
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 70--71
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 \T1/lmr/m/it/12 RING_TRANSFORMING_SENDING
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--74
+Underfull \hbox (badness 10000) in paragraph at lines 77--78
 \T1/lmr/m/n/12 teda o tzv. []
  []
 
 
-Overfull \hbox (0.71106pt too wide) in paragraph at lines 73--74
+Overfull \hbox (0.71106pt too wide) in paragraph at lines 77--78
 \T1/lmr/m/it/12 RING_TRANSFORMING_SENDING\T1/lmr/m/n/12 ,
  []
 
@@ -1795,11 +1795,11 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 20.
 Here is how much of TeX's memory you used:
  48063 strings out of 492895
  1093306 string characters out of 3124669
- 1279936 words of memory out of 3000000
+ 1279937 words of memory out of 3000000
  51297 multiletter control sequences out of 15000+200000
  604739 words of font info for 87 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,23n,95p,1908b,1271s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 57i,23n,95p,1907b,1271s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}
 {C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.en
 c}{C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}
@@ -1818,7 +1818,7 @@ c/lm/lmr8.pfb><C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
 c/lm/lmri12.pfb><C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
 lic/lm/lmsy10.pfb><C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/p
 ublic/lm/lmsy8.pfb>
-Output written on main.pdf (17 pages, 3448270 bytes).
+Output written on main.pdf (17 pages, 3448616 bytes).
 PDF statistics:
  325 PDF objects out of 1000 (max. 8388607)
  78 named destinations out of 1000 (max. 500000)

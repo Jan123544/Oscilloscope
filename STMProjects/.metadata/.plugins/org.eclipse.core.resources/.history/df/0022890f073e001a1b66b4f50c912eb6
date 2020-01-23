@@ -110,6 +110,9 @@ int main(void)
   MX_TIM15_Init();
   /* USER CODE BEGIN 2 */
 
+  LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_7);
+  LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_6);
+
   Osci_Application* app = OSCI_init();
   app_IT_reference = app;
 
@@ -119,12 +122,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
 	  OSCI_transceiver_update(&app->transceiver);
 	  OSCI_channel_update(&app->xChannelStateMachine);
 	  OSCI_channel_update(&app->yChannelStateMachine);
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
 }
