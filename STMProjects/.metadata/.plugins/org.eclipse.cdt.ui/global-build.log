@@ -1,351 +1,256 @@
-13:16:40 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:41:35 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/adc.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/adc.d" -MT"Core/Src/adc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/adc.o"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc "../Core/Src/stm32f3xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/stm32f3xx_it.d" -MT"Core/Src/stm32f3xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f3xx_it.o"
-arm-none-eabi-gcc "../Core/Src/sys.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/sys.d" -MT"Core/Src/sys.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/sys.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-gcc "../Core/Src/usart.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/usart.d" -MT"Core/Src/usart.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/usart.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
    text	   data	    bss	    dec	    hex	filename
-   3740	     12	   1572	   5324	   14cc	osci_test_vrefint_measurement.elf
+  13640	     12	   1580	  15232	   3b80	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:17:07 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:42:18 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3740	     12	   1572	   5324	   14cc	osci_test_vrefint_measurement.elf
+  13640	     12	   1580	  15232	   3b80	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-13:18:09 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:44:16 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3876	     12	   1572	   5460	   1554	osci_test_vrefint_measurement.elf
+  13640	     12	   1580	  15232	   3b80	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:20:37 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:46:30 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   4016	     12	   1572	   5600	   15e0	osci_test_vrefint_measurement.elf
+  13636	     12	   1580	  15228	   3b7c	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:23:11 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:49:23 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   4016	     12	   1572	   5600	   15e0	osci_test_vrefint_measurement.elf
+  13644	     12	   1580	  15236	   3b84	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:23:57 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:52:16 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   4080	     12	   1572	   5664	   1620	osci_test_vrefint_measurement.elf
+  13644	     12	   1580	  15236	   3b84	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:26:51 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+16:58:17 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/adc.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/adc.d" -MT"Core/Src/adc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/adc.o"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc "../Core/Src/stm32f3xx_it.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/stm32f3xx_it.d" -MT"Core/Src/stm32f3xx_it.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/stm32f3xx_it.o"
-arm-none-eabi-gcc "../Core/Src/sys.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/sys.d" -MT"Core/Src/sys.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/sys.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3728	     12	   1572	   5312	   14c0	osci_test_vrefint_measurement.elf
+  13644	     12	   1580	  15236	   3b84	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:28:44 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+17:00:39 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/adc.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/adc.d" -MT"Core/Src/adc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/adc.o"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3728	     12	   1572	   5312	   14c0	osci_test_vrefint_measurement.elf
+  13648	     12	   1580	  15240	   3b88	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:29:28 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+17:01:48 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3780	     12	   1572	   5364	   14f4	osci_test_vrefint_measurement.elf
+  13648	     12	   1580	  15240	   3b88	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:31:17 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+17:02:44 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3944	     12	   1572	   5528	   1598	osci_test_vrefint_measurement.elf
+  13652	     12	   1580	  15244	   3b8c	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:31:45 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+17:04:09 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
+ 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3944	     12	   1572	   5528	   1598	osci_test_vrefint_measurement.elf
+  13612	     12	   1580	  15204	   3b64	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-13:32:52 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+Finished building: osci_test_signal_generator.list
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+17:05:08 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
+make -j4 all 
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
+ 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3984	     12	   1572	   5568	   15c0	osci_test_vrefint_measurement.elf
+  13612	     12	   1580	  15204	   3b64	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:33:36 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+17:06:33 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3920	     12	   1572	   5504	   1580	osci_test_vrefint_measurement.elf
+  13612	     12	   1580	  15204	   3b64	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:35:27 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
+17:07:49 **** Incremental Build of configuration Debug for project osci_test_signal_generator ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
+arm-none-eabi-g++ "../Core/Src/SignalAdjuster.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/SignalAdjuster.d" -MT"Core/Src/SignalAdjuster.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/SignalAdjuster.o"
+arm-none-eabi-g++ "../Core/Src/cppmain.cpp" -mcpu=cortex-m4 -std=gnu++14 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -fno-exceptions -fno-rtti -fno-threadsafe-statics -fno-use-cxa-atexit -Wall -fstack-usage -MMD -MP -MF"Core/Src/cppmain.d" -MT"Core/Src/cppmain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/cppmain.o"
+arm-none-eabi-g++ -o "osci_test_signal_generator.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_signal_generator\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_signal_generator.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+Finished building target: osci_test_signal_generator.elf
  
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
+arm-none-eabi-objdump -h -S  osci_test_signal_generator.elf  > "osci_test_signal_generator.list"
+arm-none-eabi-size   osci_test_signal_generator.elf 
    text	   data	    bss	    dec	    hex	filename
-   3992	     12	   1572	   5576	   15c8	osci_test_vrefint_measurement.elf
+  13612	     12	   1580	  15204	   3b64	osci_test_signal_generator.elf
 Finished building: default.size.stdout
  
-Finished building: osci_test_vrefint_measurement.list
+Finished building: osci_test_signal_generator.list
  
-13:37:44 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   3992	     12	   1572	   5576	   15c8	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-13:37:49 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   3992	     12	   1572	   5576	   15c8	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-13:39:16 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   3992	     12	   1572	   5576	   15c8	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-13:40:54 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   4112	     12	   1572	   5696	   1640	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-13:41:21 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   4112	     12	   1572	   5696	   1640	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-13:42:18 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   4136	     12	   1572	   5720	   1658	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-13:42:53 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   4136	     12	   1572	   5720	   1658	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-13:44:50 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   3864	     12	   1572	   5448	   1548	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-13:57:25 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Inc/main.h:31:0,
-                 from ../Core/Src/main.c:22:
-../Core/Src/main.c: In function 'main':
-../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_ll_adc.h:368:44: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
- #define VREFINT_CAL_ADDR                   ((uint16_t*) ((uint32_t)0x1FFFF7BAU)) /* Internal voltage reference, address of parameter VREFINT_CAL: VrefInt ADC raw data acquired at temperature 30 DegC (tolerance: +-5 DegC), Vref+ = 3.3 V (tolerance: +-10 mV). */
-                                            ^
-../Core/Src/main.c:114:32: note: in expansion of macro 'VREFINT_CAL_ADDR'
-   uint32_t* vrefint_cal_addr = VREFINT_CAL_ADDR;
-                                ^~~~~~~~~~~~~~~~
-../Core/Src/main.c:115:47: error: expected expression before ';' token
-   uint32_t vrefint_cal_val = vrefint_cal_addr*;
-                                               ^
-../Core/Src/main.c:115:12: warning: unused variable 'vrefint_cal_val' [-Wunused-variable]
-   uint32_t vrefint_cal_val = vrefint_cal_addr*;
-            ^~~~~~~~~~~~~~~
-make: *** [Core/Src/subdir.mk:38: Core/Src/main.o] Error 1
-"make -j4 all" terminated with exit code 2. Build might be incomplete.
-13:57:35 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Inc/main.h:31:0,
-                 from ../Core/Src/main.c:22:
-../Core/Src/main.c: In function 'main':
-../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_ll_adc.h:368:44: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
- #define VREFINT_CAL_ADDR                   ((uint16_t*) ((uint32_t)0x1FFFF7BAU)) /* Internal voltage reference, address of parameter VREFINT_CAL: VrefInt ADC raw data acquired at temperature 30 DegC (tolerance: +-5 DegC), Vref+ = 3.3 V (tolerance: +-10 mV). */
-                                            ^
-../Core/Src/main.c:114:32: note: in expansion of macro 'VREFINT_CAL_ADDR'
-   uint32_t* vrefint_cal_addr = VREFINT_CAL_ADDR;
-                                ^~~~~~~~~~~~~~~~
-../Core/Src/main.c:115:12: warning: unused variable 'vrefint_cal_val' [-Wunused-variable]
-   uint32_t vrefint_cal_val = *vrefint_cal_addr;
-            ^~~~~~~~~~~~~~~
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   3876	     12	   1572	   5460	   1554	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-13:59:13 **** Incremental Build of configuration Debug for project osci_test_vrefint_measurement ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:115:12: warning: unused variable 'vrefint_cal_val' [-Wunused-variable]
-   uint16_t vrefint_cal_val = *vrefint_cal_addr;
-            ^~~~~~~~~~~~~~~
-arm-none-eabi-gcc -o "osci_test_vrefint_measurement.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci_test_vrefint_measurement\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci_test_vrefint_measurement.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: osci_test_vrefint_measurement.elf
- 
-arm-none-eabi-objdump -h -S  osci_test_vrefint_measurement.elf  > "osci_test_vrefint_measurement.list"
-arm-none-eabi-size   osci_test_vrefint_measurement.elf 
-   text	   data	    bss	    dec	    hex	filename
-   3876	     12	   1572	   5460	   1554	osci_test_vrefint_measurement.elf
-Finished building: default.size.stdout
- 
-Finished building: osci_test_vrefint_measurement.list
- 
-14:07:59 **** Incremental Build of configuration Debug for project osci ****
+07:17:16 **** Build of configuration Debug for project osci ****
 make -j4 all 
 arm-none-eabi-size   osci.elf 
    text	   data	    bss	    dec	    hex	filename
-  22708	    112	   1616	  24436	   5f74	osci.elf
+  22732	    112	   1616	  24460	   5f8c	osci.elf
+Finished building: default.size.stdout
+ 
+07:19:26 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22732	    112	   1616	  24460	   5f8c	osci.elf
+Finished building: default.size.stdout
+ 
+07:24:25 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22796	    112	   1616	  24524	   5fcc	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+07:27:53 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/osci_transceiver.c" -mcpu=cortex-m4 -std=gnu11 -g3 '-DEXTERNAL_CLOCK_VALUE=8000000' '-DHSE_VALUE=8000000' '-DHSE_STARTUP_TIMEOUT=100' -DDEBUG '-DLSE_STARTUP_TIMEOUT=5000' '-DLSE_VALUE=32768' '-DVDD_VALUE=3300' '-DLSI_VALUE=40000' '-DHSI_VALUE=8000000' -DSTM32F303x8 -DUSE_FULL_LL_DRIVER '-DPREFETCH_ENABLE=1' -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/osci_transceiver.d" -MT"Core/Src/osci_transceiver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/osci_transceiver.o"
+arm-none-eabi-gcc -o "osci.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\dot\Documents\Skola\Semester7\VS\SemestralnyProjekt\git\Oscilloscope\STMProjects\osci\STM32F303K8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="osci.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: osci.elf
+ 
+arm-none-eabi-objdump -h -S  osci.elf  > "osci.list"
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22796	    112	   1616	  24524	   5fcc	osci.elf
+Finished building: default.size.stdout
+ 
+Finished building: osci.list
+ 
+08:10:50 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22796	    112	   1616	  24524	   5fcc	osci.elf
+Finished building: default.size.stdout
+ 
+08:17:09 **** Incremental Build of configuration Debug for project osci ****
+make -j4 all 
+arm-none-eabi-size   osci.elf 
+   text	   data	    bss	    dec	    hex	filename
+  22796	    112	   1616	  24524	   5fcc	osci.elf
 Finished building: default.size.stdout
  

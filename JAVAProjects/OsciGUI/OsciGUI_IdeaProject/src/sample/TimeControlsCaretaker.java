@@ -19,6 +19,9 @@ public class TimeControlsCaretaker {
         float inRangeValue = GeneralOperations.putInRange(Float.parseFloat(tf.getText()), GlobalConstants.TIME_PER_DIVISION_MIN, GlobalConstants.TIME_PER_DIVISION_MAX);
         s.setValue(Math.log10(inRangeValue));
         tf.setText(String.format(Locale.US, "%g", inRangeValue));
+        if(c.autoMeasureCB.isSelected()) {
+            c.serialWriter.setUpdateNeeded(true);
+        }
     }
 
     static private void initTimePerDivisionTF(Controller c, TextField tf, Slider s, Channel channel){
@@ -38,6 +41,9 @@ public class TimeControlsCaretaker {
         // Put read value into range, update slider and also update TF with value in range.
         float inRangeValue = GeneralOperations.putInRange(Float.parseFloat(tf.getText()), GlobalConstants.TIMER_HOLD_OFF_MIN, GlobalConstants.TIMER_HOLD_OFF_MAX);
         tf.setText(String.format(Locale.US, "%d", (int)inRangeValue));
+        if(c.autoMeasureCB.isSelected()) {
+            c.serialWriter.setUpdateNeeded(true);
+        }
     }
 
     static private void initHoldOffTF(Controller c, TextField tf, Channel channel){
@@ -60,6 +66,9 @@ public class TimeControlsCaretaker {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 tf.setText(String.format(Locale.US, "%.4g", Math.pow(10, t1.doubleValue())));
+                if(c.autoMeasureCB.isSelected()) {
+                    c.serialWriter.setUpdateNeeded(true);
+                }
             }
         });
 

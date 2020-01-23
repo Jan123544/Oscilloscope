@@ -23,7 +23,9 @@ class TriggerControlCaretaker {
         // Put read value into range, update slider and also update TF with value in range.
         GeneralOperations.setTFSControlsAndCropInRange(tf, s, Float.parseFloat(tf.getText()), activeMinimumTriggerLevel, activeMaximumTriggerLevel);
         c.canvasCaretaker.setThresholdLineVoltage(s.getValue(), channel);
-        c.serialWriter.setUpdateNeeded(true);
+        if(c.autoMeasureCB.isSelected()) {
+            c.serialWriter.setUpdateNeeded(true);
+        }
     }
 
     static private void setupTriggerControlCallbackTF(Controller c, TextField tf, Slider s, Channel channel){

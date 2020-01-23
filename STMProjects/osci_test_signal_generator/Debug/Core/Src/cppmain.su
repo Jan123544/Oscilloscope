@@ -2,9 +2,10 @@ stm32f3xx_ll_dac.h:1038:22:void LL_DAC_Enable(DAC_TypeDef*, uint32_t)	16	static
 stm32f3xx_ll_dac.h:1195:22:void LL_DAC_ConvertData12RightAligned(DAC_TypeDef*, uint32_t, uint32_t)	32	static,ignoring_inline_asm
 stm32f3xx_ll_usart.h:2926:22:void LL_USART_EnableIT_RXNE(USART_TypeDef*)	16	static
 cmath:260:3:constexpr float std::floor(float)	16	static
-SignalAdjuster.h:47:2:SignalAdjuster::SignalAdjuster(float, float, float, uint32_t, float, uint32_t, uint32_t)	40	static
+SignalAdjuster.h:35:2:SignalAdjuster::SignalAdjuster(float, float, float, uint32_t, uint32_t, uint32_t)	40	static
 cppmain.cpp:13:6:void usart_init()	8	static
 cppmain.cpp:17:6:void dac_init()	8	static
 cppmain.cpp:23:6:void timer_callback(void*)	16	static
-cppmain.cpp:36:6:void Timer_setup_512Atnhz(float)	24	static
-cppmain.cpp:47:6:void cppmain()	2088	static
+cppmain.cpp:33:6:void Timer_setup_512Atnhz(float)	24	static
+cppmain.cpp:43:6:void Timer_setup_Atnhz(float)	24	static
+cppmain.cpp:51:6:void cppmain()	280	static

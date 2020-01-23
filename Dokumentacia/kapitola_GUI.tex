@@ -1,7 +1,8 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
-	\section{Používateľské rozhranie}
+	\section{Používateľská príručka}
 		\begin{multicols}{2}
+			\subsection{Používateľské rozhranie}
 			V krátkosti opíšeme časti používateľského rozhrania. Po spustení programu sa zobrazí okno na \cref{fig:GUIPrveOkno}. Vysvetlenie jednotlivých nastavení je v \cref{tab:GUIVysvetlenieNastaveni}. Začatím merania, je potrebné vytvoriť spojenie so zariadením. Najprv je treba prepnúť sa do okna $Protocol$ vyznačené na \cref{fig:GUIPrveOkno}. Po prepnutí sa zobrazia nastavenia komunikácie na \cref{fig:GUINastaveniaKomunikacie}, kde je potrebné vybrať správny sériový port, na ktorom je zariadenie pripojené a nastaviť vhodnú prenosovú rýchlosť. Po nastavení týchto parametrov je treba kliknúť na tlačidlo $Connect$ a počkať ($~1$sec) kým sa nezmení indikátor stavu spojenia na zelenú alebo červenú. Spojenie prebehlo úspešne v prípade zelenej farby indikátora stavu spojenia.
 			
 			Meranie sa potom spúšťa tlačidlom $Measure$, ktorého stlačením sa zašlú aktuálne nastavenia do mikropočítača. V prípade, že žiadame aby sa citlivosť a posunutie kanálu aplikovala automaticky, je možné zaškrtnúť checkbox $autoupdate$. Zaškrtnutím $autoupdate$ sa s frekvenciou $10HZ$ budú do mikropočítača posielať požiadavky o úpravu transformačných parametrov.  
@@ -37,4 +38,20 @@
 			\caption{Okno nastavení komunikácie}
 			\label{fig:GUINastaveniaKomunikacie}
 		\end{figure}
+		\FloatBarrier
+		\begin{multicols}{2}
+			\subsection{Spustenie merania}
+			\begin{enumerate}
+				\item Zapnutie GUI
+				\item Prepnutie do záložky Protocol
+				\item Nastavenie parametrov protokolu 
+				\item Kliknutie na tlačidlo Connect
+				\item Ak je ProgressBar naľavo zelený, spojenie prebehlo úspešne, inak nie a v takom prípade, je treba znova overiť, či boli zadané parametre správne.
+				\item Prepnutie naspäť na záložku Control
+				\item Nastavenie parametrov merania
+				\item V prípade, že vyžadujeme aj automatickú aktualizáciu parametrov transformácie, tak zaškrtnime CheckBox autoupdate.
+				\item Klikneme na tlačidlo Measure
+				\item Počkáme, až kým sa naľavo nezobrazia namerané priebehy.
+			\end{enumerate}
+		\end{multicols}
 \end{document}

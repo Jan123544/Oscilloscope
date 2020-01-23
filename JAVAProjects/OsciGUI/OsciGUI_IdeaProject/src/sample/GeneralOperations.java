@@ -56,7 +56,7 @@ public class GeneralOperations {
     public static void setTFSControlsAndCropInRange(TextField tf, Slider sl, float value, float rangeMin, float rangeMax){
         float inRangeValue = GeneralOperations.putInRange(value, rangeMin, rangeMax);
         sl.setValue(inRangeValue);
-        tf.setText(String.format(Locale.US, "%.2g",inRangeValue));
+        tf.setText(String.format(Locale.US, "%.2f",inRangeValue));
     }
 
     static float bufferAverage(byte [] buffer, int bufflen){

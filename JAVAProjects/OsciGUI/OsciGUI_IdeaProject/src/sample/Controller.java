@@ -70,6 +70,8 @@ public class Controller {
 
     @FXML
     CheckBox autoUpdateCB;
+    @FXML
+    CheckBox autoMeasureCB;
 
     // Serial settings
     @FXML
@@ -148,6 +150,9 @@ public class Controller {
     @FXML
     Button measureB;
     boolean isFirstMeasurement;
+
+    @FXML
+    Button stopB;
 
     // Internal settings
     @FXML
@@ -249,6 +254,16 @@ public class Controller {
                 isFirstMeasurement = false;
             }
             SerialWriter.sendOnce(this, port, PacketType.NORMAL);
+        }
+    }
+
+    public void stopButtonHandler(){
+        if(port == null){
+            PopupWindowClass.display("Error", "You are not connected.", "OK");
+            return;
+        }
+        if(port.isOpen()){
+            SerialWriter.sendOnce(this, port, PacketType.EXIT);
         }
     }
 }

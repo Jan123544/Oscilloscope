@@ -10,11 +10,13 @@
 
 void OSCI_timer_stop(TIM_TypeDef* timer)
 {
+	// Stop counting by disabling counter
 	LL_TIM_DisableCounter(timer);
 }
 
 void OSCI_timer_start(TIM_TypeDef* timer)
 {
+	// Start counting by enabling update events, their interrupts, reseting the counter and enabling the counter.
 	LL_TIM_EnableUpdateEvent(timer);
 	LL_TIM_EnableIT_UPDATE(timer);
 
@@ -24,6 +26,7 @@ void OSCI_timer_start(TIM_TypeDef* timer)
 
 void OSCI_timer_set_update_callback(TIM_TypeDef* timer, ADC_callback new_callback)
 {
+	// Sets timer callbacks.
 	if (timer == TIM3)
 		osci_timer3_update_callback = new_callback;
 	else if (timer == TIM15)
@@ -32,6 +35,7 @@ void OSCI_timer_set_update_callback(TIM_TypeDef* timer, ADC_callback new_callbac
 
 void OSCI_timer_setup(TIM_TypeDef* timer, Osci_TimerSettings settings)
 {
+	// Just assign registers based on settings structure.
 	timer->PSC = settings.psc;
 	timer->ARR = settings.arr;
 }

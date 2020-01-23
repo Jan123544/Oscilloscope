@@ -12,6 +12,7 @@
 
 float Calculate_alpha(uint32_t beta5, uint32_t beta10, uint32_t beta20, uint32_t range, float calib5, float calib10, float calib20)
 {
+	// Calculate alpha, which is a calibartion factor.
 	switch(range)
 	{
 		case 5:
@@ -28,28 +29,33 @@ float Calculate_alpha(uint32_t beta5, uint32_t beta10, uint32_t beta20, uint32_t
 
 void Fill_alphas(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
 {
+	// Fill calibration factors into the new parameters structure.
 	new_parameters->xAlpha = Calculate_alpha(OSCI_MEASUREMENT_BETA_5_X, OSCI_MEASUREMENT_BETA_10_X, OSCI_MEASUREMENT_BETA_20_X, settings->xVoltageRange, OSCI_MEASUREMENT_ADCCALIB_5_X, OSCI_MEASUREMENT_ADCCALIB_10_X, OSCI_MEASUREMENT_ADCCALIB_20_X);
 	new_parameters->yAlpha = Calculate_alpha(OSCI_MEASUREMENT_BETA_5_Y, OSCI_MEASUREMENT_BETA_10_Y, OSCI_MEASUREMENT_BETA_20_Y, settings->yVoltageRange, OSCI_MEASUREMENT_ADCCALIB_5_Y, OSCI_MEASUREMENT_ADCCALIB_10_Y, OSCI_MEASUREMENT_ADCCALIB_20_Y);
 }
 
 void Fill_ranges(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
 {
+	// Fills voltage ranges into the new parameters structure.
 	new_parameters->xRange = settings->xVoltageRange;
 	new_parameters->yRange = settings->yVoltageRange;
 }
 
 float Calculate_sensitivity(float sensitvityVoltPerDiv, float range, uint32_t divisions)
 {
+	// Calculates sensitivity based on received data from GUI.
 	return sensitvityVoltPerDiv*divisions/range;
 }
 
 float Calculate_offset(float offsetInVolts, float sensitivityInVolts, uint32_t divisions)
 {
+	// Calculates offset based on received data from GUI.
 	return offsetInVolts/(sensitivityInVolts*divisions)*OSCI_MEASUREMENT_MAX_LEVELS;
 }
 
 void Fill_sensitivity_and_offset(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
 {
+	// Fills sensitivity and offset into the new parameters structure, based on settings, which are data received from the GUI.
 	new_parameters->xSensitivity = Calculate_sensitivity(settings->xSensitivity, new_parameters->xRangeWhenMeasured, new_parameters->xDivisions);
 	new_parameters->ySensitivity = Calculate_sensitivity(settings->ySensitivity, new_parameters->yRangeWhenMeasured, new_parameters->yDivisions);
 
@@ -59,37 +65,50 @@ void Fill_sensitivity_and_offset(Osci_Settings* settings, Osci_CalculatedParamet
 
 uint32_t Calculate_threshold(float thresholdInVolts, float range, float alpha, uint32_t maxThreshold)
 {
+	// Calculates threshold level, that is used as AWD threshold
 	return floor(thresholdInVolts/range*maxThreshold/alpha);
 }
 
 void Fill_thresholds(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
 {
+	// Fills new threshold levels into the new parameters structure.
 	new_parameters->xThresholdInLevels = Calculate_threshold(settings->xThreshold, settings->xVoltageRange, new_parameters->xAlpha, OSCI_MEASUREMENT_MAX_THRESHOLD_LEVELS_12BIT);
 	new_parameters->yThresholdInLevels = Calculate_threshold(settings->yThreshold, settings->yVoltageRange, new_parameters->yAlpha, OSCI_MEASUREMENT_MAX_THRESHOLD_LEVELS_8BIT);
 }
 
 void Fill_times(Osci_Settings* settings, Osci_CalculatedParameters* new_parameters)
 {
-	// Assumes 32MHZ timer clock
+	// Calulcates and fills timer settings into the new parameters.
+	// Assumes 32MHZ timer clock.
+
+	// First get the number of cycles that fill the wanted time period, givent the received settings and the timer clock frequency.
 	float xCyclesRequired = 32000000*settings->xTimePerDivision*settings->xGraticuleDivisions/(NUM_SAMPLES -1);
 	float yCyclesRequired = 32000000*settings->yTimePerDivision*settings->yGraticuleDivisions/(NUM_SAMPLES -1);
 
+	// This number determines, how many times more cycles are required than the maximum number of cycles in ARR.
+
 	uint16_t xOverflows = floor(xCyclesRequired/MAX_16BIT);
 	uint16_t yOverflows = floor(yCyclesRequired/MAX_16BIT);
+
+	// For best precision the PSC must be minimal and the count per period must fit into ARR.
+	// Count will fit into ARR only if PSC is >=  number of overflows of ARR, thus PSC will be minimal
+	// if PSC = number of overflows, since (PSC + 1)*(ARR + 1) = totalCycles, then we have
+	// ARR = totalCycles/(PSC + 1) - 1;
 
 	new_parameters->xTimerSettings.psc = xOverflows;
 	new_parameters->yTimerSettings.psc = yOverflows;
 	new_parameters->xHoldOffTimerSettings.psc = 31999;
 	new_parameters->yHoldOffTimerSettings.psc = 31999;
 
-	new_parameters->xTimerSettings.arr = xCyclesRequired/(xOverflows + 1);
-	new_parameters->yTimerSettings.arr = yCyclesRequired/(yOverflows + 1);
+	new_parameters->xTimerSettings.arr = xCyclesRequired/(xOverflows + 1) - 1;
+	new_parameters->yTimerSettings.arr = yCyclesRequired/(yOverflows + 1) - 1;
 	new_parameters->xHoldOffTimerSettings.arr = settings->xHoldOffTime - 1;
 	new_parameters->yHoldOffTimerSettings.arr = settings->yHoldOffTime - 1;
 }
 
 void Switch_relays(Osci_Settings* s, Osci_CalculatedParameters* p)
 {
+	// Just switch GPIO output values, to turn on/off relays.
 	switch (s->xVoltageRange)
 	{
 		case 5:

@@ -9,6 +9,7 @@
 
 void OSCI_dma_channel_init(Osci_ChannelStateMachine* csm)
 {
+	// Initialisation of DMA, sets the input peripheral to be da given ADC, and enables TE and TC interrupts.
 	LL_DMA_SetPeriphAddress(csm->dma, csm->dmaChannel, LL_ADC_DMA_GetRegAddr(csm->adc, LL_ADC_DMA_REG_REGULAR_DATA));
 	LL_DMA_EnableIT_TE(csm->dma, csm->dmaChannel);
 	LL_DMA_EnableIT_TC(csm->dma, csm->dmaChannel);
@@ -16,6 +17,7 @@ void OSCI_dma_channel_init(Osci_ChannelStateMachine* csm)
 
 void OSCI_dma_channel_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
 {
+	// Reconfiguration of DMA, should be disabled, data length is set, address is set and channel is enabled.
 	if(LL_DMA_IsEnabledChannel(csm->dma, csm->dmaChannel))
 		OSCI_error_loop("dma enabled when reconfiguring for measurement");
 
@@ -26,6 +28,7 @@ void OSCI_dma_channel_reconfigure_for_measuring(Osci_ChannelStateMachine* csm)
 
 void OSCI_dma_set_TC_callback(Osci_ChannelStateMachine* csm, Measurement_complete_callback measurement_complete_callback)
 {
+	// Set callbacks for DMA, these are the measurement complete callbacks, they are called on TC of DMA.
 	switch(csm->dmaChannel)
 	{
 		case LL_DMA_CHANNEL_1:

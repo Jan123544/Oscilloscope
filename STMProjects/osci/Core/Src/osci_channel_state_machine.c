@@ -35,6 +35,7 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, TIM_Ty
 
 void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
 {
+	// Stop adcs and timers, reconfigure timers, adcs thresholds, dma, change into measuring state, start timers and start ADC (external trigger mode).
 	OSCI_adc_stop(csm);
 	OSCI_timer_stop(csm->timer);
 	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
@@ -54,11 +55,12 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 {
 	if (!csm->params.triggerLevel)
 	{
+		// If there is no trigger level, start measuring immediately.
 		OSCI_channel_start_measuring(csm);
-		//csm->events.start_measuring = TRUE;
 		return;
 	}
 
+	// Stop adc and timer, disable dma channel, reconfigure for monitoring, change into monitoring state and start ADC (continuous mode).
 	OSCI_adc_stop(csm);
 	OSCI_timer_stop(csm->timer);
 	LL_DMA_DisableChannel(csm->dma, csm->dmaChannel);
@@ -72,6 +74,7 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 
 void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 {
+	// The channel state machine, state changes and event handling.
 	switch(csm->state)
 	{
 		case OSCI_CHANNEL_STATE_SHUTDOWN:
@@ -157,6 +160,7 @@ void OSCI_channel_measurement_complete_callback_x(Osci_Application* app)
 
 	OSCI_timer_stop(app->xChannelStateMachine.timer);
 
+	// Copy measured data from DMA buffer.
 	app->xChannelStateMachine.measurement = app->xChannelStateMachine.measurementDMABuffer;
 	app->xChannelStateMachine.events.measurement_complete = TRUE;
 }
@@ -169,44 +173,51 @@ void OSCI_channel_measurement_complete_callback_y(Osci_Application* app)
 
 	OSCI_timer_stop(app->yChannelStateMachine.timer);
 
+	// Copy measured data from DMA buffer.
 	app->yChannelStateMachine.measurement = app->yChannelStateMachine.measurementDMABuffer;
 	app->yChannelStateMachine.events.measurement_complete = TRUE;
 }
 
 void OSCI_channel_awd_threshold_callback_x(Osci_Application* app)
 {
+	// Do not trigger AWD callback after first time.
 	LL_ADC_DisableIT_AWD1(app->xChannelStateMachine.adc);
 
 	if (app->xChannelStateMachine.state != OSCI_CHANNEL_STATE_MONITORING)
 		return;
 
-	//app->xChannelStateMachine.events.start_measuring = TRUE;
+	// Start measuring immediately for minimal delay.
 	OSCI_channel_start_measuring(&app->xChannelStateMachine);
 }
 
 void OSCI_channel_awd_threshold_callback_y(Osci_Application* app)
 {
+	// Do not trigger AWD callback after first time.
 	LL_ADC_DisableIT_AWD2(app->yChannelStateMachine.adc);
 
 	if (app->yChannelStateMachine.state != OSCI_CHANNEL_STATE_MONITORING)
 		return;
 
-	//app->yChannelStateMachine.events.start_measuring = TRUE;
+	// Start measuring immediately for minimal delay.
 	OSCI_channel_start_measuring(&app->yChannelStateMachine);
 }
 
 void OSCI_channel_hold_off_callback_x(Osci_Application* app)
 {
+	// Only do this in shutdown state.
 	if (app->xChannelStateMachine.state != OSCI_CHANNEL_STATE_SHUTDOWN || app->transceiver.state != OSCI_TRANSCEIVER_STATE_IDLE)
 		return;
 
+	// Enter monitoring state after holdoff timer issues and update event.
 	app->xChannelStateMachine.events.start_monitoring = TRUE;
 }
 
 void OSCI_channel_hold_off_callback_y(Osci_Application* app)
 {
+	// Only do this in shutdown state.
 	if (app->yChannelStateMachine.state != OSCI_CHANNEL_STATE_SHUTDOWN || app->transceiver.state != OSCI_TRANSCEIVER_STATE_IDLE)
 		return;
 
+	// Enter monitoring state after holdoff timer issues and update event.
 	app->yChannelStateMachine.events.start_monitoring = TRUE;
 }

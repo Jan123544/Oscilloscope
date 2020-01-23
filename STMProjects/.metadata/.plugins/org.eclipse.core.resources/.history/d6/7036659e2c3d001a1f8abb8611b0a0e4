@@ -1,0 +1,46 @@
+/*
+ * SignalAdjuster.h
+ *
+ *  Created on: Dec 27, 2019
+ *      Author: dot
+ */
+
+#ifndef INC_SIGNALADJUSTER_H_
+#define INC_SIGNALADJUSTER_H_
+#include "main.h"
+#include<stdint.h>
+#include<math.h>
+#define SIGNAL_SINE 0
+#define SIGNAL_COSINE 1
+#define SIGNAL_TANGENT 2
+#define SIGNAL_RANDOM 3
+#define NUM_SAMPLES 512
+
+void c_putSignalToDAC(void *v);
+void c_execute(void *v);
+
+class SignalAdjuster {
+private:
+	uint32_t signalBuffer[NUM_SAMPLES];
+	float amplitude;
+	float frequency;
+	float offset;
+
+	void sample();
+	void configureTimer();
+	uint32_t quantize(float v);
+
+public:
+	SignalAdjuster(float amplitude=3.3, float frequency=1000, float offset=1.65,
+			uint32_t startSampleIndex=0, uint32_t startSignal=0) :
+				 signal(startSignal), amplitude(amplitude), frequency(frequency), offset(offset), sampleIndex(startSampleIndex) {
+		tim1_callback = c_putSignalToDAC;
+		usart2_rxne_callback = c_execute;
+	}
+
+	void start();
+	void execute(char cmd);
+	uint32_t getNextSample();
+};
+
+#endif /* INC_SIGNALADJUSTER_H_ */

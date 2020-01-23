@@ -167,6 +167,14 @@ void Switch_to_reconfiguring_after_shutdown(Osci_Transceiver* ts)
 		if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN && ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
 			ts->state = OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS;
 	}
+
+	// Both are inactive
+	if (!OSCI_is_channel_active(ts, CHANNEL_X) && !OSCI_is_channel_active(ts, CHANNEL_Y))
+	{
+		// To idle since no measurement is to take place and no reconfiguration is needed.
+		if(ts->x_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN && ts->y_channel_state_machine->state == OSCI_CHANNEL_STATE_SHUTDOWN)
+			ts->state = OSCI_TRANSCEIVER_STATE_IDLE;
+	}
 }
 
 
@@ -179,15 +187,20 @@ void Reconfigure_channels_only_transform(Osci_Transceiver* ts)
 
 void Reconfigure_channels(Osci_Transceiver* ts)
 {
+	// Copy settings.
 	Osci_Settings settingsCopy = ts->receiveCompleteBuffer;
+	// Recalculate parameters.
 	OSCI_configurator_recalculate_parameters(ts, &settingsCopy);
+	// Switch relays. This also waits the relay switch time.
 	OSCI_configurator_switch_relays(ts, &settingsCopy);
+	// Distribute recalculated settings to the CSMs.
 	OSCI_configurator_distribute_settings(ts, &settingsCopy);
 
 	// Start periodic timers.
 	OSCI_timer_stop(ts->x_channel_state_machine->holdOffTimer);
 	OSCI_timer_stop(ts->y_channel_state_machine->holdOffTimer);
 
+	// Setup the holdoff timers, if channels should run in continuous mode.
 	if (OSCI_is_channel_holdoff_timer_active(ts, CHANNEL_X))
 	{
 		OSCI_timer_setup(ts->x_channel_state_machine->holdOffTimer, ts->x_channel_state_machine->params.holdOffTimerSettings);
@@ -203,6 +216,8 @@ void Reconfigure_channels(Osci_Transceiver* ts)
 
 void Start_monitoring(Osci_Transceiver* ts)
 {
+	// Determine which channel should start monitoring and set the corresponding event.
+
 	if (OSCI_is_channel_active(ts, CHANNEL_X))
 		ts->x_channel_state_machine->events.start_monitoring = TRUE;
 
@@ -212,6 +227,7 @@ void Start_monitoring(Osci_Transceiver* ts)
 
 int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data)
 {
+	// If the conditions is true, execute the function with given data and return 1 else return 0
 	if(!condition) return 0;
 	fcn(fcn_data);
 	return 1;
@@ -219,6 +235,7 @@ int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data)
 
 void Transition(Osci_TransitionSpec spec)
 {
+	// Determine state machine type, and assign new state to it.
 	switch(spec.stateMachineType)
 	{
 		case CHANNEL_STATE_MACHINE:
@@ -232,6 +249,7 @@ void Transition(Osci_TransitionSpec spec)
 
 void Send_pong(void* data)
 {
+	// Send pong message, in response to receiving ping
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	ts->channelUpdateMask = 0;
@@ -241,6 +259,7 @@ void Send_pong(void* data)
 
 void Measure_stop(void* data)
 {
+	// Transition into shutting down of channels state, called when shutdown msg is received from GUI
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	ts->channelUpdateMask = 0;
@@ -249,6 +268,7 @@ void Measure_stop(void* data)
 
 void Trigger(void* data)
 {
+	// Called when trigger message is received from GUI, begins reconfiguration procedure.
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	ts->channelUpdateMask = ts->receiveCompleteBuffer.triggerCommand;
@@ -257,6 +277,8 @@ void Trigger(void* data)
 
 void Transform(void* data)
 {
+	// Called when only_transform message is received from GUI, reconfigure transform parameters (not threshold or timing)
+	// ,queue send requests for both buffers and transitions the transceiver into the sending state.
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	Reconfigure_channels_only_transform(ts);
@@ -268,6 +290,7 @@ void Transform(void* data)
 
 void TrySendXbuffer(Osci_Transceiver* ts)
 {
+	// If no data is being send, send the X buffer and clear the sending event, else just skip to the next update.
 	Gather_data(ts, ts->x_channel_state_machine, CHANNEL_X);
 	OSCI_transform_apply(&ts->xSendingBuffer, ts->x_channel_state_machine->params);
 	ts->xSendingBuffer.channelData.continuous = ts->channelUpdateMask & MEASURE_CONTINUOUS_X;
@@ -280,6 +303,7 @@ void TrySendXbuffer(Osci_Transceiver* ts)
 
 void TrySendYbuffer(void*data)
 {
+	// Same as TrySendXbuffer, but for Ybuffer.
 	Osci_Transceiver* ts = (Osci_Transceiver*)data;
 
 	Gather_data(ts, ts->y_channel_state_machine, CHANNEL_Y);
@@ -294,6 +318,7 @@ void TrySendYbuffer(void*data)
 
 void OSCI_transceiver_update(Osci_Transceiver* ts)
 {
+	// Transceiver state machine, for state switching and event handling.
 	switch(ts->state)
 	{
 		case OSCI_TRANSCEIVER_STATE_IDLE:
@@ -327,23 +352,27 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 		}
 		case OSCI_TRANSCEIVER_STATE_WAITING_FOR_CHANNELS_TO_SHUTDOWN:
 		{
+			// Transceiver waits in this state for channels to shutdown before reconfiguration.
 			Switch_to_reconfiguring_after_shutdown(ts);
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_RECONFIGURING_CHANNELS:
 		{
+			// Reconfiguration of channels. (timing, threshold, sensitivity, offset etc.)
 			Reconfigure_channels(ts);
 			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_STARTING_CHANNELS:
 		{
+			// Transceiver switches the channels into monitoring state.
 			Start_monitoring(ts);
 			Transition((Osci_TransitionSpec){.new_state = OSCI_TRANSCEIVER_STATE_IDLE, .stateMachine=ts, .stateMachineType=TRANSCEIVER});
 			break;
 		}
 		case OSCI_TRANSCEIVER_STATE_GATHERING_TRANSFORMING_AND_SENDING:
 		{
+			// Transceiver sends the buffered data, first applying the transformations.
 			if(ts->events.send_requested[0])
 				TrySendXbuffer(ts);
 
@@ -358,6 +387,7 @@ void OSCI_transceiver_update(Osci_Transceiver* ts)
 
 uint8_t OSCI_is_channel_active(Osci_Transceiver* ts, uint8_t channel)
 {
+	// Determine if the channel has a measurement request.
 	switch (channel)
 	{
 		case CHANNEL_X:
@@ -371,6 +401,7 @@ uint8_t OSCI_is_channel_active(Osci_Transceiver* ts, uint8_t channel)
 
 uint8_t OSCI_is_channel_holdoff_timer_active(Osci_Transceiver* ts, uint8_t channel)
 {
+	// Determine if the channel has an active holdofftimer, e.g. it's in continuous mode and a measurement request is active.
 	switch (channel)
 	{
 		case CHANNEL_X:
