@@ -15,4 +15,4 @@
 \contentsline {subsection}{\numberline {4.1}Pou\IeC {\v z}\IeC {\'\i }vate\IeC {\v l}sk\IeC {\'e} rozhranie}{12}{subsection.4.1}% 
 \contentsline {subsection}{\numberline {4.2}Spustenie merania}{14}{subsection.4.2}% 
 \contentsline {section}{\numberline {5}Vyhotovenie}{15}{section.5}% 
-\contentsline {section}{\numberline {6}Liter\IeC {\'a}rne zdroje, pou\IeC {\v z}it\IeC {\'y} software a pou\IeC {\v z}it\IeC {\'e} kni\IeC {\v z}nice}{16}{section.6}% 
+\contentsline {section}{\numberline {6}Liter\IeC {\'a}rne zdroje, pou\IeC {\v z}it\IeC {\'y} software a pou\IeC {\v z}it\IeC {\'e} kni\IeC {\v z}nice}{17}{section.6}% 
