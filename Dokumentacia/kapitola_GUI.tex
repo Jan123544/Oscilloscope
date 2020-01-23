@@ -1,11 +1,13 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
+	\newpage
+	\pagebreak
 	\section{Používateľská príručka}
 		\begin{multicols}{2}
 			\subsection{Používateľské rozhranie}
 			V krátkosti opíšeme časti používateľského rozhrania. Po spustení programu sa zobrazí okno na \cref{fig:GUIPrveOkno}. Vysvetlenie jednotlivých nastavení je v \cref{tab:GUIVysvetlenieNastaveni}. Začatím merania, je potrebné vytvoriť spojenie so zariadením. Najprv je treba prepnúť sa do okna $Protocol$ vyznačené na \cref{fig:GUIPrveOkno}. Po prepnutí sa zobrazia nastavenia komunikácie na \cref{fig:GUINastaveniaKomunikacie}, kde je potrebné vybrať správny sériový port, na ktorom je zariadenie pripojené a nastaviť vhodnú prenosovú rýchlosť. Po nastavení týchto parametrov je treba kliknúť na tlačidlo $Connect$ a počkať ($~1$sec) kým sa nezmení indikátor stavu spojenia na zelenú alebo červenú. Spojenie prebehlo úspešne v prípade zelenej farby indikátora stavu spojenia.
 			
-			Meranie sa potom spúšťa tlačidlom $Measure$, ktorého stlačením sa zašlú aktuálne nastavenia do mikropočítača. V prípade, že žiadame aby sa citlivosť a posunutie kanálu aplikovala automaticky, je možné zaškrtnúť checkbox $autoupdate$. Zaškrtnutím $autoupdate$ sa s frekvenciou $10HZ$ budú do mikropočítača posielať požiadavky o úpravu transformačných parametrov.  
+			Meranie sa potom spúšťa tlačidlom $Measure$, ktorého stlačením sa zašlú aktuálne nastavenia do mikropočítača. V prípade, že žiadame aby sa citlivosť a posunutie kanálu aplikovala automaticky, je možné zaškrtnúť checkbox $Auto Update$. Zaškrtnutím $Auto Update$ sa s frekvenciou $10HZ$ budú do mikropočítača posielať požiadavky o úpravu transformačných parametrov. Okrem $Auto Update$ je možne takisto zaškrtnúť $Auto Measure$, v prípade čoho sa budú automaticky aktualizovať aj časové základne a napäťové prahy.
 			
 			
 		\end{multicols}

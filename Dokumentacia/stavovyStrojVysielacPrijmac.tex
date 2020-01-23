@@ -11,14 +11,15 @@
 		\node[state] (C) [below right of=A]					{$SSH$};
 		\node[state] (D) [below of=C, node distance=2cm]	{$WSH$};
 		\node[state] (E) [below of=D, node distance=2cm]	{$RCF$};
-		
-		\path (A) edge [bend left] node {ROT} (B);
+		\node[state] (SCH) [right of=C, node distance=2cm] {$SCH$};
+		\path (A) edge [bend left] node {SRQ} (B);
 		\path (A) edge [anchor=east] node {RME} (C);
 		\path (B) edge [bend left] node {NPS} (A);
 		\path (C) edge node {$\epsilon$} (D);
 		\path (D) edge node {CSH} (E);
-		\path (E) edge [bend left] node {$\epsilon$} (B);
+		\path (E) edge [bend right] node {$\epsilon$} (SCH);
 		\path (A) edge [loop right] node {RPG} (A);
+		\path (SCH) edge node {$\epsilon$} (A);
 		\end{tikzpicture}
 		\caption{Stavový stroj vysielač/príjmač} \label{fig:stavovyStrojVysielacPrijmac}
 	\end{figurehere}
@@ -31,12 +32,13 @@
 			SSH & starting channel shutdown \\
 			WSH & waiting for channels to shutdown \\
 			RCF & reconfiguring channels \\
+			SCH & starting channels \\
 			\hline 
 			RPG & requested pong \\
 			RME & requested measurement \\
-			ROT & requested only transform \\
+			SRQ & send request \\
 			NPS & no pending send \\
-			CSG & channel shutdown \\
+			CSH & channel shutdown \\
 			$\epsilon$ & unconditionaly \\
 		\end{tabular}
 	\caption{Vysvetlenie skratiek stavového stroja príjmač/vysielač}

@@ -2,39 +2,49 @@
 \begin{document}
 	\section{Program}
 		\begin{multicols*}{2}
-			\noindent Program je tovrený 3 stavovými strojmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový stroj má vlajky udalostí, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových strojov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $Transceiver$ (príjmač a vysielač) alebo $ChannelStateMachine$ (stavový stroj riadiaci činnosť meracieho kanála). V krátkosti opíšeme činnosť týchto stavových strojov, pre detaily je vhodné konzultovať zdrojový kód. Schematické znázornenie programu je na konci tejto kapitoly na \cref{fig:programClekovaSchema}.
+			\noindent Program je tvorený 3 stavovými automatmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový automat má štruktúru udalostí s  príznakmi, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových automatov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $OSCI_transceiver$ (príjmač a vysielač) alebo $OSCI_channel_update$ (stavový automat riadiaci činnosť kanála). V krátkosti opíšeme činnosť týchto stavových automatov, pre detaily je vhodné konzultovať zdrojový kód. %Schematické znázornenie programu je na konci tejto kapitoly na \cref{fig:programClekovaSchema}.
 			
-			\subsection{Stavový stroj vysielač/príjmač}
-			Úlohou tohto stavového stroja, je reakcia na príchod nových dát, distribúcia nových nastavení a posielanie nových meraní do uživateľského prostredia. Jednoduché zobrazenie môžeme vidieť na \cref{fig:stavovyStrojVysielacPrijmac}.
+			\subsection{Stavový automat vysielač/príjmač}
+			Úlohou tohto stavového automatu, je reakcia na príchod nových dát, distribúcia nových nastavení a posielanie nových meraní do užívateľského prostredia. Jednoduché zobrazenie môžeme vidieť na \cref{fig:stavovyStrojVysielacPrijmac}.
 			
-			Po príchode dát cez $UART$ linku, sa na základe obsahu prijatej správy, vysielač rozhodne, či má poslať $pong$ správu, zmeniť transformáciu dát, alebo prekonfigurovať stavový stroj kanálu na iný typ merania. Prekonfigurovanie prebieha vypnutím meraní, prepísaním parametrov a prevodom stavových strojov kanálov do stavu $MONITORING$, v ktorom $watchdog$ obvody sledujú hodnoty prevedné AD prevodníkom. Ak tieto hodnoty prekročia definované limity spustí sa meranie. Po vykonaní merania nastane udalosť, na ktorú stavový stroj vysielač/príjmač reaguje zaslaním nových dát do uživateľského prostredia.
+			
+			Počiatočný stav stavového automatu je $IDL-IDLE$, v tomto stave čaká na požiadavky z GUI, alebo na požiadavku od stavových automatov kanálov, na zaslanie nových dát.
+			
+			Cez perifériu UART sa pri požiadavke z GUI príjmu nové nastavenia. Prerušenie DMA TC pri prijatí, celej štruktúry nastavení, nastaví príznak stavovému automatu vysielač/príjmač. Tento príznak zodpovedá požiadavke na vykonanie merania (RME), načo stavový automat prejde do stavu SSH - Sending shutdown request. V stave SSH nastaví príznaky kanálom, ktoré reagujú ukončením meraní a prejdú do stavu SHD - shutdown. Vysielač/prijmač čaká, až kým sa kanály nedostanú do stavu SHD v stave WSH - waiting for channels to shutdown. Potom prejde do stavu RCF - reconfiguring channels. V tomto stave sa zmenia parametre transformácie dát, kanály dostanú nové nastavenia a stavový automat prepne do stavu SCH - starting channels. V tomto novom stave sa nastaví príznak stavovým automatom kanálov, aby začali kanály monitorovať, čo znamená, že sa AD prevodníky spustia v Continuous stave a čaká sa na prerušenie Watchdogu. Nakoniec sa vysielač/príjmač vráti do stavu IDLE, v ktorom zostane pokiaľ nedostane ďalšiu požiadavku na meranie, iný typ požiadavky.
+			
+			V prípade, že sa vykoná meranie, stavový automat daného kanála, nastaví príznak stavovému automatu vysielač/príjmač, aby vykonal transformáciu nameraných dát a poslal tieto nové dáta do GUI. Stavový automat vysielač/príjmač, reaguje na tento príznak v stave IDLE a prejde do stavu GTS - gathering transforming and sending, v tomto stave sa vykoná už spomínaná transformácia dát a ich zaslanie do GUI. Vysielač/príjmač sa nakoniec vráti do stavu IDLE potom čo vyriešil všetky požiadavky na odoslanie dát, keďže tie sú rozdielne pre X a Y kanál.
+			
+			Požiadavka od GUI, môže byť aj požiadavkou o vykonanie transformácie, v prípade ktorej, sa zmenia parametre priamo v stave IDLE a vygeneruje sa požiadavka na zaslanie starého merania s novou transformáciou.
+			
 			
 			\subfile{stavovyStrojVysielacPrijmac}
 			\vskip 0.25cm
 			
-			\subsection{Stavový stroj meracieho kanála}
-			Úlohou tohto stavového stroja je zastavovanie a spúšťanie merania. Štruktúra je zobrazená na \cref{fig:stavovyStrojMeraciehoKanalu}.
-
-			Bufre nastavení nastavuje vysielač/príjmač. Po príchode požiadavky na meranie nastane udalosť, ktorá prevedie stavové stroje meracieho kanála do stavu $SHUTDOWN$, zastavením časovačov a prevodov AD prevodníkov. Vysielač/príjmač reaguje na $SHUTDOWN$ stav kanálov vo svojej stavovej slučke, a prevedie ich do stavu $MONITORING$. V stave $MONITORING$ kanále vzorkujú svoj vstup a $watchody$ porovnávajú prevedené hodnoty s nastavenými limitmi. V prípade, že sú limity určené pre žačatie merania prekročené, začne sa meranie a kanál prejde do stavu $MEASURING$. V prerušení od $DMA$ modulu, sa kanály prevedú znova $SHUTDOWN$ módu a nastane udalosť, na ktorú vysielač bude reagovať zaslaním nových dát do uživateľského prostredia.
+			Ešte pred meraním, je potrebné vytvoriť spojenie, ktoré slúži na overenie nahraného programu. V takomto prípade, je vysielač/príjmač v stave IDLE, z ktorého rovno pošle PONG bez prechodu do iného stavu.
+			
+			\subsection{Stavové automaty kanálov}
+			Úlohou týchto stavových automatov je zastavovanie a spúšťanie merania. Štruktúra je zobrazená na \cref{fig:stavovyStrojMeraciehoKanalu}.
 			
 			\subfile{stavovyStrojMeraciehoKanalu}
 			\vskip 0.25cm
 			
 			
+			Počiatočný stav týchto stavových automatov je stav SHD - shutdown. Pri nastavení príznaku začatia monitorovania kanála, čo nastavuje stavový automat vysielač/príjmač, sa nastaví a spustí AD prevodník v móde Conitnous, čo pravidelne vzorkuje kanál a automat prejde do stavu MON - monitoring. V tomto stave sa čaká na prerušenie Watchdogu. Ktoré sa vyvolá, pokiaľ je napätie na kanály nad stanovenou hranicou, nastavenou v GUI. V tomto prerušení, sa hneď spúšťa meranie a automat prechádza do stavu MES - measuring. V stave MES ostáva, pokiaľ sa meranie nedokončí, čo sa určí na základe TC prerušenia DMA. V tomto prerušení sa nastaví príznak measurement complete, načo stavový automat reaguje prechodom do stavu SHD a nastavením príznaku SRQ - send request stavového automatu vysielač/prijmač, pre daný kanál. 
+			
 			\subsection{Hlavičkové súbory}
-			Program sa skladá z niekoľkých zdrojových súborov, niekoľkých hlavičkových súborov a niekoľkých .c súborov. Hlavičkové súbory slúžia ako miesto deklarácie funkcií nebudeme opisovať, opíšeme len tie, v ktorých sa nachádzajú dôležité konštanty a premenné.
+			Program sa skladá z niekoľkých zdrojových, hlavičkových a  .c súborov. Hlavičkové súbory slúžia ako miesto deklarácie funkcií, pričom všetky nebudeme opisovať, opíšeme len tie, v ktorých sa nachádzajú dôležité konštanty a premenné.
 			
 			\textit{osci\_defines.h } - nachádzajú sa tu kalibračné faktory, počiatočné nastavenia, enumerácie opkódov správ do GUI, enumerácia kanálov, makrá na MIN a MAX, definícia TRUE a FALSE, niektoré definované maximálne hodnoty unsigned registrov, enumerácia typov stavového stroja.
 			
-			\textit{osci\_data\_structures.h} - tento súbor obsahuje definície dátových štruktúr stavových strojov a rôznych abstrakcií ako napríklad meranie kanálu, čo predstavuje postupnosť vzoriek, dátové štruktúry nastavení poslaných z GUI, nastavení kanálov, udalostí jednotlivých stavových strojov, dátovú štruktúru aplikácie a dátovú štruktúru opisujúce parametre prechodu stavového stroja.
+			\textit{osci\_data\_structures.h} - tento súbor obsahuje definície dátových štruktúr stavových automatov a rôznych abstrakcií ako napríklad meranie kanálu, čo predstavuje postupnosť vzoriek, dátové štruktúry nastavení poslaných z GUI, nastavení kanálov, udalostí jednotlivých stavových automatov, dátovú štruktúru aplikácie a dátovú štruktúru opisujúce parametre prechodu stavového automatu.
 			\subsection{.C Súbory}
 			Okrem inicializačných súborov periférií a iných štandardných súborov vygenerovaných pomocou CubeMX sa tu nachádzajú nasledovné súbory.
 			
 			\textit{ osci\_adc.h} - pomocné funkcie, na ovládanie AD prevodníka. 
 			
-			\textit{ osci\_channel\_state\_machine.c} - implementácia stavového stroja meracieho kanálu. 
+			\textit{ osci\_channel\_state\_machine.c} - implementácia stavového automatu meracieho kanálu. 
 			
-			\textit{ osci\_configurator.c} - v tomto zdrojovom súbore sú funkcie na výpočet a prepočet parametrov kanálov, teda časovačov a transformácie merania. 
+			\textit{ osci\_configurator.c} -  funkcie na výpočet a prepočet parametrov kanálov, teda časovačov a transformácie merania. 
 			
 			\textit{ osci\_dma.c} - funkcie na jednoduchšiu obsluhu dma. 
 			
@@ -42,17 +52,17 @@
 			
 			\textit{ osci\_timer.c} - pomocné funkcie na obsluhu časovačov. 
 			
-			\textit{ osci\_transceiver.c} - implementácia stavového stroja vysielač/prijmač.
+			\textit{ osci\_transceiver.c} - implementácia stavového automatu vysielač/prijmač.
 			
 			\textit{ osci\_transform.c} - aplikácia transformácie podľa vypočítaných parametrov.
 			
 			\subsection{Postup merania}
 			Pre lepšiu názornosť funkcie programu, opíšeme ešte celkový reťazec udalostí, od stlačenia tlačidla merania až po vykreslenie nameraných dát. Pričom uvažujeme, že zariadenie je už pripojené, teda, že už prebehol ping-pong handshake.
 			
-			Po stlačený tlačidla \textit{MEASURE} sa prečítajú aktuálne nastavenia GUI, ktoré sa pošlú cez \textit{UART} linku. UART príjmač generuje DMA požiadavky až kým sa nepríjme celá štruktúra nastavení, v prípade čoho DMA vygeneruje TC prerušenie daného kanálu (6).  Obslužná funkcia prerušenia nastaví event stavovému stroju vysielač/prijmač. Ten pri ďalšom volaní svojej update funkcie, deteguje event a rozhodne sa čo ďalej, na základe typu správy, ktorú dostal. Keďže uvažujeme, že užívateľ stlačil tlačidlo \textit{MEASURE}, tak sa vykoná nasledujúca sekvencia udalostí. Stavovým strojom kanálov sa pošle event na vypnutie a prejde do stavu \textit{WAITING\_FOR\_SHUTDOWN}, stavový stroj vysielač/prijmač počká na prechod stavových strojov kanálov do režimu \textit{SHUTDOWN} a prejde do stavu \textit{RECONFIGURING\_CHANNELS}, stavový stroj vysielač/prijmač prestaví parametre kanálov a prejde do stavu \textit{STARTING\_CHANNELS} v tomto stave stavový stroj vysielač/prijmač nastaví event stavovým strojom kanálov, že sa majú previesť do stavu monitoring, stavové stroje kanálov sa prevedú do stavu monitoring, čo predstavuje nastavenie continuous módu ADC prevodníkov, ktoré začnú vzorkovať kanály a nastavenie watchdogov na úrovne poslané z GUI, ak nastane prerušenie daného watchdogu, nastavia sa časovače, DMA, AD prevodník a spustí sa meranie, stavový stroj kanálu prejde do stavu \textit{MEASURING}, po ukončení merania DMA generuje prerušenie TC, v ktorom sa pošle event stavovému stroju vysielač/prijmač, že má poslať nové dáta, ten reaguje a prejde do stavu \textit{GATHERING\_TRANSFORMING\_SENDING} zo stavu \text{IDLE} a pošle označené dáta, keďže dáta kanálov sa posielajú zvlášť.
+			Po stlačený tlačidla \textit{MEASURE} sa prečítajú aktuálne nastavenia GUI, ktoré sa pošlú cez \textit{UART} linku. UART príjmač generuje DMA požiadavky až kým sa nepríjme celá štruktúra nastavení, v prípade čoho DMA vygeneruje TC prerušenie daného kanálu (6).  Obslužná funkcia prerušenia nastaví event stavovému automatu vysielač/prijmač. Ten pri ďalšom volaní svojej update funkcie, deteguje event a rozhodne sa čo ďalej, na základe typu správy, ktorú dostal. Keďže uvažujeme, že užívateľ stlačil tlačidlo \textit{MEASURE}, tak sa vykoná nasledujúca sekvencia udalostí. Stavovým automatom kanálov sa pošle event na vypnutie a prejde do stavu \textit{WAITING\_FOR\_SHUTDOWN}, stavový automat vysielač/prijmač počká na prechod stavových automatov kanálov do režimu \textit{SHUTDOWN} a prejde do stavu \textit{RECONFIGURING\_CHANNELS}, stavový automat vysielač/prijmač prestaví parametre kanálov a prejde do stavu \textit{STARTING\_CHANNELS} v tomto stave stavový automat vysielač/prijmač nastaví event stavovým automatomom kanálov, že sa majú previesť do stavu monitoring, stavové automatye kanálov sa prevedú do stavu monitoring, čo predstavuje nastavenie continuous módu ADC prevodníkov, ktoré začnú vzorkovať kanály a nastavenie watchdogov na úrovne poslané z GUI, ak nastane prerušenie daného watchdogu, nastavia sa časovače, DMA, AD prevodník a spustí sa meranie, stavový automat kanálu prejde do stavu \textit{MEASURING}, po ukončení merania DMA generuje prerušenie TC, v ktorom sa pošle event stavovému automatuu vysielač/prijmač, že má poslať nové dáta, ten reaguje a prejde do stavu \textit{GATHERING\_TRANSFORMING\_SENDING} zo stavu \text{IDLE} a pošle označené dáta, keďže dáta kanálov sa posielajú zvlášť.
 			
 			\subsection{Postup v prípade automatického aktualizácie parametrov transformácie}
-			 V prípade, že ide o požiadavku na zaslanie dát s inou transformáciou, teda o tzv. \text{ONLY\_TRANSFORM} typ správy, tak sa len prepočítajú parametre transformácií jednotlivých kanálov a registruje sa požiadavka na odoslanie oboch kanálov, stavový stroj prejde do stavu \textit{GATHERING\_TRANSFORMING\_SENDING}, v ktorom sa vykoná transformácia posledného merania a aktivuje sa DMA kanál pripojený na vysielač UART-u, ktorý pošle jednotlivé transformované merania do GUI.
+			 V prípade, že ide o požiadavku na zaslanie dát s inou transformáciou, teda o tzv. \text{ONLY\_TRANSFORM} typ správy, tak sa len prepočítajú parametre transformácií jednotlivých kanálov a registruje sa požiadavka na odoslanie oboch kanálov, stavový automat prejde do stavu \textit{GATHERING\_TRANSFORMING\_SENDING}, v ktorom sa vykoná transformácia posledného merania a aktivuje sa DMA kanál pripojený na vysielač UART-u, ktorý pošle jednotlivé transformované merania do GUI.
 			 
 			 
 		\end{multicols*}

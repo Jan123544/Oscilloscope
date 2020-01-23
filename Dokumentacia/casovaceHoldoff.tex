@@ -1,6 +1,6 @@
 \documentclass[main.tex]{subfiles}
 \begin{document}
-	V používateľskom rozhraní je možné nastaviť jednorazové (Single mode) alebo priebežné (Continuous mode) meranie každého kanála zvlášť. Pri jednorazovom meraní sa uskutoční práve jedno meranie po doručení požiadavky. Pošlú sa údaje z merania a zariadenie sa prepne do stavu čakania. Pri priebežnom meraní sa spustí časovač (Hold Off timer), ktorý periodicky žiada o vykonanie merania. Periódu tohto časovača je možné nastaviť pomocou GUI. Rozlíšenie tohto časovača je 1ms, preto použijeme pevnú hodnotu preddeličky (PSC = 31999, pri 32MHZ impulz každú milisekundu) a počítadlo nastavíme podľa údajov z GUI (ARR = (hodnota z GUID) - 1). 
+	V používateľskom rozhraní je možné nastaviť jednorazové (Single mode) alebo priebežné (Continuous mode) meranie každého kanála zvlášť. Pri jednorazovom meraní sa uskutoční práve jedno meranie po doručení požiadavky. Pošlú sa údaje z merania a zariadenie sa prepne do stavu čakania. Pri priebežnom meraní sa spustí časovač (Hold Off timer), ktorý periodicky žiada o vykonanie merania. Periódu tohto časovača je možné nastaviť pomocou GUI. Rozlíšenie tohto časovača je 1ms, preto použijeme pevnú hodnotu preddeličky (PSC = 31999, pri 32MHZ impulz každú milisekundu) a počítadlo nastavíme podľa údajov z GUI (ARR = (hodnota z GUI) - 1). 
 	
 	
 \end{document}

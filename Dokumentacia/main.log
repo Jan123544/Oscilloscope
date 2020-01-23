@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.9.29)  22 JAN 2020 19:01
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7140 64-bit) (preloaded format=pdflatex 2019.9.29)  23 JAN 2020 14:53
 entering extended mode
 **./main.tex
 (main.tex
@@ -1477,41 +1477,41 @@ LaTeX Font Info:    Try loading font information for OT1+lmtt on input line 4.
 ("C:\Users\dot\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\ot1lmtt.fd"
 File: ot1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
+(main.toc)
+\tf@toc=\write4
+\openout4 = `main.toc'.
+
+ [1
+
+{C:/Users/dot/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 (kapitola_stavoveStroje.tex
 
-LaTeX Warning: Reference `fig:programClekovaSchema' on page 1 undefined on inpu
-t line 5.
+Package hyperref Warning: Composite letter `\textasciicaron+c'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 7.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 7--7
-[]\T1/lmr/bx/n/14.4 Stavový stroj vy-sie-
+Package hyperref Warning: Composite letter `\textasciicaron+c'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 7.
+
+(stavovyStrojVysielacPrijmac.tex [2]
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 24.
+See the caption package documentation for explanation.
+
+
+Overfull \hbox (3.5547pt too wide) in paragraph at lines 23--24
+ [][] 
  []
 
 
-Package hyperref Warning: Composite letter `\textasciicaron+c'
-(hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 7.
-
-
-Package hyperref Warning: Composite letter `\textasciicaron+c'
-(hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 7.
-
-(stavovyStrojVysielacPrijmac.tex
-
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 23.
+(caption)                particular \caption on input line 44.
 See the caption package documentation for explanation.
 
-
-Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 42.
-See the caption package documentation for explanation.
-
-) [1
-
-{C:/Users/dot/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-(stavovyStrojMeraciehoKanalu.tex
+) (stavovyStrojMeraciehoKanalu.tex
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 20.
@@ -1522,50 +1522,45 @@ Package caption Warning: The option `hypcap=true' will be ignored for this
 (caption)                particular \caption on input line 37.
 See the caption package documentation for explanation.
 
-)
+) [3]
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 24.
+(hyperref)                removing `\textasciicaron' on input line 34.
 
-[2]
-Underfull \hbox (badness 6078) in paragraph at lines 52--53
+[4]
+Underfull \hbox (badness 6078) in paragraph at lines 62--63
 []\T1/lmr/m/n/12 Po stla-£ený tla-£idla \T1/lmr/m/it/12 ME-A-SURE
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
 \T1/lmr/m/it/12 TING_FOR_SHUTDOWN\T1/lmr/m/n/12 , sta-vový
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
 \T1/lmr/m/it/12 STAR-TING_CHANNELS \T1/lmr/m/n/12 v tomto
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
 \T1/lmr/m/it/12 RING_TRANSFORMING_SENDING
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 55--56
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
 \T1/lmr/m/n/12 teda o tzv. []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 55--56
-\T1/lmr/m/n/12 na odo-sla-nie oboch ka-ná-lov, sta-
- []
-
-
-Overfull \hbox (0.71106pt too wide) in paragraph at lines 55--56
+Overfull \hbox (0.71106pt too wide) in paragraph at lines 65--66
 \T1/lmr/m/it/12 RING_TRANSFORMING_SENDING\T1/lmr/m/n/12 ,
  []
 
-[3] [4]) (kapitola_nastavenia.tex (transformacia.tex)
+[5]) (kapitola_nastavenia.tex (transformacia.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 9--9
-[]\T1/lmr/bx/n/14.4 Nastavenie £a-so-va-£ov
+[]\T1/lmr/bx/n/14.4 Nastavenie pra-ho-vého
  []
 
 
@@ -1578,103 +1573,34 @@ Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
 (hyperref)                removing `\textasciicaron' on input line 9.
 
-(casovaceMerania.tex)
+(casovaceMerania.tex) [6]
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 12.
-
-
-Package hyperref Warning: Composite letter `\textasciicaron+c'
-(hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 12.
-
-(casovaceHoldOff.tex [5]) [6]) (kapitola_GUI.tex
-
-Package hyperref Warning: Composite letter `\textasciicaron+l'
-(hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 3.
+(hyperref)                removing `\textasciicaron' on input line 14.
 
 
 Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 3.
+(hyperref)                removing `\textasciicaron' on input line 14.
 
+(casovaceHoldOff.tex)) (kapitola_delicNapatia.tex [7]
 
-Package hyperref Warning: Composite letter `\textasciicaron+l'
+Package hyperref Warning: Composite letter `\textasciicaron+c'
 (hyperref)                not defined in PD1 encoding,
 (hyperref)                removing `\textasciicaron' on input line 5.
 
-<../Obrazky/GUIPrveOkno.png, id=77, 326.9013pt x 158.2713pt>
-File: ../Obrazky/GUIPrveOkno.png Graphic file (type png)
-<use ../Obrazky/GUIPrveOkno.png>
-Package pdftex.def Info: ../Obrazky/GUIPrveOkno.png  used on input line 15.
-(pdftex.def)             Requested size: 418.25368pt x 202.5141pt.
-
-Underfull \hbox (badness 5431) in paragraph at lines 26--27
-[]|\T1/lmr/m/n/12 Ur£uje na-sta-ve-nie vstup-
- []
-
-
-Underfull \hbox (badness 3612) in paragraph at lines 27--28
-[]|\T1/lmr/m/n/12 Bu¤ $\OML/lmm/m/it/12 Single$ \T1/lmr/m/n/12 - vy-ko-na-nie
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-\T1/lmr/m/n/12 jed-ného me-ra-nia, alebo
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-\OML/lmm/m/it/12 Continous$ \T1/lmr/m/n/12 - pra-vi-delné
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 28--29
-[]|\T1/lmr/m/n/12 Ur£uje hra-nicu na-pä-tia,
- []
-
-
-Underfull \hbox (badness 6188) in paragraph at lines 28--29
-\T1/lmr/m/n/12 pre-kro-£e-nie kto-rej spustí
- []
-
-
-Underfull \hbox (badness 1629) in paragraph at lines 29--29
-[]|\T1/lmr/m/n/12 ƒasový in-ter-val na die-lik
- []
-
-
-Underfull \hbox (badness 3343) in paragraph at lines 30--31
-[]|\T1/lmr/m/n/12 Ur£uje mi-ni-málny £a-sový
- []
-
-<../Obrazky/GUINastaveniaKomunikacie.png, id=79, 290.5254pt x 152.0079pt>
-File: ../Obrazky/GUINastaveniaKomunikacie.png Graphic file (type png)
-<use ../Obrazky/GUINastaveniaKomunikacie.png>
-Package pdftex.def Info: ../Obrazky/GUINastaveniaKomunikacie.png  used on input
- line 37.
-(pdftex.def)             Requested size: 418.25368pt x 218.85408pt.
-[7 <../Obrazky/GUIPrveOkno.png>] [8 <../Obrazky/GUINastaveniaKomunikacie.png>])
-(kapitola_delicNapatia.tex
-
-Package hyperref Warning: Composite letter `\textasciicaron+c'
-(hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 3.
-
-[9]
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 73.
+(caption)                particular \caption on input line 75.
 See the caption package documentation for explanation.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 85.
+(caption)                particular \caption on input line 87.
 See the caption package documentation for explanation.
 
-[10] (schemadelica.tex
+[8] (schemadelica.tex
 \realshift=\dimen331
 \alshift=\dimen332
 \absvshift=\dimen333
@@ -1714,42 +1640,110 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 \alshift=\dimen363
 \absvshift=\dimen364
 \realshift=\dimen365
-)) [11] [12] (kapitola_krabica.tex
-<../Obrazky/Box01.png, id=152, 803.0pt x 702.625pt>
+)) [9] [10] (kapitola_GUI.tex
+
+Package hyperref Warning: Composite letter `\textasciicaron+l'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 5.
+
+
+Package hyperref Warning: Composite letter `\textasciicaron+c'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 5.
+
+
+Package hyperref Warning: Composite letter `\textasciicaron+l'
+(hyperref)                not defined in PD1 encoding,
+(hyperref)                removing `\textasciicaron' on input line 7.
+
+<../Obrazky/GUIPrveOkno.png, id=147, 374.3586pt x 200.4288pt>
+File: ../Obrazky/GUIPrveOkno.png Graphic file (type png)
+<use ../Obrazky/GUIPrveOkno.png>
+Package pdftex.def Info: ../Obrazky/GUIPrveOkno.png  used on input line 17.
+(pdftex.def)             Requested size: 418.25368pt x 223.9374pt.
+
+Underfull \hbox (badness 5431) in paragraph at lines 28--29
+[]|\T1/lmr/m/n/12 Ur£uje na-sta-ve-nie vstup-
+ []
+
+
+Underfull \hbox (badness 3612) in paragraph at lines 29--30
+[]|\T1/lmr/m/n/12 Bu¤ $\OML/lmm/m/it/12 Single$ \T1/lmr/m/n/12 - vy-ko-na-nie
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--30
+\T1/lmr/m/n/12 jed-ného me-ra-nia, alebo
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--30
+\OML/lmm/m/it/12 Continous$ \T1/lmr/m/n/12 - pra-vi-delné
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+[]|\T1/lmr/m/n/12 Ur£uje hra-nicu na-pä-tia,
+ []
+
+
+Underfull \hbox (badness 6188) in paragraph at lines 30--31
+\T1/lmr/m/n/12 pre-kro-£e-nie kto-rej spustí
+ []
+
+
+Underfull \hbox (badness 1629) in paragraph at lines 31--31
+[]|\T1/lmr/m/n/12 ƒasový in-ter-val na die-lik
+ []
+
+
+Underfull \hbox (badness 3343) in paragraph at lines 32--33
+[]|\T1/lmr/m/n/12 Ur£uje mi-ni-málny £a-sový
+ []
+
+<../Obrazky/GUINastaveniaKomunikacie.png, id=149, 290.5254pt x 152.0079pt>
+File: ../Obrazky/GUINastaveniaKomunikacie.png Graphic file (type png)
+<use ../Obrazky/GUINastaveniaKomunikacie.png>
+Package pdftex.def Info: ../Obrazky/GUINastaveniaKomunikacie.png  used on input
+ line 39.
+(pdftex.def)             Requested size: 418.25368pt x 218.85408pt.
+[11
+
+ <../Obrazky/GUIPrveOkno.png>] [12 <../Obrazky/GUINastaveniaKomunikacie.png>]) 
+(kapitola_krabica.tex [13]
+<../Obrazky/Box01.png, id=178, 803.0pt x 702.625pt>
 File: ../Obrazky/Box01.png Graphic file (type png)
 <use ../Obrazky/Box01.png>
-Package pdftex.def Info: ../Obrazky/Box01.png  used on input line 9.
+Package pdftex.def Info: ../Obrazky/Box01.png  used on input line 11.
 (pdftex.def)             Requested size: 204.12683pt x 178.60414pt.
 
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 10.
+(caption)                particular \caption on input line 12.
 See the caption package documentation for explanation.
 
-<../Obrazky/Box02.png, id=153, 803.0pt x 702.625pt>
+<../Obrazky/Box02.png, id=179, 803.0pt x 702.625pt>
 File: ../Obrazky/Box02.png Graphic file (type png)
 <use ../Obrazky/Box02.png>
-Package pdftex.def Info: ../Obrazky/Box02.png  used on input line 15.
+Package pdftex.def Info: ../Obrazky/Box02.png  used on input line 17.
 (pdftex.def)             Requested size: 204.12683pt x 178.60414pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 16.
+(caption)                particular \caption on input line 18.
 See the caption package documentation for explanation.
 
-<../Obrazky/Box03.png, id=154, 803.0pt x 702.625pt>
+<../Obrazky/Box03.png, id=180, 803.0pt x 702.625pt>
 File: ../Obrazky/Box03.png Graphic file (type png)
 <use ../Obrazky/Box03.png>
-Package pdftex.def Info: ../Obrazky/Box03.png  used on input line 21.
+Package pdftex.def Info: ../Obrazky/Box03.png  used on input line 23.
 (pdftex.def)             Requested size: 204.12683pt x 178.60414pt.
 
 Package caption Warning: The option `hypcap=true' will be ignored for this
-(caption)                particular \caption on input line 22.
+(caption)                particular \caption on input line 24.
 See the caption package documentation for explanation.
 
-[13
-
- <../Obrazky/Box01.png (PNG copy)> <../Obrazky/Box02.png (PNG copy)> <../Obrazk
-y/Box03.png (PNG copy)>]) (kapitola_zdroje.tex
+[14 <../Obrazky/Box01.png (PNG copy)> <../Obrazky/Box02.png (PNG copy)> <../Obr
+azky/Box03.png (PNG copy)>]) (kapitola_zdroje.tex
 LaTeX Font Info:    Try loading font information for OMS+lmr on input line 7.
 
 ("C:\Users\dot\AppData\Local\Programs\MiKTeX 2.9\tex/latex/lm\omslmr.fd"
@@ -1762,26 +1756,22 @@ Overfull \hbox (10.799pt too wide) in paragraph at lines 17--18
 []\T1/lmr/m/n/12 jSerialComm (Platform-independent
  []
 
-[14])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 16.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 16.
+[15])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 20.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 20.
  (main.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 16.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 16.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 16.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 20.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 20.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 20.
  ) 
 Here is how much of TeX's memory you used:
- 48031 strings out of 492895
- 1092619 string characters out of 3124669
- 1277600 words of memory out of 3000000
- 51277 multiletter control sequences out of 15000+200000
+ 48044 strings out of 492895
+ 1092838 string characters out of 3124669
+ 1278778 words of memory out of 3000000
+ 51285 multiletter control sequences out of 15000+200000
  604739 words of font info for 87 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,23n,95p,1884b,1271s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 57i,23n,95p,1908b,1271s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}
 {C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.en
 c}{C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}
@@ -1800,9 +1790,9 @@ c/lm/lmr8.pfb><C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publi
 c/lm/lmri12.pfb><C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
 lic/lm/lmsy10.pfb><C:/Users/dot/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/p
 ublic/lm/lmsy8.pfb>
-Output written on main.pdf (14 pages, 405673 bytes).
+Output written on main.pdf (15 pages, 421362 bytes).
 PDF statistics:
- 286 PDF objects out of 1000 (max. 8388607)
- 72 named destinations out of 1000 (max. 500000)
+ 311 PDF objects out of 1000 (max. 8388607)
+ 74 named destinations out of 1000 (max. 500000)
  174 words of extra memory for PDF output out of 10000 (max. 10000000)
 
