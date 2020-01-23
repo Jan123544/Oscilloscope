@@ -2,7 +2,7 @@
 \begin{document}
 	\section{Program}
 		\begin{multicols*}{2}
-			\noindent Program je tvorený 3 stavovými automatmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový automat má štruktúru udalostí s  príznakmi, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových automatov. Túto aktualizáciu vykonáva funkcia $*\_update$, kde $*$ môže byť buď $OSCI_transceiver$ (príjmač a vysielač) alebo $OSCI_channel_update$ (stavový automat riadiaci činnosť kanála). V krátkosti opíšeme činnosť týchto stavových automatov, pre detaily je vhodné konzultovať zdrojový kód. %Schematické znázornenie programu je na konci tejto kapitoly na \cref{fig:programClekovaSchema}.
+			\noindent Program je tvorený 3 stavovými automatmi, ktorých činnosť je previazaná systémom udalostí. Každý stavový automat má štruktúru udalostí s  príznakmi, ktoré sa nastavia v prípade, že udalosť nastane. V hlavnej slučke programu, sa vykonáva aktualizácia jednotlivých stavových automatov. Túto aktualizáciu vykonáva funkcia *\_update, kde $*$ môže byť buď OSCI\_transceiver (príjmač a vysielač) alebo OSCI\_channel\_update (stavový automat riadiaci činnosť kanála). V krátkosti opíšeme činnosť týchto stavových automatov, pre detaily je vhodné konzultovať zdrojový kód. %Schematické znázornenie programu je na konci tejto kapitoly na \cref{fig:programClekovaSchema}.
 			
 			\subsection{Stavový automat vysielač/príjmač}
 			Úlohou tohto stavového automatu, je reakcia na príchod nových dát, distribúcia nových nastavení a posielanie nových meraní do užívateľského prostredia. Jednoduché zobrazenie môžeme vidieť na \cref{fig:stavovyStrojVysielacPrijmac}.
