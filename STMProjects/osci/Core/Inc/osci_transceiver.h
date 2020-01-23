@@ -12,6 +12,7 @@
 #include "osci_data_structures.h"
 #include "osci_transform.h"
 #include "osci_configurator.h"
+#include "osci_state_machine.h"
 
 #define OSCI_TRANSCEIVER_STATE_IDLE 0
 #define OSCI_TRANSCEIVER_STATE_SHUTTING_DOWN_CHANNELS 1

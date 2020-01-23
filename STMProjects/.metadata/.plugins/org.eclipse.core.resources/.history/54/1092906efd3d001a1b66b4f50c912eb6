@@ -1,0 +1,29 @@
+/*
+ * osci_state_machine.c
+ *
+ *  Created on: 23. 1. 2020
+ *      Author: dot
+ */
+
+
+int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data)
+{
+	// If the conditions is true, execute the function with given data and return 1 else return 0
+	if(!condition) return 0;
+	fcn(fcn_data);
+	return 1;
+}
+
+void Transition(Osci_TransitionSpec spec)
+{
+	// Determine state machine type, and assign new state to it.
+	switch(spec.stateMachineType)
+	{
+		case CHANNEL_STATE_MACHINE:
+			((Osci_ChannelStateMachine*)spec.stateMachine)->state = spec.new_state;
+			break;
+		case TRANSCEIVER:
+			((Osci_Transceiver*)spec.stateMachine)->state = spec.new_state;
+			break;
+	}
+}

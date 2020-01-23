@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;osci/Core/Src/osci_state_machine&apos;" deleteContents="false" description="Delete resource &apos;osci/Core/Src/osci_state_machine&apos;" element1="/osci/Core/Src/osci_state_machine" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1579796018184"/>&#x0A;<refactoring comment="Delete resource &apos;osci_test_vrefint_measurement&apos;" deleteContents="true" description="Delete resource &apos;osci_test_vrefint_measurement&apos;" element1="/osci_test_vrefint_measurement" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1579798340798"/>
+</session>

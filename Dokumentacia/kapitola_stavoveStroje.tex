@@ -37,10 +37,18 @@
 			\textit{osci\_defines.h } - nachádzajú sa tu kalibračné faktory, počiatočné nastavenia, enumerácie opkódov správ do GUI, enumerácia kanálov, makrá na MIN a MAX, definícia TRUE a FALSE, niektoré definované maximálne hodnoty unsigned registrov, enumerácia typov stavového stroja.
 			
 			\textit{osci\_data\_structures.h} - tento súbor obsahuje definície dátových štruktúr stavových automatov a rôznych abstrakcií ako napríklad meranie kanálu, čo predstavuje postupnosť vzoriek, dátové štruktúry nastavení poslaných z GUI, nastavení kanálov, udalostí jednotlivých stavových automatov, dátovú štruktúru aplikácie a dátovú štruktúru opisujúce parametre prechodu stavového automatu.
+			
+			\textit{osci\_channel\_state\_machine.h} - definícia stavov automatu, deklarácia callbackov, init a update funkcií stavového automatu kanálu.
+			
+			\textit{osci\_transceiver.h} - definícia stavov automatu, deklarácia callbackov, init a update funkcií stavového automatu vysielač/prijmač.
+			
 			\subsection{.C Súbory}
 			Okrem inicializačných súborov periférií a iných štandardných súborov vygenerovaných pomocou CubeMX sa tu nachádzajú nasledovné súbory.
 			
 			\textit{ osci\_adc.h} - pomocné funkcie, na ovládanie AD prevodníka. 
+			
+			
+			\textit{ osci\_state\_machine.c} - všeobecné funkcie pre stavové automaty
 			
 			\textit{ osci\_channel\_state\_machine.c} - implementácia stavového automatu meracieho kanálu. 
 			

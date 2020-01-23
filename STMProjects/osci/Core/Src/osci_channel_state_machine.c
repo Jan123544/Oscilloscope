@@ -22,7 +22,7 @@ void OSCI_channel_init(Osci_ChannelStateMachine* csm, TIM_TypeDef* timer, TIM_Ty
 	csm->events.start_monitoring = FALSE;
 	csm->channelOpcode = channelOpcode;
 
-	// Initialize static callbacks.
+	// Initialize callbacks.
 	OSCI_dma_set_TC_callback(csm, measurement_complete_callback);
 	OSCI_adc_set_awd_callback(csm, awd_threshold_callback);
 	OSCI_timer_set_update_callback(csm->holdOffTimer, holdOffTimerCallback);
@@ -45,7 +45,7 @@ void OSCI_channel_start_measuring(Osci_ChannelStateMachine* csm)
 	OSCI_adc_reconfigure_for_measuring(csm);
 	OSCI_dma_channel_reconfigure_for_measuring(csm);
 
-	csm->state = OSCI_CHANNEL_STATE_MEASURING;
+	Transition((Osci_TransitionSpec) {.new_state = OSCI_CHANNEL_STATE_MEASURING, .stateMachine=csm, .stateMachineType=CHANNEL_STATE_MACHINE});
 
 	OSCI_timer_start(csm->timer);
 	LL_ADC_REG_StartConversion(csm->adc);
@@ -67,9 +67,51 @@ void OSCI_channel_start_monitoring(Osci_ChannelStateMachine* csm)
 
 	OSCI_adc_reconfigure_for_monitoring(csm);
 
-	csm->state = OSCI_CHANNEL_STATE_MONITORING;
+	Transition((Osci_TransitionSpec) {.new_state = OSCI_CHANNEL_STATE_MONITORING, .stateMachine=csm, .stateMachineType=CHANNEL_STATE_MACHINE});
 
 	LL_ADC_REG_StartConversion(csm->adc);
+}
+
+void Measurement_Complete(void * data){
+	Osci_ChannelStateMachine* csm = (Osci_ChannelStateMachine*) data;
+
+	csm->events.measurement_complete = FALSE;
+
+	OSCI_adc_stop(csm);
+	Transition((Osci_TransitionSpec) {.new_state = OSCI_CHANNEL_STATE_SHUTDOWN, .stateMachine=csm, .stateMachineType=CHANNEL_STATE_MACHINE});
+
+	if (csm == csm->transceiver->x_channel_state_machine)
+	{
+		csm->transceiver->events.send_requested[0] = TRUE;
+
+		if ((csm->transceiver->channelUpdateMask & MEASURE_CONTINUOUS_X)
+				&& !(OSCI_is_channel_holdoff_timer_active(csm->transceiver, CHANNEL_X)))
+			csm->events.start_monitoring = TRUE;
+	}
+	else
+	{
+		csm->transceiver->events.send_requested[1] = TRUE;
+
+		if ((csm->transceiver->channelUpdateMask & MEASURE_CONTINUOUS_Y)
+				&& !(OSCI_is_channel_holdoff_timer_active(csm->transceiver, CHANNEL_Y)))
+			csm->events.start_monitoring = TRUE;
+	}
+}
+
+void Shutdown(void* data){
+	Osci_ChannelStateMachine* csm = (Osci_ChannelStateMachine*) data;
+
+	OSCI_adc_stop(csm);
+	OSCI_timer_stop(csm->holdOffTimer);
+	csm->events.shutdown = FALSE;
+	Transition((Osci_TransitionSpec) {.new_state = OSCI_CHANNEL_STATE_SHUTDOWN, .stateMachine=csm, .stateMachineType=CHANNEL_STATE_MACHINE});
+}
+
+void Start_Monitoring(void* data){
+	Osci_ChannelStateMachine* csm = (Osci_ChannelStateMachine*) data;
+
+	OSCI_channel_start_monitoring(csm);
+	csm->events.start_monitoring = FALSE;
 }
 
 void OSCI_channel_update(Osci_ChannelStateMachine* csm)
@@ -83,11 +125,8 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			csm->events.measurement_complete = FALSE;
 			csm->events.shutdown = FALSE;
 
-			// Check for transitions
-			if (csm->events.start_monitoring)
-			{
-				OSCI_channel_start_monitoring(csm);
-				csm->events.start_monitoring = FALSE;
+			if(TryExecOnFlag(csm->events.start_monitoring, Start_Monitoring, (void*)csm)){
+				return;
 			}
 			break;
 		}
@@ -98,12 +137,7 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			csm->events.start_monitoring = FALSE;
 
 			// Check for transitions
-			if (csm->events.shutdown)
-			{
-				OSCI_adc_stop(csm);
-				OSCI_timer_stop(csm->holdOffTimer);
-				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
-				csm->events.shutdown = FALSE;
+			if(TryExecOnFlag(csm->events.shutdown, Shutdown, (void*)csm)){
 				return;
 			}
 			break;
@@ -115,38 +149,15 @@ void OSCI_channel_update(Osci_ChannelStateMachine* csm)
 			csm->events.start_monitoring = FALSE;
 
 			// Check for transitions
-			if(csm->events.shutdown)
-			{
-				OSCI_adc_stop(csm);
-				OSCI_timer_stop(csm->holdOffTimer);
-				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
+
+			if(TryExecOnFlag(csm->events.shutdown, Shutdown, (void*)csm)){
 				return;
 			}
 
-			if(csm->events.measurement_complete)
-			{
-				csm->events.measurement_complete = FALSE;
-
-				OSCI_adc_stop(csm);
-				csm->state = OSCI_CHANNEL_STATE_SHUTDOWN;
-
-				if (csm == csm->transceiver->x_channel_state_machine)
-				{
-					csm->transceiver->events.send_requested[0] = TRUE;
-
-					if ((csm->transceiver->channelUpdateMask & MEASURE_CONTINUOUS_X)
-							&& !(OSCI_is_channel_holdoff_timer_active(csm->transceiver, CHANNEL_X)))
-						csm->events.start_monitoring = TRUE;
-				}
-				else
-				{
-					csm->transceiver->events.send_requested[1] = TRUE;
-
-					if ((csm->transceiver->channelUpdateMask & MEASURE_CONTINUOUS_Y)
-							&& !(OSCI_is_channel_holdoff_timer_active(csm->transceiver, CHANNEL_Y)))
-						csm->events.start_monitoring = TRUE;
-				}
+			if(TryExecOnFlag(csm->events.measurement_complete, Measurement_Complete, (void*)csm)){
+				return;
 			}
+
 			break;
 		}
 	}

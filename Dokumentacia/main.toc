@@ -6,13 +6,13 @@
 \contentsline {subsection}{\numberline {1.4}.C S\IeC {\'u}bory}{4}{subsection.1.4}% 
 \contentsline {subsection}{\numberline {1.5}Postup merania}{5}{subsection.1.5}% 
 \contentsline {subsection}{\numberline {1.6}Postup v pr\IeC {\'\i }pade automatick\IeC {\'e}ho aktualiz\IeC {\'a}cie parametrov transform\IeC {\'a}cie}{5}{subsection.1.6}% 
-\contentsline {section}{\numberline {2}Nastavenia}{6}{section.2}% 
-\contentsline {subsection}{\numberline {2.1}Transform\IeC {\'a}cia merania}{6}{subsection.2.1}% 
-\contentsline {subsection}{\numberline {2.2}Nastavenie prahov\IeC {\'e}ho nap\IeC {\"a}tia a \IeC {\v c}asova\IeC {\v c}ov merania}{6}{subsection.2.2}% 
-\contentsline {subsection}{\numberline {2.3}Nastavenie Hold-off \IeC {\v c}asova\IeC {\v c}ov}{7}{subsection.2.3}% 
-\contentsline {section}{\numberline {3}Deli\IeC {\v c} nap\IeC {\"a}tia}{8}{section.3}% 
-\contentsline {section}{\numberline {4}Pou\IeC {\v z}\IeC {\'\i }vate\IeC {\v l}sk\IeC {\'a} pr\IeC {\'\i }ru\IeC {\v c}ka}{11}{section.4}% 
-\contentsline {subsection}{\numberline {4.1}Pou\IeC {\v z}\IeC {\'\i }vate\IeC {\v l}sk\IeC {\'e} rozhranie}{11}{subsection.4.1}% 
-\contentsline {subsection}{\numberline {4.2}Spustenie merania}{13}{subsection.4.2}% 
-\contentsline {section}{\numberline {5}Vyhotovenie}{14}{section.5}% 
-\contentsline {section}{\numberline {6}Liter\IeC {\'a}rne zdroje, pou\IeC {\v z}it\IeC {\'y} software a pou\IeC {\v z}it\IeC {\'e} kni\IeC {\v z}nice}{15}{section.6}% 
+\contentsline {section}{\numberline {2}Nastavenia}{7}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Transform\IeC {\'a}cia merania}{7}{subsection.2.1}% 
+\contentsline {subsection}{\numberline {2.2}Nastavenie prahov\IeC {\'e}ho nap\IeC {\"a}tia a \IeC {\v c}asova\IeC {\v c}ov merania}{7}{subsection.2.2}% 
+\contentsline {subsection}{\numberline {2.3}Nastavenie Hold-off \IeC {\v c}asova\IeC {\v c}ov}{8}{subsection.2.3}% 
+\contentsline {section}{\numberline {3}Deli\IeC {\v c} nap\IeC {\"a}tia}{9}{section.3}% 
+\contentsline {section}{\numberline {4}Pou\IeC {\v z}\IeC {\'\i }vate\IeC {\v l}sk\IeC {\'a} pr\IeC {\'\i }ru\IeC {\v c}ka}{12}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Pou\IeC {\v z}\IeC {\'\i }vate\IeC {\v l}sk\IeC {\'e} rozhranie}{12}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}Spustenie merania}{14}{subsection.4.2}% 
+\contentsline {section}{\numberline {5}Vyhotovenie}{15}{section.5}% 
+\contentsline {section}{\numberline {6}Liter\IeC {\'a}rne zdroje, pou\IeC {\v z}it\IeC {\'y} software a pou\IeC {\v z}it\IeC {\'e} kni\IeC {\v z}nice}{16}{section.6}% 

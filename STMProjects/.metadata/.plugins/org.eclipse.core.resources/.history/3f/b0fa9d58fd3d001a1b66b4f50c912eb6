@@ -1,0 +1,15 @@
+/*
+ * osci_state_machine.h
+ *
+ *  Created on: 23. 1. 2020
+ *      Author: dot
+ */
+
+#ifndef INC_OSCI_STATE_MACHINE_H_
+#define INC_OSCI_STATE_MACHINE_H_
+
+
+int TryExecOnFlag(int condition, void (*fcn) (void *), void*fcn_data);
+void Transition(Osci_TransitionSpec spec);
+
+#endif /* INC_OSCI_STATE_MACHINE_H_ */
