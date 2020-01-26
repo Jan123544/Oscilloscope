@@ -6,7 +6,7 @@
 		v_n = \ceil{\floor{\frac{1}{s}v_\alpha + o}^{4095}}_{0}
 		\label{eqn:transformacia}
 	\end{equation}
-	kde $v_n$ je hodnota posielaná do uživateľského prostredia, $s$ je prepočítaná citlivosť daná rovnicou \cref{eqn:transformaciaCitlivost}, $o$ je prepočítaný posun daný rovnicou \cref{eqn:transformaciaPosun} a $\floor{}^{4095}, \ceil{}_{0}$ sú funkcie definované podľa \cref{eqn:transformaciaCeilFloor}. Hodnota $v_alpha$ je daná \cref{eqn:transformaciaAlpha}, kde $\alpha$ slúži na kalibráciu hodnoty $v_{adc}$ preveden AD prevodníkom.
+	kde $v_n$ je hodnota posielaná do uživateľského prostredia, $s$ je prepočítaná citlivosť daná rovnicou \cref{eqn:transformaciaCitlivost}, $o$ je prepočítaný posun daný rovnicou \cref{eqn:transformaciaPosun} a $\floor{}^{4095}, \ceil{}_{0}$ sú funkcie definované podľa \cref{eqn:transformaciaCeilFloor}. Hodnota $v_{\alpha}$ je daná \cref{eqn:transformaciaAlpha}, kde $\alpha$ slúži na kalibráciu hodnoty $v_{adc}$ prevedenú AD prevodníkom.
 	
 	\begin{equation}
 		s = \frac{s_gd_g}{r_m}
